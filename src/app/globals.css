@@ -66,6 +66,50 @@
 }
 
 @layer utilities {
+  /* Header glassmorphism and circuit pattern */
+  .cyber-header {
+    background-color: hsl(var(--background) / 0.7);
+    backdrop-filter: blur(8px);
+    /* Subtle SVG circuit pattern */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='M0 38.59l2.83-2.83 1.41 1.41L1.41 40H0v-1.41zM0 1.4l2.83 2.83 1.41-1.41L1.41 0H0v1.41zM38.59 40l-2.83-2.83 1.41-1.41L40 38.59V40h-1.41zM40 1.41l-2.83 2.83-1.41-1.41L38.59 0H40v1.41z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  /* Nav Link Styling */
+  .cyber-nav-link {
+    @apply relative flex items-center gap-2 py-2 text-sm font-medium transition-colors hover:text-primary;
+  }
+
+  /* Glitch animation for nav item hover */
+  .cyber-nav-link:hover .nav-link-text {
+    animation: nav-glitch 0.3s linear infinite;
+  }
+
+  @keyframes nav-glitch {
+    0%, 100% {
+      transform: translate(0, 0);
+    }
+    25% {
+      transform: translate(1px, -1px);
+    }
+    50% {
+      transform: translate(-1px, 1px);
+    }
+    75% {
+      transform: translate(1px, 1px);
+    }
+  }
+
+  /* Sliding underline element */
+  .sliding-underline {
+    position: absolute;
+    bottom: -2px; /* Position it just below the items */
+    height: 2px;
+    background-color: hsl(var(--primary));
+    box-shadow: 0 0 8px hsl(var(--primary) / 0.9);
+    transition: left 0.4s cubic-bezier(0.25, 1, 0.5, 1), width 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    border-radius: 2px;
+  }
+
   .text-glow-primary {
     text-shadow: 0 0 8px hsl(var(--primary) / 0.9);
   }

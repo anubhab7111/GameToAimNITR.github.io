@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -9,20 +10,37 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { Menu, Gamepad2 } from 'lucide-react';
+import {
+  Menu,
+  Gamepad2,
+  Info,
+  Joystick,
+  Component,
+  Calendar,
+  Trophy,
+  Users,
+  Send,
+} from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useLenis } from '@studio-freight/react-lenis';
+import type { ElementType } from 'react';
 
-const navLinks = [
-  { href: '/#about', label: 'About' },
-  { href: '/#games', label: 'Games' },
-  { href: '/#showcase', label: 'Showcase' },
-  { href: '/#events', label: 'Events' },
-  { href: '/#achievements', label: 'Achievements' },
-  { href: '/members', label: 'Members' },
-  { href: '/#contact', label: 'Contact' },
+interface NavLink {
+  href: string;
+  label: string;
+  Icon: ElementType;
+}
+
+const navLinks: NavLink[] = [
+  { href: '/#about', label: 'About', Icon: Info },
+  { href: '/#games', label: 'Games', Icon: Joystick },
+  { href: '/#showcase', label: 'Showcase', Icon: Component },
+  { href: '/#events', label: 'Events', Icon: Calendar },
+  { href: '/#achievements', label: 'Achievements', Icon: Trophy },
+  { href: '/members', label: 'Members', Icon: Users },
+  { href: '/#contact', label: 'Contact', Icon: Send },
 ];
 
 export default function Header() {
@@ -32,20 +50,34 @@ export default function Header() {
   const isNavigatingRef = useRef(false);
   const timeoutRef = useRef<NodeJS.Timeout>();
   const lenis = useLenis();
+  const navRef = useRef<HTMLElement>(null);
+  const [underlineStyle, setUnderlineStyle] = useState({ left: 0, width: 0, opacity: 0 });
 
+  // Effect for sliding underline
   useEffect(() => {
-    // Set active link for non-homepage routes like /members
+    if (navRef.current && activeLink) {
+      const activeLinkElement = navRef.current.querySelector(`[data-href="${activeLink}"]`) as HTMLElement;
+      if (activeLinkElement) {
+        const { offsetLeft, offsetWidth } = activeLinkElement;
+        setUnderlineStyle({ left: offsetLeft, width: offsetWidth, opacity: 1 });
+      } else {
+        setUnderlineStyle({ ...underlineStyle, opacity: 0 });
+      }
+    } else {
+      setUnderlineStyle({ ...underlineStyle, opacity: 0 });
+    }
+  }, [activeLink]);
+
+  // Effect for setting active link based on scroll/path
+  useEffect(() => {
     if (pathname !== '/') {
       setActiveLink(pathname);
       return;
     }
     
-    // Logic for homepage scroll-based active link
     const observer = new IntersectionObserver(
       (entries) => {
-        // If navigating via click, ignore observer updates to prevent flickering
         if (isNavigatingRef.current) return;
-
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setActiveLink(`/#${entry.target.id}`);
@@ -53,7 +85,6 @@ export default function Header() {
         });
       },
       {
-        // A section is "active" if it's in the middle of the viewport
         rootMargin: '-50% 0px -50% 0px', 
       }
     );
@@ -65,72 +96,63 @@ export default function Header() {
 
     sections.forEach((section) => observer.observe(section));
 
+    // Set initial active link for homepage
+    setActiveLink('/#hero');
+    const heroSection = document.getElementById('hero');
+    if (heroSection) {
+      observer.observe(heroSection);
+    }
+
     return () => {
       sections.forEach((section) => observer.unobserve(section));
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
+      if (heroSection) observer.unobserve(heroSection);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
   }, [pathname]);
 
   const handleNavLinkClick = (e: React.MouseEvent, href: string) => {
     if (isSheetOpen) setIsSheetOpen(false);
 
-    // Handle on-page smooth scroll with transition
     if (href.startsWith('/#') && pathname === '/') {
       e.preventDefault();
-
-      // Add a body class to trigger the CSS transition
       document.body.classList.add('is-nav-scrolling');
-      setTimeout(() => {
-        document.body.classList.remove('is-nav-scrolling');
-      }, 800); // Match CSS animation duration
+      setTimeout(() => document.body.classList.remove('is-nav-scrolling'), 800);
 
       const targetId = href.substring(1);
       lenis?.scrollTo(targetId, {
-        offset: -80, // Account for sticky header height
+        offset: -80,
         duration: 1.5,
       });
     }
     
-    // Set active link immediately for instant feedback
     setActiveLink(href);
-
-    // Block observer for a short period to prevent race conditions
     isNavigatingRef.current = true;
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-    // Unblock observer after scroll animation completes
-    timeoutRef.current = setTimeout(() => {
-      isNavigatingRef.current = false;
-    }, 1500);
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => { isNavigatingRef.current = false; }, 1500);
   };
 
-
-  const NavLinkComponent = ({ href, label, isMobile = false }: { href: string; label: string; isMobile?: boolean }) => {
+  const NavLinkComponent = ({ href, label, Icon, isMobile = false }: NavLink & { isMobile?: boolean }) => {
     const isActive = activeLink === href;
     return (
       <Link
         href={href}
+        data-href={href}
         onClick={(e) => handleNavLinkClick(e, href)}
         className={cn(
-          'transition-colors hover:text-primary',
-          isMobile 
-            ? 'block text-lg font-semibold'
-            : 'relative py-2 text-sm font-medium after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:origin-center after:scale-x-0 after:bg-primary after:transition-transform after:duration-300 hover:after:scale-x-100',
-          isActive && (isMobile ? 'text-primary' : 'text-primary after:scale-x-100')
+          isMobile ? 'flex items-center gap-3 text-lg font-semibold' : 'cyber-nav-link',
+          isActive && !isMobile && 'text-primary'
         )}
       >
-        {label}
+        <Icon className={cn("h-4 w-4", isActive ? 'text-primary' : 'text-muted-foreground', 'transition-colors group-hover:text-primary')} />
+        <span className="nav-link-text">{label}</span>
       </Link>
     );
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background backdrop-blur">
-      <div className="container flex h-14 items-center">
-        <div className="mr-4 flex items-center">
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 cyber-header">
+      <div className="container flex h-16 items-center">
+        <div className="mr-8 flex items-center">
           <Link href="/" className="flex items-center space-x-2">
             <Gamepad2 className="h-6 w-6 text-primary" />
             <span className="font-bold text-lg tracking-wider glitch-layers" data-text="GAME TO AIM">
@@ -138,10 +160,11 @@ export default function Header() {
             </span>
           </Link>
         </div>
-        <nav className="hidden md:flex items-center space-x-6">
+        <nav ref={navRef} className="relative hidden md:flex items-center space-x-6">
           {navLinks.map((link) => (
-            <NavLinkComponent key={link.href} href={link.href} label={link.label} />
+            <NavLinkComponent key={link.href} {...link} />
           ))}
+          <div className="sliding-underline" style={underlineStyle} />
         </nav>
         <div className="flex flex-1 items-center justify-end space-x-4">
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
@@ -151,17 +174,17 @@ export default function Header() {
                 <span className="sr-only">Toggle Menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+            <SheetContent side="right" className="w-[300px] sm:w-[400px] cyber-header border-l-border/60">
               <SheetTitle className="sr-only">Menu</SheetTitle>
               <SheetDescription className="sr-only">
                 The main navigation links for the website.
               </SheetDescription>
               <div className="flex flex-col h-full">
-                <div className="flex-1 space-y-4 pt-6">
+                <nav className="flex-1 space-y-4 pt-6">
                   {navLinks.map((link) => (
-                    <NavLinkComponent key={`${link.href}-mobile`} href={link.href} label={link.label} isMobile />
+                    <NavLinkComponent key={`${link.href}-mobile`} {...link} isMobile />
                   ))}
-                </div>
+                </nav>
               </div>
             </SheetContent>
           </Sheet>
