@@ -155,7 +155,7 @@ export default function Header() {
         <div className="mr-8 flex items-center">
           <Link href="/" className="flex items-center space-x-2">
             <Gamepad2 className="h-6 w-6 text-primary" />
-            <span className="font-bold text-lg tracking-wider glitch-layers" data-text="GAME TO AIM">
+            <span className="font-bold text-lg tracking-wider">
               GAME TO AIM
             </span>
           </Link>
