@@ -76,7 +76,8 @@
 
   /* Nav Link Styling */
   .cyber-nav-link {
-    @apply relative flex items-center gap-2 py-2 text-sm font-medium transition-colors hover:text-primary;
+    @apply relative flex items-center gap-2 px-3 py-2 text-sm font-medium transition-colors hover:text-primary;
+    z-index: 1;
   }
 
   /* Glitch animation for nav item hover */
@@ -99,15 +100,17 @@
     }
   }
 
-  /* Sliding underline element */
-  .sliding-underline {
+  /* Sliding box for active nav link */
+  .sliding-box {
     position: absolute;
-    bottom: -2px; /* Position it just below the items */
-    height: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 2.25rem; /* 36px */
     background-color: hsl(var(--primary));
     box-shadow: 0 0 8px hsl(var(--primary) / 0.9);
     transition: left 0.4s cubic-bezier(0.25, 1, 0.5, 1), width 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-    border-radius: 2px;
+    border-radius: 0.375rem; /* rounded-md */
+    z-index: 0;
   }
 
   .text-glow-primary {

@@ -66,7 +66,7 @@ export default function Header() {
     } else {
       setUnderlineStyle({ ...underlineStyle, opacity: 0 });
     }
-  }, [activeLink]);
+  }, [activeLink, navRef]);
 
   // Effect for setting active link based on scroll/path
   useEffect(() => {
@@ -140,10 +140,10 @@ export default function Header() {
         onClick={(e) => handleNavLinkClick(e, href)}
         className={cn(
           isMobile ? 'flex items-center gap-3 text-lg font-semibold' : 'cyber-nav-link',
-          isActive && !isMobile && 'text-primary'
+          isActive && !isMobile && 'text-primary-foreground'
         )}
       >
-        <Icon className={cn("h-4 w-4", isActive ? 'text-primary' : 'text-muted-foreground', 'transition-colors group-hover:text-primary')} />
+        <Icon className={cn("h-4 w-4 transition-colors group-hover:text-primary", isActive ? 'text-primary-foreground' : 'text-muted-foreground')} />
         <span className="nav-link-text">{label}</span>
       </Link>
     );
@@ -160,11 +160,11 @@ export default function Header() {
             </span>
           </Link>
         </div>
-        <nav ref={navRef} className="relative hidden md:flex items-center space-x-6">
+        <nav ref={navRef} className="relative hidden md:flex items-center space-x-1">
           {navLinks.map((link) => (
             <NavLinkComponent key={link.href} {...link} />
           ))}
-          <div className="sliding-underline" style={underlineStyle} />
+          <div className="sliding-box" style={underlineStyle} />
         </nav>
         <div className="flex flex-1 items-center justify-end space-x-4">
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
