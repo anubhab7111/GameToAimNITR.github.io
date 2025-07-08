@@ -19,30 +19,42 @@ export default function ContactSection() {
               <span className="w-3 h-3 rounded-full bg-tertiary"></span>
               <span className="w-3 h-3 rounded-full bg-accent"></span>
             </div>
-            <div className="font-code">
-              <p className="text-green-400">&gt; gta_contact --initiate</p>
-              <p className="text-green-400">Initializing contact form... Success.</p>
-              <p className="text-muted-foreground">Awaiting user input. Please fill out the fields below.</p>
+            <div className="font-hacker text-lg">
+              <p className="text-green-400">
+                <span className="text-primary">gta_contact</span>{' '}
+                <span className="text-accent">--initiate</span>
+              </p>
+              <p className="text-green-400">
+                <span className="text-muted-foreground">[1/3]</span> Establishing secure channel...{' '}
+                <span className="text-tertiary">OK</span>
+              </p>
+              <p className="text-green-400">
+                <span className="text-muted-foreground">[2/3]</span> Rendering input fields...{' '}
+                <span className="text-tertiary">OK</span>
+              </p>
+               <p className="text-green-400 mb-6">
+                <span className="text-muted-foreground">[3/3]</span> Awaiting user transmission...
+              </p>
               
-              <form className="mt-6 space-y-6">
+              <form className="space-y-6">
                 <div className="flex flex-col sm:flex-row gap-4">
                   <div className="w-full">
                     <label htmlFor="name" className="text-accent">&gt; Your Name</label>
-                    <Input id="name" type="text" placeholder="unit_42" className="bg-transparent border-accent/50 focus:border-accent font-code text-green-400 mt-1" />
+                    <Input id="name" type="text" placeholder="// Your callsign or handle" className="bg-transparent border-accent/50 focus:border-accent font-hacker text-lg text-green-400 mt-1" />
                   </div>
                   <div className="w-full">
                     <label htmlFor="email" className="text-accent">&gt; Your Email</label>
-                    <Input id="email" type="email" placeholder="user@domain.net" className="bg-transparent border-accent/50 focus:border-accent font-code text-green-400 mt-1" />
+                    <Input id="email" type="email" placeholder="// Your secure email address" className="bg-transparent border-accent/50 focus:border-accent font-hacker text-lg text-green-400 mt-1" />
                   </div>
                 </div>
                 <div>
                   <label htmlFor="message" className="text-accent">&gt; Message</label>
-                  <Textarea id="message" placeholder="Load message..." className="bg-transparent border-accent/50 focus:border-accent font-code text-green-400 mt-1 min-h-[120px]" />
+                  <Textarea id="message" placeholder="// Your message payload..." className="bg-transparent border-accent/50 focus:border-accent font-hacker text-lg text-green-400 mt-1 min-h-[120px]" />
                 </div>
                 <div className="flex justify-end">
-                   <Button type="submit" variant="outline" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground font-bold">
+                   <Button type="submit" variant="outline" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground font-hacker text-lg">
                      <Send className="mr-2 h-4 w-4" />
-                     Transmit Message
+                     ./send_transmission.sh
                    </Button>
                 </div>
               </form>
