@@ -777,9 +777,6 @@
     }
   }
 
-  .animate-pan-slow {
-    animation: pan-left 60s linear infinite;
-  }
   .animate-pan-medium {
     animation: pan-left 30s linear infinite;
   }
