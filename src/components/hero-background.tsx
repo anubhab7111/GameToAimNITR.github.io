@@ -20,11 +20,6 @@ export default function HeroBackground() {
         className="absolute bottom-0 left-0 w-[200%] h-full animate-scroll-medium opacity-70"
         style={{ backgroundImage: `url("${buildings2}")`, backgroundRepeat: 'repeat-x', backgroundSize: '50% 100%' }}
       ></div>
-
-      {/* Road */}
-      <div className="absolute bottom-0 left-0 w-full h-1/3">
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black to-transparent"></div>
-      </div>
       
        {/* Foreground Fog */}
        <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-background via-background/80 to-transparent z-20"></div>

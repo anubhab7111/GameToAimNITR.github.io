@@ -95,26 +95,10 @@ export default {
             height: '0',
           },
         },
-        flicker: {
-          '0%, 100%': { opacity: '1' },
-          '50%': { opacity: '0.6' },
-        },
-        glow: {
-          '0%, 100%': {
-            filter:
-              'drop-shadow(0 0 5px hsl(var(--primary) / 0.8)) drop-shadow(0 0 10px hsl(var(--primary) / 0.6))',
-          },
-          '50%': {
-            filter:
-              'drop-shadow(0 0 10px hsl(var(--primary) / 1)) drop-shadow(0 0 20px hsl(var(--primary) / 0.8))',
-          },
-        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
-        flicker: 'flicker 2s linear infinite',
-        glow: 'glow 3s ease-in-out infinite',
       },
     },
   },
