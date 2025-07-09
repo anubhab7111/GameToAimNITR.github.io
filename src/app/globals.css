@@ -879,6 +879,38 @@
     from { background-position: 0 0; }
     to { background-position: -300px 200px; }
   }
-}
 
-    
+  /* Hacker Overlay */
+  .hacker-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: hsl(var(--background));
+    z-index: 10000;
+    font-family: var(--font-hacker);
+    color: hsl(var(--accent));
+    opacity: 1;
+    transition: opacity 1s ease-out;
+  }
+
+  .hacker-overlay.is-fading-out {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .hacker-overlay::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      0deg,
+      hsla(0, 0%, 0%, 0),
+      hsla(0, 0%, 0%, 0.15) 1px,
+      hsla(0, 0%, 0%, 0) 2px
+    );
+    animation: scanlines 20s linear infinite;
+  }
+}

@@ -6,42 +6,19 @@ import { useLenis } from '@studio-freight/react-lenis';
 import { Gamepad2, Component, UserPlus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Cybertype from '@/components/cybertype';
-import Typewriter from '@/components/typewriter';
 import HeroBackground from '@/components/hero-background';
+import HackerOverlay from '@/components/hacker-overlay';
 
 export default function HeroSection() {
   const buttons = ['games', 'showcase', 'join'] as const;
   type SelectedButton = (typeof buttons)[number];
+  
   const [selectedButton, setSelectedButton] = useState<SelectedButton>('games');
-  const [isVisible, setIsVisible] = useState(false);
+  const [sequenceState, setSequenceState] = useState(0);
+  const [sequenceComplete, setSequenceComplete] = useState(false);
+
   const lenis = useLenis();
   const sectionRef = useRef<HTMLDivElement>(null);
-
-  // Use IntersectionObserver to play animation only when section is visible
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-            observer.unobserve(entry.target); // Animate only once
-          }
-        });
-      },
-      { threshold: 0.5 } // Animate when 50% of the section is visible
-    );
-
-    const currentRef = sectionRef.current;
-    if (currentRef) {
-      observer.observe(currentRef);
-    }
-
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
-      }
-    };
-  }, []);
 
   const handleNavigation = (targetId: string) => {
     document.body.classList.add('is-nav-scrolling');
@@ -57,6 +34,10 @@ export default function HeroSection() {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) {
+        return; // Don't interfere with form inputs
+      }
+      
       const currentIndex = buttons.indexOf(selectedButton);
 
       if (['a', 'arrowleft'].includes(event.key.toLowerCase())) {
@@ -95,11 +76,18 @@ export default function HeroSection() {
 
   return (
     <section ref={sectionRef} id="hero" className="relative h-[100vh] w-full flex items-center justify-center text-center overflow-hidden">
-      <HeroBackground isVisible={isVisible} />
+      {!sequenceComplete && (
+        <HackerOverlay 
+          onStateChange={setSequenceState}
+          onSequenceComplete={() => {
+            setTimeout(() => setSequenceComplete(true), 1000); // Wait for fade out
+          }}
+        />
+      )}
+      <HeroBackground isVisible={sequenceState >= 1} />
       <div className="z-10 flex flex-col items-center p-4">
         <div
-          className={cn('animate-entry animate-slide-in-top', { 'is-visible': isVisible })}
-          style={{ animationDelay: '600ms' }}
+          className={cn('animate-entry animate-slide-in-top', { 'is-visible': sequenceState >= 2 })}
         >
           <h1
             className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-wider text-glow-primary glitch-layers"
@@ -109,8 +97,7 @@ export default function HeroSection() {
           </h1>
         </div>
         <div
-          className={cn('max-w-3xl mt-8 animate-entry animate-fade-in', { 'is-visible': isVisible })}
-          style={{ animationDelay: '800ms' }}
+          className={cn('max-w-3xl mt-8 animate-entry animate-fade-in', { 'is-visible': sequenceState >= 3 })}
         >
           <Cybertype
             texts={[
@@ -120,16 +107,16 @@ export default function HeroSection() {
           />
         </div>
         <div
-          className="flex flex-col items-center gap-4 mt-12"
+          className={cn('flex flex-col items-center gap-4 mt-12 transition-opacity duration-500', sequenceState >= 4 ? 'opacity-100' : 'opacity-0')}
         >
           <div className="flex flex-col sm:flex-row items-center gap-8">
             {buttonData.map((btn, index) => (
               <div 
                 key={btn.id}
-                className={cn('animate-entry', { 'is-visible': isVisible },
+                className={cn('animate-entry', { 'is-visible': sequenceState >= 4 },
                   index === 0 ? 'animate-slide-in-left' : index === 1 ? 'animate-fade-in' : 'animate-slide-in-right'
                 )}
-                style={{ animationDelay: `${1000 + index * 150}ms` }}
+                style={{ animationDelay: `${index * 150}ms` }}
               >
                 <button
                   className={cn(
@@ -142,13 +129,7 @@ export default function HeroSection() {
                   <div className="cyber-button-content">
                     {btn.icon}
                     <span className="cyber-button-text">
-                      {isVisible ? (
-                        <Typewriter
-                          text={btn.label}
-                          speed={50}
-                          delay={1200 + index * 150} // Delay typewriter until after container animates in
-                        />
-                      ) : <span>&nbsp;</span>}
+                      {btn.label}
                     </span>
                   </div>
                 </button>
@@ -156,8 +137,8 @@ export default function HeroSection() {
             ))}
           </div>
           <div 
-            className={cn('animate-entry animate-fade-in', { 'is-visible': isVisible })}
-            style={{ animationDelay: '1500ms' }}
+            className={cn('animate-entry animate-fade-in', { 'is-visible': sequenceState >= 4 })}
+            style={{ animationDelay: '500ms' }}
           >
             <p className="text-sm text-muted-foreground font-code mt-4">
               Use [<kbd className="px-1.5 py-0.5 text-xs font-semibold text-foreground bg-card border border-border rounded-md">A</kbd>/<kbd className="px-1.5 py-0.5 text-xs font-semibold text-foreground bg-card border border-border rounded-md">D</kbd>] or [<kbd className="px-1.5 py-0.5 text-xs font-semibold text-foreground bg-card border border-border rounded-md">Arrows</kbd>] to select. Press [<kbd className="px-1.5 py-0.5 text-xs font-semibold text-foreground bg-card border border-border rounded-md">Enter</kbd>] to confirm.
