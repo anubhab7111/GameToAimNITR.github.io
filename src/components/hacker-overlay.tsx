@@ -7,12 +7,12 @@ import Typewriter from '@/components/typewriter';
 import { useAnimation } from '@/context/animation-context';
 
 const sequence = [
-  { id: 1, text: '> Initializing nav-matrix...', duration: 1000 },
-  { id: 2, text: '> Booting renderer...\n> Drawing cityscape...', duration: 2000 },
-  { id: 3, text: '> Compiling H1 header...', duration: 1500 },
-  { id: 4, text: '> Loading sub-routines...', duration: 1500 },
-  { id: 5, text: '> Mounting UI components...', duration: 2000 },
-  { id: 6, text: '> Sequence complete. Welcome.', duration: 1000 },
+  { id: 1, text: '[Log] Kernel.Boot: Initializing Renderer.NavMatrix...', duration: 1000 },
+  { id: 2, text: '[Log] RenderPipeline: Booting...\n[Log] RenderPipeline: Pre-caching asset Cityscape_Geo...', duration: 2000 },
+  { id: 3, text: '[Compiler] Compiling Header.GameObject... Success.', duration: 1500 },
+  { id: 4, text: '[Coroutine] Starting <HeroSubtitle_Cybertype>...', duration: 1500 },
+  { id: 5, text: '[UI] Instantiating Button_Prefab(3)...', duration: 2000 },
+  { id: 6, text: '[Kernel] Boot sequence complete. Handing control to user.', duration: 1000 },
 ];
 
 export default function HackerOverlay() {
