@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
@@ -95,15 +96,23 @@ export default function HeroSection() {
 
   return (
     <section ref={sectionRef} id="hero" className="relative h-[100vh] w-full flex items-center justify-center text-center overflow-hidden">
-      <HeroBackground />
+      <HeroBackground isVisible={isVisible} />
       <div className="z-10 flex flex-col items-center p-4">
-        <h1
-          className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-wider text-glow-primary glitch-layers"
-          data-text="GAME TO AIM"
+        <div
+          className={cn('animate-entry', { 'is-visible': isVisible })}
+          style={{ animationDelay: '200ms' }}
         >
-          GAME TO AIM
-        </h1>
-        <div className="max-w-3xl mt-8">
+          <h1
+            className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-wider text-glow-primary glitch-layers"
+            data-text="GAME TO AIM"
+          >
+            GAME TO AIM
+          </h1>
+        </div>
+        <div
+          className={cn('max-w-3xl mt-8 animate-entry', { 'is-visible': isVisible })}
+          style={{ animationDelay: '400ms' }}
+        >
           <Cybertype
             texts={[
               "NIT Rourkela's Official Game Development Club.",
@@ -111,17 +120,18 @@ export default function HeroSection() {
             ]}
           />
         </div>
-        <div className="flex flex-col items-center gap-4 mt-12">
+        <div
+          className={cn('flex flex-col items-center gap-4 mt-12 animate-entry', { 'is-visible': isVisible })}
+          style={{ animationDelay: '600ms' }}
+        >
           <div className="flex flex-col sm:flex-row items-center gap-8">
             {buttonData.map((btn, index) => (
               <button
                 key={btn.id}
                 className={cn(
                   'cyber-button group flex-shrink-0',
-                  { 'is-selected': selectedButton === btn.id },
-                  isVisible ? 'animate-slide-in-left-fade' : 'opacity-0'
+                  { 'is-selected': selectedButton === btn.id }
                 )}
-                style={{ animationDelay: `${isVisible ? index * 150 : 0}ms` }}
                 onClick={() => handleNavigation(btn.target)}
                 onMouseEnter={() => setSelectedButton(btn.id as SelectedButton)}
               >
@@ -132,7 +142,7 @@ export default function HeroSection() {
                       <Typewriter
                         text={btn.label}
                         speed={50}
-                        delay={index * 150 + 300}
+                        delay={index * 150 + 800} // Delay typewriter until after container animates in
                       />
                     ) : <span>&nbsp;</span>}
                   </span>
