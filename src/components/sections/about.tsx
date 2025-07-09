@@ -116,7 +116,7 @@ export default function AboutSection() {
         <div className="text-center mb-16">
           <h2
             className={cn(
-              'text-4xl md:text-5xl font-bold text-glow-accent animate-entry',
+              'text-4xl md:text-5xl font-bold text-glow-accent animate-entry animate-slide-up-fade',
               { 'is-visible': isVisible }
             )}
             style={{ animationDelay: '100ms' }}
@@ -125,7 +125,7 @@ export default function AboutSection() {
           </h2>
           <p
             className={cn(
-              'mt-4 text-lg text-muted-foreground max-w-3xl mx-auto animate-entry',
+              'mt-4 text-lg text-muted-foreground max-w-3xl mx-auto animate-entry animate-slide-up-fade',
               { 'is-visible': isVisible }
             )}
             style={{ animationDelay: '200ms' }}
@@ -137,7 +137,7 @@ export default function AboutSection() {
         {/* Infographic Panel */}
         <div
           className={cn(
-            'mb-16 animate-entry',
+            'mb-16 animate-entry animate-fade-in',
             { 'is-visible': isVisible }
           )}
           style={{ animationDelay: '300ms' }}
@@ -163,7 +163,7 @@ export default function AboutSection() {
             <div
               key={area.title}
               className={cn(
-                "animate-entry h-full",
+                "animate-entry animate-slide-up-fade h-full",
                 { "is-visible": isVisible }
               )}
               style={{ animationDelay: `${500 + index * 150}ms` }}
