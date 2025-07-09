@@ -1,0 +1,54 @@
+diff --git a/node_modules/@react-three/drei/core/useGLTF.js b/node_modules/@react-three/drei/core/useGLTF.js
+index 99a473e..c7e39a5 100644
+--- a/node_modules/@react-three/drei/core/useGLTF.js
++++ b/node_modules/@react-three/drei/core/useGLTF.js
+@@ -1,5 +1,5 @@
+-import * as React from 'react';
+-import { useLoader } from '@react-three/fiber';
++import { use, useMemo } from 'react';
++import { useLoader, useThree } from '@react-three/fiber';
+ import { GLTFLoader } from 'three-stdlib';
+ import { DRACOLoader } from 'three-stdlib';
+ import { KTX2Loader } from 'three-stdlib';
+@@ -20,7 +20,7 @@
+   if (ktx2) {
+     extensions.push(loader => {
+       const ktx2Loader = new KTX2Loader();
+-      ktx2Loader.setTranscoderPath('https://www.gstatic.com/draco/v1/decoders/');
++      ktx2Loader.setTranscoderPath('https://www.gstatic.com/draco/v1/decoders/').detectSupport(this.gl);
+       loader.setKTX2Loader(ktx2Loader);
+     });
+   }
+@@ -35,16 +35,21 @@
+   return extensions;
+ }
+ function useGLTF(path, draco = true, ktx2 = true, extensions) {
+-  const gltf = useLoader(GLTFLoader, path, loader => {
++  // Need to be a hook, and that's that
++  const gl = useThree(state => state.gl);
++  const newExtensions = useMemo(() => {
+     // Create new extensions
+-    const newExtensions = exts.reduce((acc, e) => e(acc), []);
++    const newExtensions = exts.reduce((acc, e) => e(acc, gl), []);
+     // Add user extensions
+     if (extensions) {
+       extensions(loader);
+     }
+-    if (newExtensions) {
++    // Add our extensions
++    if (newExtensions.length) {
+       newExtensions.forEach(e => e(loader));
+     }
+-  });
++  }, [extensions, gl]);
++  const gltf = useLoader(GLTFLoader, path, newExtensions);
+   const clonedGltf = useMemo(() => {
+     const scene = gltf.scene.clone(true);
+     const nodes = Object.fromEntries(Object.entries(gltf.nodes).map(([key, val]) => [key, val.clone()]));
+@@ -53,4 +58,4 @@
+   }, [gltf]);
+   return clonedGltf;
+ }
+-useGLTF.preload = (path, draco = true, ktx2 = true, extensions) => useLoader.preload(GLTFLoader, path, extensions);
++useGLTF.preload = (path, draco = true, ktx2 = true, extensions) => useLoader.preload(GLTFLoader, path, exts);
+\ No newline at end of file

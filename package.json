@@ -10,7 +10,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@genkit-ai/googleai": "^1.13.0",
@@ -83,9 +84,6 @@
     "@studio-freight/react-lenis": {
       "react": "$react",
       "react-dom": "$react-dom"
-    },
-    "react-reconciler": {
-      "react": "$react"
     }
   }
 }
