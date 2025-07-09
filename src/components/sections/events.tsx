@@ -111,7 +111,7 @@ export default function EventsSection() {
                 key={event.title}
                 ref={(el) => (eventRefs.current[index] = el)}
                 className={cn(
-                    "relative mb-12 flex animate-entry",
+                    "relative mb-12 flex animate-entry animate-slide-up-fade",
                     index % 2 === 1 ? "md:justify-end" : "md:justify-start"
                 )}
               >
