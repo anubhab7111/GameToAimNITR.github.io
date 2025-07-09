@@ -103,15 +103,23 @@ export default function EventsSection() {
             <p className="mt-4 text-lg text-muted-foreground">Join our game jams, workshops, and hackathons.</p>
           </div>
           <div className="relative max-w-4xl mx-auto">
+            {/* The vertical line in the middle */}
             <div className="absolute left-0 md:left-1/2 h-full w-0.5 bg-border md:-translate-x-1/2"></div>
+            
             {events.map((event, index) => (
               <div
                 key={event.title}
                 ref={(el) => (eventRefs.current[index] = el)}
-                className="relative mb-12 pl-8 md:pl-0 animate-entry"
+                className={cn(
+                    "relative mb-12 flex animate-entry",
+                    index % 2 === 1 ? "md:justify-end" : "md:justify-start"
+                )}
               >
-                <div className={cn('flex items-center', index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse')}>
-                  <div className="md:w-1/2 md:px-4">
+                {/* The circle on the timeline */}
+                <div className="absolute left-0 top-8 md:left-1/2 w-6 h-6 -translate-x-1/2 rounded-full bg-primary border-4 border-background box-glow-primary"></div>
+                
+                {/* The content card */}
+                <div className="pl-12 md:w-1/2 md:px-6">
                     <div
                       onClick={() => handleEventClick(event)}
                       className="p-6 rounded-lg border-2 border-primary/20 bg-card backdrop-blur-sm shadow-lg hover:border-primary transition-all duration-300 event-card-clickable"
@@ -120,10 +128,7 @@ export default function EventsSection() {
                       <h3 className="text-2xl font-bold mb-2 text-accent">{event.title}</h3>
                       <p className="text-muted-foreground">{event.description}</p>
                     </div>
-                  </div>
-                  <div className="md:w-1/2"></div>
                 </div>
-                <div className="absolute left-0 top-1/2 md:left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-primary border-4 border-background box-glow-primary"></div>
               </div>
             ))}
           </div>
