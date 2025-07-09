@@ -513,16 +513,52 @@
     }
   }
 
+  /* Base state for animated entries */
   .animate-entry {
     opacity: 0;
   }
-  .animate-entry.is-visible {
-    animation: slide-up-fade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+  /* LEGO-style animations */
+  @keyframes slide-in-top {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
   }
+  .animate-entry.animate-slide-in-top.is-visible {
+    animation: slide-in-top 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  }
+  
+  @keyframes slide-in-left {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  .animate-entry.animate-slide-in-left.is-visible {
+    animation: slide-in-left 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  }
+
+  @keyframes slide-in-right {
+    from { opacity: 0; transform: translateX(30px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  .animate-entry.animate-slide-in-right.is-visible {
+    animation: slide-in-right 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  }
+  
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .animate-entry.animate-fade-in.is-visible {
+    animation: fade-in 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  }
+
   @keyframes slide-up-fade {
     from { opacity: 0; transform: translateY(40px); }
     to { opacity: 1; transform: translateY(0); }
   }
+  .animate-entry.animate-slide-up-fade.is-visible {
+    animation: slide-up-fade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
 
   .animate-content-slide-in {
     opacity: 0;

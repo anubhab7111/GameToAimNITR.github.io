@@ -24,8 +24,7 @@ export default function HeroSection() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setIsVisible(true);
-          } else {
-            setIsVisible(false);
+            observer.unobserve(entry.target); // Animate only once
           }
         });
       },
@@ -99,8 +98,8 @@ export default function HeroSection() {
       <HeroBackground isVisible={isVisible} />
       <div className="z-10 flex flex-col items-center p-4">
         <div
-          className={cn('animate-entry', { 'is-visible': isVisible })}
-          style={{ animationDelay: '200ms' }}
+          className={cn('animate-entry animate-slide-in-top', { 'is-visible': isVisible })}
+          style={{ animationDelay: '600ms' }}
         >
           <h1
             className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-wider text-glow-primary glitch-layers"
@@ -110,8 +109,8 @@ export default function HeroSection() {
           </h1>
         </div>
         <div
-          className={cn('max-w-3xl mt-8 animate-entry', { 'is-visible': isVisible })}
-          style={{ animationDelay: '400ms' }}
+          className={cn('max-w-3xl mt-8 animate-entry animate-fade-in', { 'is-visible': isVisible })}
+          style={{ animationDelay: '800ms' }}
         >
           <Cybertype
             texts={[
@@ -121,38 +120,49 @@ export default function HeroSection() {
           />
         </div>
         <div
-          className={cn('flex flex-col items-center gap-4 mt-12 animate-entry', { 'is-visible': isVisible })}
-          style={{ animationDelay: '600ms' }}
+          className="flex flex-col items-center gap-4 mt-12"
         >
           <div className="flex flex-col sm:flex-row items-center gap-8">
             {buttonData.map((btn, index) => (
-              <button
+              <div 
                 key={btn.id}
-                className={cn(
-                  'cyber-button group flex-shrink-0',
-                  { 'is-selected': selectedButton === btn.id }
+                className={cn('animate-entry', { 'is-visible': isVisible },
+                  index === 0 ? 'animate-slide-in-left' : index === 1 ? 'animate-fade-in' : 'animate-slide-in-right'
                 )}
-                onClick={() => handleNavigation(btn.target)}
-                onMouseEnter={() => setSelectedButton(btn.id as SelectedButton)}
+                style={{ animationDelay: `${1000 + index * 150}ms` }}
               >
-                <div className="cyber-button-content">
-                  {btn.icon}
-                  <span className="cyber-button-text">
-                    {isVisible ? (
-                      <Typewriter
-                        text={btn.label}
-                        speed={50}
-                        delay={index * 150 + 800} // Delay typewriter until after container animates in
-                      />
-                    ) : <span>&nbsp;</span>}
-                  </span>
-                </div>
-              </button>
+                <button
+                  className={cn(
+                    'cyber-button group flex-shrink-0',
+                    { 'is-selected': selectedButton === btn.id }
+                  )}
+                  onClick={() => handleNavigation(btn.target)}
+                  onMouseEnter={() => setSelectedButton(btn.id as SelectedButton)}
+                >
+                  <div className="cyber-button-content">
+                    {btn.icon}
+                    <span className="cyber-button-text">
+                      {isVisible ? (
+                        <Typewriter
+                          text={btn.label}
+                          speed={50}
+                          delay={1200 + index * 150} // Delay typewriter until after container animates in
+                        />
+                      ) : <span>&nbsp;</span>}
+                    </span>
+                  </div>
+                </button>
+              </div>
             ))}
           </div>
-          <p className="text-sm text-muted-foreground font-code mt-4">
-            Use [<kbd className="px-1.5 py-0.5 text-xs font-semibold text-foreground bg-card border border-border rounded-md">A</kbd>/<kbd className="px-1.5 py-0.5 text-xs font-semibold text-foreground bg-card border border-border rounded-md">D</kbd>] or [<kbd className="px-1.5 py-0.5 text-xs font-semibold text-foreground bg-card border border-border rounded-md">Arrows</kbd>] to select. Press [<kbd className="px-1.5 py-0.5 text-xs font-semibold text-foreground bg-card border border-border rounded-md">Enter</kbd>] to confirm.
-          </p>
+          <div 
+            className={cn('animate-entry animate-fade-in', { 'is-visible': isVisible })}
+            style={{ animationDelay: '1500ms' }}
+          >
+            <p className="text-sm text-muted-foreground font-code mt-4">
+              Use [<kbd className="px-1.5 py-0.5 text-xs font-semibold text-foreground bg-card border border-border rounded-md">A</kbd>/<kbd className="px-1.5 py-0.5 text-xs font-semibold text-foreground bg-card border border-border rounded-md">D</kbd>] or [<kbd className="px-1.5 py-0.5 text-xs font-semibold text-foreground bg-card border border-border rounded-md">Arrows</kbd>] to select. Press [<kbd className="px-1.5 py-0.5 text-xs font-semibold text-foreground bg-card border border-border rounded-md">Enter</kbd>] to confirm.
+            </p>
+          </div>
         </div>
       </div>
     </section>
