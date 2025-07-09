@@ -14,9 +14,12 @@ interface GameCardProps {
   isVisible: boolean;
   index: number;
   onClick: (game: Game) => void;
+  onMouseEnter: () => void;
+  isHovered: boolean;
+  isDimmed: boolean;
 }
 
-export default function GameCard({ game, isVisible, index, onClick }: GameCardProps) {
+export default function GameCard({ game, isVisible, index, onClick, onMouseEnter, isHovered, isDimmed }: GameCardProps) {
   const isMobile = useIsMobile();
   const [isMounted, setIsMounted] = useState(false);
   const [startTyping, setStartTyping] = useState(false);
@@ -57,11 +60,14 @@ export default function GameCard({ game, isVisible, index, onClick }: GameCardPr
   return (
     <div
       onClick={() => onClick(game)}
+      onMouseEnter={onMouseEnter}
       className={cn(
-        "group relative aspect-[3/4] w-full transition-all duration-300 hover:scale-105 hover:-rotate-1",
-        'transition-[transform,opacity] duration-500 ease-out',
+        "relative aspect-[3/4] w-full",
+        'transition-all duration-300 ease-in-out',
         getTransformOrigin(index),
-        !isVisible || !isMounted ? 'scale-y-0 opacity-0' : 'scale-y-100 opacity-100'
+        !isVisible || !isMounted ? 'scale-y-0 opacity-0' : 'scale-y-100 opacity-100',
+        isHovered && 'scale-105 z-10',
+        isDimmed && 'scale-90 blur-sm opacity-50',
       )}
       style={{ transitionDelay: `${index * 50}ms` }}
       role="button"
@@ -82,12 +88,12 @@ export default function GameCard({ game, isVisible, index, onClick }: GameCardPr
               alt={game.title}
               fill
               sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
-              className="object-cover transition-transform duration-500 group-hover:scale-110"
+              className="object-cover transition-transform duration-500"
               data-ai-hint={game.aiHint}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-80 transition-opacity duration-300" />
             <div className="absolute bottom-0 left-0 p-4">
-              <h3 className="font-bold text-lg text-foreground text-glow-accent transition-all duration-300 group-hover:text-primary group-hover:text-glow-primary">
+              <h3 className="font-bold text-lg text-foreground text-glow-accent transition-all duration-300">
                 {startTyping ? (
                   <Typewriter text={game.title} />
                 ) : (

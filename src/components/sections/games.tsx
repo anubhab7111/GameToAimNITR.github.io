@@ -18,6 +18,7 @@ import { Github, Users } from 'lucide-react';
 export default function GamesSection() {
   const [isVisible, setIsVisible] = useState(false);
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -64,7 +65,10 @@ export default function GamesSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 w-full">
+        <div 
+          className="grid grid-cols-2 md:grid-cols-4 gap-6 w-full"
+          onMouseLeave={() => setHoveredIndex(null)}
+        >
           {games.map((game, index) => (
             <GameCard
               key={game.title}
@@ -72,6 +76,9 @@ export default function GamesSection() {
               isVisible={isVisible}
               index={index}
               onClick={handleCardClick}
+              onMouseEnter={() => setHoveredIndex(index)}
+              isHovered={hoveredIndex === index}
+              isDimmed={hoveredIndex !== null && hoveredIndex !== index}
             />
           ))}
         </div>
