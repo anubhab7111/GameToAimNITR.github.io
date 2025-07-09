@@ -884,12 +884,16 @@
   .hacker-overlay {
     position: fixed;
     inset: 0;
-    background-color: hsl(var(--background));
+    background-color: hsl(var(--background) / 0.7);
+    backdrop-filter: blur(2px);
     z-index: 10000;
     font-family: var(--font-hacker);
     color: hsl(var(--accent));
     opacity: 1;
     transition: opacity 1s ease-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .hacker-overlay.is-fading-out {

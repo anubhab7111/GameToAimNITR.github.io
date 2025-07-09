@@ -7,20 +7,20 @@ import { Gamepad2, Component, UserPlus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Cybertype from '@/components/cybertype';
 import HeroBackground from '@/components/hero-background';
-import HackerOverlay from '@/components/hacker-overlay';
+import { useAnimation } from '@/context/animation-context';
 
 export default function HeroSection() {
   const buttons = ['games', 'showcase', 'join'] as const;
   type SelectedButton = (typeof buttons)[number];
   
+  const { sequenceState, sequenceComplete } = useAnimation();
   const [selectedButton, setSelectedButton] = useState<SelectedButton>('games');
-  const [sequenceState, setSequenceState] = useState(0);
-  const [sequenceComplete, setSequenceComplete] = useState(false);
-
+  
   const lenis = useLenis();
   const sectionRef = useRef<HTMLDivElement>(null);
 
   const handleNavigation = (targetId: string) => {
+    if (!sequenceComplete) return;
     document.body.classList.add('is-nav-scrolling');
     setTimeout(() => {
       document.body.classList.remove('is-nav-scrolling');
@@ -33,6 +33,8 @@ export default function HeroSection() {
   };
 
   useEffect(() => {
+    if (!sequenceComplete) return;
+
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) {
         return; // Don't interfere with form inputs
@@ -66,7 +68,7 @@ export default function HeroSection() {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [selectedButton, lenis]);
+  }, [selectedButton, lenis, sequenceComplete]);
 
   const buttonData = [
     { id: 'games', label: 'Explore Games', icon: <Gamepad2 />, target: '#games' },
@@ -76,18 +78,10 @@ export default function HeroSection() {
 
   return (
     <section ref={sectionRef} id="hero" className="relative h-[100vh] w-full flex items-center justify-center text-center overflow-hidden">
-      {!sequenceComplete && (
-        <HackerOverlay 
-          onStateChange={setSequenceState}
-          onSequenceComplete={() => {
-            setTimeout(() => setSequenceComplete(true), 1000); // Wait for fade out
-          }}
-        />
-      )}
-      <HeroBackground isVisible={sequenceState >= 1} />
+      <HeroBackground isVisible={sequenceState >= 2} />
       <div className="z-10 flex flex-col items-center p-4">
         <div
-          className={cn('animate-entry animate-slide-in-top', { 'is-visible': sequenceState >= 2 })}
+          className={cn('animate-entry animate-slide-in-top', { 'is-visible': sequenceState >= 3 })}
         >
           <h1
             className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-wider text-glow-primary glitch-layers"
@@ -97,7 +91,7 @@ export default function HeroSection() {
           </h1>
         </div>
         <div
-          className={cn('max-w-3xl mt-8 animate-entry animate-fade-in', { 'is-visible': sequenceState >= 3 })}
+          className={cn('max-w-3xl mt-8 animate-entry animate-fade-in', { 'is-visible': sequenceState >= 4 })}
         >
           <Cybertype
             texts={[
@@ -107,13 +101,13 @@ export default function HeroSection() {
           />
         </div>
         <div
-          className={cn('flex flex-col items-center gap-4 mt-12 transition-opacity duration-500', sequenceState >= 4 ? 'opacity-100' : 'opacity-0')}
+          className={cn('flex flex-col items-center gap-4 mt-12 transition-opacity duration-500', sequenceState >= 5 ? 'opacity-100' : 'opacity-0')}
         >
           <div className="flex flex-col sm:flex-row items-center gap-8">
             {buttonData.map((btn, index) => (
               <div 
                 key={btn.id}
-                className={cn('animate-entry', { 'is-visible': sequenceState >= 4 },
+                className={cn('animate-entry', { 'is-visible': sequenceState >= 5 },
                   index === 0 ? 'animate-slide-in-left' : index === 1 ? 'animate-fade-in' : 'animate-slide-in-right'
                 )}
                 style={{ animationDelay: `${index * 150}ms` }}
@@ -137,7 +131,7 @@ export default function HeroSection() {
             ))}
           </div>
           <div 
-            className={cn('animate-entry animate-fade-in', { 'is-visible': sequenceState >= 4 })}
+            className={cn('animate-entry animate-fade-in', { 'is-visible': sequenceState >= 5 })}
             style={{ animationDelay: '500ms' }}
           >
             <p className="text-sm text-muted-foreground font-code mt-4">

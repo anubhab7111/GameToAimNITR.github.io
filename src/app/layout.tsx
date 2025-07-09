@@ -7,6 +7,7 @@ import Header from '@/components/header';
 import Footer from '@/components/footer';
 import CursorFX from '@/components/cursor-fx';
 import LenisProvider from '@/components/lenis-provider';
+import { AnimationProvider } from '@/context/animation-context';
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -40,15 +41,17 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${spaceGrotesk.variable} ${orbitron.variable} ${vt323.variable} dark`}>
       <body className="font-body antialiased">
-        <LenisProvider>
-          <CursorFX />
-          <div className="relative flex min-h-screen flex-col">
-            <Header />
-            <main className="flex-1 relative z-10">{children}</main>
-            <Footer />
-          </div>
-          <Toaster />
-        </LenisProvider>
+        <AnimationProvider>
+          <LenisProvider>
+            <CursorFX />
+            <div className="relative flex min-h-screen flex-col">
+              <Header />
+              <main className="flex-1 relative z-10">{children}</main>
+              <Footer />
+            </div>
+            <Toaster />
+          </LenisProvider>
+        </AnimationProvider>
       </body>
     </html>
   );

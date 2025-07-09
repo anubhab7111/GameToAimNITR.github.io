@@ -26,6 +26,7 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useLenis } from '@studio-freight/react-lenis';
 import type { ElementType } from 'react';
+import { useAnimation } from '@/context/animation-context';
 
 interface NavLink {
   href: string;
@@ -45,6 +46,7 @@ const navLinks: NavLink[] = [
 
 export default function Header() {
   const pathname = usePathname();
+  const { sequenceState } = useAnimation();
   const [activeLink, setActiveLink] = useState('');
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const isNavigatingRef = useRef(false);
@@ -149,8 +151,13 @@ export default function Header() {
     );
   };
 
+  const isHomePage = pathname === '/';
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 cyber-header">
+    <header className={cn(
+      "sticky top-0 z-50 w-full border-b border-border/40 cyber-header animate-entry",
+      { 'animate-slide-in-top is-visible': isHomePage && sequenceState >= 1, 'opacity-100': !isHomePage }
+    )}>
       <div className="container flex h-16 items-center">
         <div className="mr-8 flex items-center">
           <Link href="/" className="flex items-center space-x-2">

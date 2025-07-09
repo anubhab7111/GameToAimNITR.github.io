@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useEffect, useState, useRef, useCallback } from 'react';
@@ -10,22 +11,36 @@ import ContactSection from '@/components/sections/contact';
 import GamesSection from '@/components/sections/games';
 import ShowcaseSection from '@/components/sections/showcase';
 import BackgroundFX from '@/components/background-fx';
+import HackerOverlay from '@/components/hacker-overlay';
+import { useAnimation } from '@/context/animation-context';
 
 export default function Home() {
+  const { sequenceComplete } = useAnimation();
   const lenis = useLenis();
   const [currentSection, setCurrentSection] = useState(0);
   const sectionsRef = useRef<HTMLElement[]>([]);
   const isScrolling = useRef(false);
   const isDiving = useRef(false);
+  const enableScroll = useRef(false);
+
+  // Enable scrolling only after the landing sequence is complete
+  useEffect(() => {
+    if (sequenceComplete) {
+      const timer = setTimeout(() => {
+        enableScroll.current = true;
+      }, 500); // Small delay to prevent accidental scroll during fade-out
+      return () => clearTimeout(timer);
+    }
+  }, [sequenceComplete]);
 
   // Collect all main sections with an ID for navigation
   useEffect(() => {
     sectionsRef.current = Array.from(document.querySelectorAll('main > section[id]'));
-    if (lenis) {
+    if (lenis && sequenceComplete) {
       lenis.scrollTo(0, { immediate: true });
       setCurrentSection(0);
     }
-  }, [lenis]);
+  }, [lenis, sequenceComplete]);
 
   // The core snap-scrolling function
   const scrollToSection = useCallback((index: number) => {
@@ -72,7 +87,7 @@ export default function Home() {
   // Handle user-initiated scroll via mouse wheel and keyboard
   useEffect(() => {
     const handleScrollIntent = (direction: number) => {
-      if (isScrolling.current || isDiving.current) {
+      if (!enableScroll.current || isScrolling.current || isDiving.current) {
         return;
       }
       
@@ -91,13 +106,17 @@ export default function Home() {
     }
 
     const handleWheel = (e: WheelEvent) => {
+      if (!enableScroll.current) {
+        e.preventDefault();
+        return;
+      };
       e.preventDefault();
       const direction = e.deltaY > 0 ? 1 : -1;
       handleScrollIntent(direction);
     };
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+      if (!enableScroll.current || e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
         return; // Don't interfere with form inputs
       }
 
@@ -121,7 +140,7 @@ export default function Home() {
   
   // Sync state when scrolling via nav links to keep track of the current section
   useEffect(() => {
-    if (!lenis) return;
+    if (!lenis || !enableScroll.current) return;
     const handleScroll = () => {
         if (isScrolling.current) return;
         const scrollPosition = lenis.scroll + window.innerHeight / 2;
@@ -147,6 +166,7 @@ export default function Home() {
   
   return (
     <>
+      {!sequenceComplete && <HackerOverlay />}
       <BackgroundFX />
       <HeroSection />
       <AboutSection />
