@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -41,19 +40,23 @@ export default function HackerOverlay() {
   }, [currentStep, setSequenceState, setSequenceComplete]);
   
   const displayedLines = sequence.slice(0, currentStep);
+  const staticTextForGlitch = displayedLines.map(line => line.text).join('\n');
 
   if (sequenceComplete) return null;
 
   return (
     <div className={cn('hacker-overlay', { 'is-fading-out': isFadingOut })}>
       <div className="p-8 text-lg text-accent text-center">
-        {displayedLines.map((line, i) => (
-          <div key={i} className="whitespace-pre-wrap">
-            {line.text}
-          </div>
-        ))}
+        {staticTextForGlitch && (
+            <div 
+                className="glitch-layers glitch-active whitespace-pre-wrap text-left"
+                data-text={staticTextForGlitch}
+            >
+                {staticTextForGlitch}
+            </div>
+        )}
         {currentStep < sequence.length && (
-            <div className="whitespace-pre-wrap">
+            <div className="whitespace-pre-wrap text-left">
                 <Typewriter text={sequence[currentStep].text} speed={25} />
             </div>
         )}
