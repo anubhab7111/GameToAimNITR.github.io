@@ -96,7 +96,7 @@ export default function EventsSection() {
 
   return (
     <>
-      <section id="events" className="py-20 md:py-32">
+      <section id="events" className="py-16 md:py-24">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-glow-accent">Club Timeline</h2>

@@ -111,7 +111,7 @@ export default function AboutSection() {
   }, []);
 
   return (
-    <section id="about" ref={sectionRef} className="py-20 md:py-32 parallax-section">
+    <section id="about" ref={sectionRef} className="py-16 md:py-24 parallax-section">
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16">
           <h2

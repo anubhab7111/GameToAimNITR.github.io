@@ -5,7 +5,7 @@ import { Send } from "lucide-react"
 
 export default function ContactSection() {
   return (
-    <section id="contact" className="py-20 md:py-32">
+    <section id="contact" className="py-16 md:py-24">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-glow-accent">Join Us / Contact</h2>

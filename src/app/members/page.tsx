@@ -22,7 +22,7 @@ export default function MembersPage() {
   ), [activeFilter]);
 
   return (
-    <section id="members" className="py-20 md:py-32 parallax-section">
+    <section id="members" className="py-16 md:py-24 parallax-section">
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold">Meet the Team</h2>

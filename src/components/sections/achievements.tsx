@@ -43,20 +43,22 @@ export default function AchievementsSection() {
 
   return (
     <>
-      <section id="achievements" className="container mx-auto px-4 py-20 md:py-32">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-glow-accent">Hall of Fame</h2>
-          <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
-            Celebrating the milestones and legendary feats of our members. Every achievement marks a step forward in our journey.
-          </p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {achievements.map((achievement, index) => (
-            <AchievementCard key={index} achievement={achievement} onCardClick={handleCardClick} />
-          ))}
-        </div>
-        <div className="mt-20 text-center">
-          <AccessTeamButton />
+      <section id="achievements" className="py-16 md:py-24">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-glow-accent">Hall of Fame</h2>
+            <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
+              Celebrating the milestones and legendary feats of our members. Every achievement marks a step forward in our journey.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {achievements.map((achievement, index) => (
+              <AchievementCard key={index} achievement={achievement} onCardClick={handleCardClick} />
+            ))}
+          </div>
+          <div className="mt-20 text-center">
+            <AccessTeamButton />
+          </div>
         </div>
       </section>
 
