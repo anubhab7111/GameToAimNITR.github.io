@@ -46,20 +46,17 @@ export default function HackerOverlay() {
 
   return (
     <div className={cn('hacker-overlay', { 'is-fading-out': isFadingOut })}>
-      <div className="p-8 text-lg text-accent text-center">
-        {staticTextForGlitch && (
-            <div 
-                className="glitch-layers glitch-active whitespace-pre-wrap text-left"
-                data-text={staticTextForGlitch}
-            >
-                {staticTextForGlitch}
-            </div>
-        )}
-        {currentStep < sequence.length && (
-            <div className="whitespace-pre-wrap text-left">
+      <div className="p-8 text-lg text-accent text-left">
+        <div className="hacker-overlay-content" data-text={staticTextForGlitch}>
+          <div className="whitespace-pre-wrap">
+            {staticTextForGlitch}
+          </div>
+          {currentStep < sequence.length && (
+            <div className="whitespace-pre-wrap">
                 <Typewriter text={sequence[currentStep].text} speed={25} />
             </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );
