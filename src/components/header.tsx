@@ -156,7 +156,7 @@ export default function Header() {
   return (
     <header className={cn(
       "sticky top-0 z-50 w-full border-b border-border/40 cyber-header animate-entry",
-      { 'animate-slide-in-top is-visible': isHomePage && sequenceState >= 1, 'opacity-100': !isHomePage }
+      { 'animate-slide-in-top is-visible': isHomePage, 'opacity-100': !isHomePage }
     )}>
       <div className="container flex h-16 items-center">
         <div className="mr-8 flex items-center">
