@@ -184,7 +184,7 @@ const BioIDTerminal = () => {
           <div className="space-y-2">
             <div className="flex justify-between items-center flex-wrap">
               <span className="text-cyan-400 mr-2">USER:</span>
-              <span className="text-pink-500 text-right">GUEST</span>
+              <span className="text-pink-500 text-right">EDGERUNNERS</span>
             </div>
             <div className="flex justify-between items-center flex-wrap">
               <span className="text-cyan-400 mr-2">STATUS:</span>
@@ -198,7 +198,7 @@ const BioIDTerminal = () => {
                 <div className="border-t border-green-400 pt-2 mt-2">
                   <div className="flex justify-between items-center flex-wrap mb-1">
                     <span className="text-cyan-400 mr-2">CLEARANCE:</span>
-                    <span className="text-pink-500 text-right">LEVEL 1</span>
+                    <span className="text-pink-500 text-right">ADMIN</span>
                   </div>
                   <div className="flex justify-between items-center flex-wrap">
                     <span className="text-cyan-400 mr-2">LINK:</span>
