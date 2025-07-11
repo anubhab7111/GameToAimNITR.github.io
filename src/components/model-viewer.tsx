@@ -39,7 +39,7 @@ function FallbackModel({ model }: { model: ModelInfo }) {
 
 function LoadedModel({ url }: { url: string }) {
   const { scene } = useGLTF(url);
-  return <primitive object={scene} scale={1.5} />;
+  return <primitive object={scene} scale={1} />;
 }
 
 export default function ModelViewer({ model }: { model: ModelInfo }) {
