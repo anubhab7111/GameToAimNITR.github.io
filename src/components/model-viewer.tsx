@@ -5,6 +5,7 @@ import { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF } from '@react-three/drei';
 import type { ModelInfo } from '@/lib/modelInfo';
+import { Skeleton } from './ui/skeleton';
 
 function FallbackModel({ model }: { model: ModelInfo }) {
   if (!model?.fallback) return null;
@@ -44,7 +45,7 @@ function LoadedModel({ url }: { url: string }) {
 export default function ModelViewer({ model }: { model: ModelInfo }) {
   return (
     <div className="w-full h-[500px] rounded-lg border-2 border-primary/30 bg-card box-glow-primary">
-      <Canvas dpr={[1, 2]} camera={{ position: [0, 1, 8], fov: 45 }}>
+       <Canvas dpr={[1, 2]} camera={{ position: [0, 1, 8], fov: 45 }}>
         <ambientLight intensity={3.5} />
         <directionalLight position={[10, 10, 5]} intensity={2} />
         <pointLight position={[-10, -10, -10]} intensity={1.5} color={model?.fallback?.color || '#ffffff'} />
