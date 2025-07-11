@@ -50,9 +50,9 @@ const BioIDTerminal = () => {
         }
       `}</style>
 
-      <div className="flex flex-col md:flex-row gap-2 items-center bg-black p-3 md:p-4 rounded-lg border border-cyan-400 shadow-2xl shadow-cyan-400/20 w-full max-w-4xl mx-auto">
+      <div className="flex flex-col md:flex-row gap-4 items-center bg-black p-3 md:p-4 rounded-lg border border-cyan-400 shadow-2xl shadow-cyan-400/20 w-full max-w-4xl mx-auto">
         {/* Left Side - Larger Eye Scanner */}
-        <div className="relative w-48 md:w-56 flex flex-col items-center gap-2">
+        <div className="relative w-48 md:w-56 flex-shrink-0 flex flex-col items-center gap-2">
           <div
             className={cn(
                 'bio-id-scanner transition-all duration-300',
@@ -159,19 +159,19 @@ const BioIDTerminal = () => {
         </div>
 
         <div className="hidden md:flex items-center mx-4">
-          {[...Array(8)].map((_, i) => (
+          {[...Array(4)].map((_, i) => (
             <div
               key={i}
-              className={`w-2 h-2 mx-1 rounded-full ${ i % 2 === 0 ? 'bg-cyan-400' : 'bg-purple-500' } animate-pulse`}
+              className={`w-1.5 h-1.5 mx-0.5 rounded-full ${ i % 2 === 0 ? 'bg-cyan-400' : 'bg-purple-500' } animate-pulse`}
               style={{ animationDelay: `${i * 0.15}s` }}
             />
           ))}
           <div className="text-cyan-400 text-xs mx-2 font-mono">AUTH</div>
-          {[...Array(8)].map((_, i) => (
+          {[...Array(4)].map((_, i) => (
             <div
-              key={i + 8}
-              className={`w-2 h-2 mx-1 rounded-full ${ i % 2 === 0 ? 'bg-green-400' : 'bg-cyan-400' } animate-pulse`}
-              style={{ animationDelay: `${(i + 8) * 0.15}s` }}
+              key={i + 4}
+              className={`w-1.5 h-1.5 mx-0.5 rounded-full ${ i % 2 === 0 ? 'bg-green-400' : 'bg-cyan-400' } animate-pulse`}
+              style={{ animationDelay: `${(i + 4) * 0.15}s` }}
             />
           ))}
         </div>
@@ -182,29 +182,29 @@ const BioIDTerminal = () => {
           </div>
 
           <div className="space-y-2">
-            <div className="flex justify-between">
-              <span className="text-cyan-400">USER:</span>
-              <span className="text-pink-500">GUEST</span>
+            <div className="flex justify-between items-center flex-wrap">
+              <span className="text-cyan-400 mr-2">USER:</span>
+              <span className="text-pink-500 text-right">GUEST</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-cyan-400">STATUS:</span>
-              <span className={`${ accessGranted ? 'text-green-400' : scanning ? 'text-yellow-400 animate-pulse' : 'text-red-400' }`}>
-                {accessGranted ? '✅ ACCESS GRANTED' : scanning ? 'SCANNING...' : 'AWAITING SCAN'}
+            <div className="flex justify-between items-center flex-wrap">
+              <span className="text-cyan-400 mr-2">STATUS:</span>
+              <span className={`text-right ${ accessGranted ? 'text-green-400' : scanning ? 'text-yellow-400 animate-pulse' : 'text-red-400' }`}>
+                {accessGranted ? 'ACCESS GRANTED' : scanning ? 'SCANNING...' : 'AWAITING SCAN'}
               </span>
             </div>
 
             {accessGranted && (
               <>
                 <div className="border-t border-green-400 pt-2 mt-2">
-                  <div className="flex justify-between mb-1">
-                    <span className="text-cyan-400">CLEARANCE:</span>
-                    <span className="text-pink-500">LEVEL 1</span>
+                  <div className="flex justify-between items-center flex-wrap mb-1">
+                    <span className="text-cyan-400 mr-2">CLEARANCE:</span>
+                    <span className="text-pink-500 text-right">LEVEL 1</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-cyan-400">LINK:</span>
+                  <div className="flex justify-between items-center flex-wrap">
+                    <span className="text-cyan-400 mr-2">LINK:</span>
                     <button
                       onClick={handleNavigate}
-                      className="hover:text-green-200 px-2 cursor-pointer transition-colors text-xs md:text-sm border-none p-0 font-mono focus:outline-none focus:ring-1 focus:ring-green-500 focus:ring-opacity-50 bg-green-400 text-gray-900 rounded-sm"
+                      className="hover:text-green-200 px-2 py-0.5 cursor-pointer transition-colors text-xs md:text-sm border-none font-mono focus:outline-none focus:ring-1 focus:ring-green-500 focus:ring-opacity-50 bg-green-400 text-gray-900 rounded-sm whitespace-nowrap"
                     >
                       ACCESS TEAM DATABASE
                     </button>
@@ -231,5 +231,3 @@ const BioIDTerminal = () => {
 };
 
 export default BioIDTerminal;
-
-    
