@@ -14,7 +14,7 @@ export const models: ModelInfo[] = [
     id: 'cyber-cube',
     name: 'Cyber-Cube MK.II',
     description: 'A fundamental data block, pulsating with raw information.',
-    url: 'https://res.cloudinary.com/demo/image/upload/v1614036928/samples/3d-models/box.glb',
+    url: 'https://res.cloudinary.com/ds5ovd9Ld/image/upload/v1718395642/cyber-cube.glb',
     fallback: {
         geometry: 'box',
         color: '#00ffff', // cyan
@@ -24,7 +24,7 @@ export const models: ModelInfo[] = [
     id: 'data-sphere',
     name: 'Data-Sphere',
     description: 'A compressed node of archived knowledge, smooth and seamless.',
-    url: 'https://res.cloudinary.com/demo/image/upload/v1614036928/samples/3d-models/sphere.glb',
+    url: 'https://res.cloudinary.com/ds5ovd9Ld/image/upload/v1718395642/data-sphere.glb',
     fallback: {
         geometry: 'sphere',
         color: '#f0f', // magenta
@@ -34,7 +34,7 @@ export const models: ModelInfo[] = [
     id: 'protocol-torus',
     name: 'Protocol-Torus',
     description: 'A looping communication protocol, representing continuous data flow.',
-    url: 'https://res.cloudinary.com/demo/image/upload/v1614036928/samples/3d-models/torus.glb',
+    url: 'https://res.cloudinary.com/ds5ovd9Ld/image/upload/v1718395642/protocol-torus.glb',
     fallback: {
         geometry: 'torus',
         color: '#00ff00', // lime green
