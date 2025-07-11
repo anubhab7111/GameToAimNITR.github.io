@@ -116,9 +116,10 @@ const BioIDTerminal = () => {
                     r="45"
                     fill="url(#eyeGradient)"
                     opacity={hovering ? '0.9' : '0.8'}
-                    className={`transition-all duration-300 ${
-                      !accessGranted ? 'animate-soft-pulse' : ''
-                    }`}
+                    className={cn(
+                      'transition-all duration-300',
+                      !accessGranted && 'animate-soft-pulse'
+                    )}
                   />
                   <circle
                     cx="100"
