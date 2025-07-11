@@ -52,7 +52,7 @@ export default function ModelViewer({ model }: { model: ModelInfo }) {
         <Suspense fallback={<FallbackModel model={model} />}>
           {model.url ? <LoadedModel url={model.url} /> : <FallbackModel model={model} />}
         </Suspense>
-        <OrbitControls makeDefault autoRotate enableZoom={false} />
+        <OrbitControls makeDefault enablePan={true} enableZoom={true} />
       </Canvas>
     </div>
   );
