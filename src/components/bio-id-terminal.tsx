@@ -50,15 +50,14 @@ const BioIDTerminal = () => {
         }
       `}</style>
 
-      <div className="flex flex-col md:flex-row gap-4 items-center bg-background/90 p-3 md:p-4 rounded-lg border border-primary/30 box-glow-primary w-full max-w-4xl mx-auto">
+      <div className="flex flex-col md:flex-row gap-4 items-center bg-background/70 p-3 md:p-4 rounded-lg border border-primary/30 box-glow-primary w-full max-w-4xl mx-auto">
         {/* Left Side - Larger Eye Scanner */}
         <div className="relative w-48 md:w-56 flex-shrink-0 flex flex-col items-center gap-2">
           <div
             className={cn(
-                'bio-id-scanner',
+                'bio-id-scanner group',
                 {
                     'animate-pulse': scanning,
-                    'hover:scale-105': !scanning && !accessGranted
                 }
             )}
             onClick={handleClick}
@@ -70,6 +69,7 @@ const BioIDTerminal = () => {
               viewBox="0 0 200 200"
               width="160"
               height="160"
+              className="transition-transform duration-300 group-hover:scale-105"
             >
               <circle
                 cx="100"
@@ -138,8 +138,8 @@ const BioIDTerminal = () => {
               )}
               {scanning && (
                 <>
-                  <line x1="100" y1="20" x2="100" y2="180" stroke="#00ffff" strokeWidth="2" opacity="0.8" className="animate-pulse" />
-                  <line x1="20" y1="100" x2="180" y2="100" stroke="#ff00ff" strokeWidth="2" opacity="0.8" className="animate-pulse" />
+                   <line x1="100" y1="20" x2="100" y2="180" stroke="#00ffff" strokeWidth="2" opacity="0.9" className="animate-pulse" />
+                   <line x1="20" y1="100" x2="180" y2="100" stroke="#ff00ff" strokeWidth="2" opacity="0.9" className="animate-pulse" />
                 </>
               )}
               <defs>
@@ -152,7 +152,7 @@ const BioIDTerminal = () => {
             </svg>
           </div>
           {!scanning && !accessGranted && (
-            <div className="text-cyan-400 text-xs font-code whitespace-nowrap opacity-80 hover:opacity-100 transition-opacity">
+            <div className="text-accent text-xs font-code whitespace-nowrap text-glow-accent animate-pulse">
               CLICK TO SCAN
             </div>
           )}
@@ -235,5 +235,3 @@ const BioIDTerminal = () => {
 };
 
 export default BioIDTerminal;
-
-    
