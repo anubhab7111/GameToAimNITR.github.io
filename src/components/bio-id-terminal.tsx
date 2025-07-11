@@ -236,3 +236,5 @@ const BioIDTerminal = () => {
 };
 
 export default BioIDTerminal;
+
+    
