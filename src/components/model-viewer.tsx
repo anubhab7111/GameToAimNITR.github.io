@@ -7,6 +7,8 @@ import { OrbitControls, useGLTF } from '@react-three/drei';
 import type { ModelInfo } from '@/lib/modelInfo';
 
 function FallbackModel({ model }: { model: ModelInfo }) {
+  if (!model?.fallback) return null;
+
   const getGeometry = () => {
     switch (model.fallback.geometry) {
       case 'box':
