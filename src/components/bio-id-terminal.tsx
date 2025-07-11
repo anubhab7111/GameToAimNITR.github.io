@@ -50,7 +50,7 @@ const BioIDTerminal = () => {
         }
       `}</style>
 
-      <div className="flex flex-col md:flex-row gap-4 items-center bg-background/70 p-3 md:p-4 rounded-lg border border-primary/30 box-glow-primary w-full max-w-4xl mx-auto">
+      <div className="flex flex-col md:flex-row gap-4 items-center bg-background/90 p-3 md:p-4 rounded-lg border border-primary/30 box-glow-primary w-full max-w-4xl mx-auto">
         {/* Left Side - Larger Eye Scanner */}
         <div className="relative w-48 md:w-56 flex-shrink-0 flex flex-col items-center gap-2">
           <div
@@ -236,5 +236,3 @@ const BioIDTerminal = () => {
 };
 
 export default BioIDTerminal;
-
-    
