@@ -70,8 +70,8 @@ function SceneUpdater({
       if (!isInteracting) {
         const currentZoom = controlsRef.current.getDistance();
         // Normalize zoom to a 0-100 scale for the slider
-        const maxDistance = 20;
-        const minDistance = 2;
+        const maxDistance = 7;
+        const minDistance = 0.7;
         const newZoom = 100 * (1 - (currentZoom - minDistance) / (maxDistance - minDistance));
         setZoom(Math.max(0, Math.min(100, newZoom)));
       }
@@ -124,8 +124,8 @@ export default function ModelViewer({ model }: { model: ModelInfo }) {
     const newZoom = newZoomValue[0];
     const controls = controlsRef.current;
     if (controls) {
-      const maxDistance = 20;
-      const minDistance = 2;
+      const maxDistance = 7;
+      const minDistance = 0.7;
       const newDistance = minDistance + (1 - newZoom / 100) * (maxDistance - minDistance);
       
       const direction = new Vector3();
@@ -166,8 +166,8 @@ export default function ModelViewer({ model }: { model: ModelInfo }) {
           makeDefault
           enableZoom={true}
           enablePan={true}
-          minDistance={2}
-          maxDistance={20}
+          minDistance={0.7}
+          maxDistance={7}
           onStart={() => setIsInteracting(true)}
           onEnd={() => setIsInteracting(false)}
         />
