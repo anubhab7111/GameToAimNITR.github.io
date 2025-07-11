@@ -44,12 +44,10 @@ function LoadedModel({ url }: { url: string }) {
 export default function ModelViewer({ model }: { model: ModelInfo }) {
   return (
     <div className="w-full h-[500px] rounded-lg border-2 border-primary/30 bg-card box-glow-primary">
-      <Canvas dpr={[1, 2]} camera={{ position: [0, 2, 6], fov: 45 }}>
-        <ambientLight intensity={1.5} />
-        <pointLight position={[10, 10, 10]} intensity={2.5} />
-        {model?.fallback?.color && (
-            <pointLight position={[-10, -10, -10]} intensity={1.5} color={model.fallback.color || '#ffffff'} />
-        )}
+      <Canvas dpr={[1, 2]} camera={{ position: [0, 1, 8], fov: 45 }}>
+        <ambientLight intensity={3.5} />
+        <directionalLight position={[10, 10, 5]} intensity={2} />
+        <pointLight position={[-10, -10, -10]} intensity={1.5} color={model?.fallback?.color || '#ffffff'} />
         <Suspense fallback={<FallbackModel model={model} />}>
           {model.url ? <LoadedModel url={model.url} /> : <FallbackModel model={model} />}
         </Suspense>
