@@ -13,7 +13,7 @@ export default function HeroSection() {
   const buttons = ['games', 'showcase', 'join'] as const;
   type SelectedButton = (typeof buttons)[number];
   
-  const { sequenceState, sequenceComplete } = useAnimation();
+  const { sequenceComplete } = useAnimation();
   const [selectedButton, setSelectedButton] = useState<SelectedButton>('games');
   
   const lenis = useLenis();
@@ -78,10 +78,10 @@ export default function HeroSection() {
 
   return (
     <section ref={sectionRef} id="hero" className="relative h-[100vh] w-full flex items-center justify-center text-center overflow-hidden">
-      <HeroBackground isVisible={sequenceState >= 2} />
+      <HeroBackground isVisible={true} />
       <div className="z-10 flex flex-col items-center p-4">
         <div
-          className={cn('animate-entry animate-slide-in-top', { 'is-visible': sequenceState >= 3 })}
+          className={'animate-entry animate-slide-in-top is-visible'}
         >
           <h1
             className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-wider text-glow-primary glitch-layers"
@@ -91,7 +91,7 @@ export default function HeroSection() {
           </h1>
         </div>
         <div
-          className={cn('max-w-3xl mt-8 animate-entry animate-fade-in', { 'is-visible': sequenceState >= 4 })}
+          className={'max-w-3xl mt-8 animate-entry animate-fade-in is-visible'}
         >
           <Cybertype
             texts={[
@@ -101,13 +101,13 @@ export default function HeroSection() {
           />
         </div>
         <div
-          className={cn('flex flex-col items-center gap-4 mt-12 transition-opacity duration-500', sequenceState >= 5 ? 'opacity-100' : 'opacity-0')}
+          className={'flex flex-col items-center gap-4 mt-12 transition-opacity duration-500 opacity-100'}
         >
           <div className="flex flex-col sm:flex-row items-center gap-8">
             {buttonData.map((btn, index) => (
               <div 
                 key={btn.id}
-                className={cn('animate-entry', { 'is-visible': sequenceState >= 5 },
+                className={cn('animate-entry is-visible',
                   index === 0 ? 'animate-slide-in-left' : index === 1 ? 'animate-fade-in' : 'animate-slide-in-right'
                 )}
                 style={{ animationDelay: `${index * 150}ms` }}
@@ -131,7 +131,7 @@ export default function HeroSection() {
             ))}
           </div>
           <div 
-            className={cn('animate-entry animate-fade-in', { 'is-visible': sequenceState >= 5 })}
+            className={'animate-entry animate-fade-in is-visible'}
             style={{ animationDelay: '500ms' }}
           >
             <p className="text-sm text-muted-foreground font-code mt-4">
