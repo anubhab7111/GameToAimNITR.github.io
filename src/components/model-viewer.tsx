@@ -2,12 +2,12 @@
 
 import { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
-import type { Model3D } from '@/lib/models-data';
+import { OrbitControls, useGLTF } from '@react-three/drei';
+import type { ModelInfo } from '@/lib/modelInfo';
 
-function Model({ model }: { model: Model3D }) {
+function FallbackModel({ model }: { model: ModelInfo }) {
   const getGeometry = () => {
-    switch (model.geometry) {
+    switch (model.fallback.geometry) {
       case 'box':
         return <boxGeometry args={[2, 2, 2]} />;
       case 'sphere':
@@ -23,24 +23,30 @@ function Model({ model }: { model: Model3D }) {
     <mesh>
       {getGeometry()}
       <meshStandardMaterial
-        color={model.color}
+        color={model.fallback.color}
         metalness={0.6}
         roughness={0.2}
-        emissive={model.color}
+        emissive={model.fallback.color}
         emissiveIntensity={0.5}
       />
     </mesh>
   );
 }
 
-export default function ModelViewer({ model }: { model: Model3D }) {
+function LoadedModel({ url }: { url: string }) {
+  const { scene } = useGLTF(url);
+  return <primitive object={scene} scale={1} />;
+}
+
+export default function ModelViewer({ model }: { model: ModelInfo }) {
   return (
     <div className="w-full h-[500px] rounded-lg border-2 border-primary/30 bg-card box-glow-primary">
       <Canvas dpr={[1, 2]} camera={{ position: [0, 2, 6], fov: 45 }}>
-        <Suspense fallback={null}>
-          <ambientLight intensity={0.75} />
-          <pointLight position={[10, 10, 10]} intensity={1.5} />
-          <Model model={model} />
+        <ambientLight intensity={1.5} />
+        <pointLight position={[10, 10, 10]} intensity={2.5} />
+        <pointLight position={[-10, -10, -10]} intensity={1.5} color={model.fallback.color} />
+        <Suspense fallback={<FallbackModel model={model} />}>
+          {model.url ? <LoadedModel url={model.url} /> : <FallbackModel model={model} />}
         </Suspense>
         <OrbitControls makeDefault autoRotate enableZoom={false} />
       </Canvas>

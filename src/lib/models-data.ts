@@ -1,3 +1,4 @@
+// This file is deprecated and will be removed. Please use modelInfo.ts instead.
 export interface Model3D {
   id: string;
   name: string;
