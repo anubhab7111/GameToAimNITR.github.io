@@ -50,7 +50,7 @@ const BioIDTerminal = () => {
         }
       `}</style>
 
-      <div className="flex flex-col md:flex-row gap-4 items-center bg-background/70 p-3 md:p-4 rounded-lg border border-primary/30 box-glow-primary w-full max-w-4xl mx-auto">
+      <div className="flex flex-col md:flex-row gap-4 items-center bg-background/90 p-3 md:p-4 rounded-lg border border-primary/30 box-glow-primary w-full max-w-4xl mx-auto">
         {/* Left Side - Larger Eye Scanner */}
         <div className="relative w-48 md:w-56 flex-shrink-0 flex flex-col items-center gap-2">
           <div
@@ -176,7 +176,7 @@ const BioIDTerminal = () => {
           ))}
         </div>
 
-        <div className="bg-card/50 border border-green-400/30 rounded-sm p-3 md:p-4 w-full font-code text-xs md:text-sm flex-grow">
+        <div className="bg-card/50 border border-green-400 rounded-sm p-3 md:p-4 w-full font-code text-xs md:text-sm flex-grow">
           <div className="text-green-400 mb-2 text-center font-bold border-b border-green-400/30 pb-1 text-sm">
             BIO-ID TERMINAL v2.1
           </div>
@@ -189,7 +189,7 @@ const BioIDTerminal = () => {
             <div className="flex justify-between items-center flex-wrap">
               <span className="text-accent mr-2">STATUS:</span>
               <span className={cn('text-right font-bold',
-                accessGranted ? 'text-green-400' : scanning ? 'text-tertiary animate-pulse' : 'text-destructive'
+                accessGranted ? 'text-green-400' : scanning ? 'text-tertiary animate-pulse' : 'text-red-500'
               )}>
                 {accessGranted ? 'ACCESS GRANTED' : scanning ? 'SCANNING...' : 'AWAITING SCAN'}
               </span>
@@ -220,7 +220,7 @@ const BioIDTerminal = () => {
             <div className="flex items-center gap-2 text-xs">
               <div
                 className={cn('w-2 h-2 rounded-full',
-                    accessGranted ? 'bg-green-400' : scanning ? 'bg-tertiary animate-pulse' : 'bg-destructive'
+                    accessGranted ? 'bg-green-400' : scanning ? 'bg-tertiary animate-pulse' : 'bg-red-500'
                 )}
               ></div>
               <span className="text-green-400">
