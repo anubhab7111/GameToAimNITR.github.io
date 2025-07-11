@@ -59,7 +59,7 @@
   
   /* Hide default cursor on interactive elements for custom cursor */
   @media (hover: hover) and (pointer: fine) {
-    body, a, button, input, textarea, select, .flip-card-container, .game-card-clickable, .event-card-clickable, .holographic-card {
+    body, a, button, input, textarea, select, .flip-card-container, .game-card-clickable, .event-card-clickable, .holographic-card, .bio-id-scanner {
       cursor: none;
     }
   }
@@ -995,3 +995,5 @@
     }
   }
 }
+
+    

@@ -1,7 +1,9 @@
+
 'use client';
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { cn } from '@/lib/utils';
 
 const BioIDTerminal = () => {
   const [scanning, setScanning] = useState(false);
@@ -52,9 +54,13 @@ const BioIDTerminal = () => {
         {/* Left Side - Larger Eye Scanner */}
         <div className="relative w-48 md:w-56 flex flex-col items-center gap-2">
           <div
-            className={`cursor-pointer transition-all duration-300 ${
-              scanning ? 'animate-pulse' : 'hover:scale-105'
-            }`}
+            className={cn(
+                'bio-id-scanner transition-all duration-300',
+                {
+                    'animate-pulse': scanning,
+                    'hover:scale-105': !scanning
+                }
+            )}
             onClick={handleClick}
             onMouseEnter={() => setHovering(true)}
             onMouseLeave={() => setHovering(false)}
@@ -225,3 +231,5 @@ const BioIDTerminal = () => {
 };
 
 export default BioIDTerminal;
+
+    

@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
@@ -25,13 +26,13 @@ export default function CursorFX() {
     };
 
     const handleMouseOver = (e: MouseEvent) => {
-      if ((e.target as HTMLElement).closest('a, button, .flip-card-container, .game-card-clickable, .event-card-clickable, input, textarea, select')) {
+      if ((e.target as HTMLElement).closest('a, button, .flip-card-container, .game-card-clickable, .event-card-clickable, input, textarea, select, .bio-id-scanner')) {
         setIsPointer(true);
       }
     };
     
     const handleMouseOut = (e: MouseEvent) => {
-        if ((e.target as HTMLElement).closest('a, button, .flip-card-container, .game-card-clickable, .event-card-clickable, input, textarea, select')) {
+        if ((e.target as HTMLElement).closest('a, button, .flip-card-container, .game-card-clickable, .event-card-clickable, input, textarea, select, .bio-id-scanner')) {
         setIsPointer(false);
       }
     };
@@ -98,3 +99,5 @@ export default function CursorFX() {
     />
   );
 }
+
+    
