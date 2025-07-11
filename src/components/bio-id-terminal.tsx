@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState } from 'react';
@@ -235,5 +234,3 @@ const BioIDTerminal = () => {
 };
 
 export default BioIDTerminal;
-
-    
