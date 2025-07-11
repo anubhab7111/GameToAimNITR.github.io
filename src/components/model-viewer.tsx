@@ -5,9 +5,9 @@ import { Suspense, useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, useGLTF } from '@react-three/drei';
 import type { ModelInfo } from '@/lib/modelInfo';
-import { Skeleton } from './ui/skeleton';
 import { Button } from './ui/button';
 import { Slider } from './ui/slider';
+import { Skeleton } from './ui/skeleton';
 import { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
 import {
   ArrowUp,
@@ -17,6 +17,8 @@ import {
   ZoomIn,
   ZoomOut,
 } from 'lucide-react';
+import { MathUtils } from 'three';
+
 
 function FallbackModel({ model }: { model: ModelInfo }) {
   if (!model?.fallback) return null;
@@ -53,16 +55,16 @@ function LoadedModel({ url }: { url: string }) {
   return <primitive object={scene} scale={1} />;
 }
 
-export default function ModelViewer({ model }: { model: ModelInfo }) {
-  const controlsRef = useRef<OrbitControlsImpl>(null);
-  const [zoom, setZoom] = useState(1);
-  const [isInteracting, setIsInteracting] = useState(false);
-
-  useEffect(() => {
-    setZoom(1);
-    controlsRef.current?.reset();
-  }, [model]);
-
+// Helper component to contain the useFrame hook
+function SceneUpdater({
+  controlsRef,
+  setZoom,
+  isInteracting,
+}: {
+  controlsRef: React.RefObject<OrbitControlsImpl>;
+  setZoom: (zoom: number) => void;
+  isInteracting: boolean;
+}) {
   useFrame(() => {
     if (controlsRef.current) {
       if (!isInteracting) {
@@ -76,8 +78,21 @@ export default function ModelViewer({ model }: { model: ModelInfo }) {
     }
   });
 
+  return null; // This component doesn't render anything itself
+}
+
+export default function ModelViewer({ model }: { model: ModelInfo }) {
+  const controlsRef = useRef<OrbitControlsImpl>(null);
+  const [zoom, setZoom] = useState(50);
+  const [isInteracting, setIsInteracting] = useState(false);
+
+  useEffect(() => {
+    setZoom(50);
+    controlsRef.current?.reset();
+  }, [model]);
+
   const handlePan = (dx: number, dy: number) => {
-    controlsRef.current?.pan(dx, dy);
+    controlsRef.current?.pan(dx * 0.1, dy * 0.1);
     controlsRef.current?.update();
   };
 
@@ -87,7 +102,11 @@ export default function ModelViewer({ model }: { model: ModelInfo }) {
         const maxDistance = 20;
         const minDistance = 2;
         const newDistance = minDistance + (1 - newZoom / 100) * (maxDistance - minDistance);
-        controlsRef.current.dollyTo(newDistance, true);
+        
+        const currentDistance = controlsRef.current.getDistance();
+        const targetDistance = MathUtils.lerp(currentDistance, newDistance, 1);
+        
+        controlsRef.current.dollyTo(targetDistance, true);
         setZoom(newZoom);
     }
   };
@@ -122,11 +141,12 @@ export default function ModelViewer({ model }: { model: ModelInfo }) {
           onStart={() => setIsInteracting(true)}
           onEnd={() => setIsInteracting(false)}
         />
+        <SceneUpdater controlsRef={controlsRef} setZoom={setZoom} isInteracting={isInteracting} />
       </Canvas>
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-full max-w-xs px-4">
         <div className="p-2 rounded-lg bg-background/50 backdrop-blur-sm border border-border flex flex-col gap-2">
-          <div className="grid grid-cols-3 gap-2">
-            <div></div>
+          <div className="grid grid-cols-4 gap-1">
+            <div />
             <Button
               variant="ghost"
               size="icon"
@@ -135,7 +155,8 @@ export default function ModelViewer({ model }: { model: ModelInfo }) {
             >
               <ArrowUp className="w-5 h-5" />
             </Button>
-            <div></div>
+            <div />
+            <div />
             <Button
               variant="ghost"
               size="icon"
@@ -144,7 +165,7 @@ export default function ModelViewer({ model }: { model: ModelInfo }) {
             >
               <ArrowLeft className="w-5 h-5" />
             </Button>
-            <Button
+             <Button
               variant="ghost"
               size="icon"
               className="h-8 w-8"
