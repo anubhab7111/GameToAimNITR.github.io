@@ -122,16 +122,22 @@ export default function ModelViewer({ model }: { model: ModelInfo }) {
 
   const handleZoomChange = (newZoomValue: number[]) => {
     const newZoom = newZoomValue[0];
-    if (controlsRef.current) {
-        const maxDistance = 20;
-        const minDistance = 2;
-        const newDistance = minDistance + (1 - newZoom / 100) * (maxDistance - minDistance);
-        
-        const currentDistance = controlsRef.current.getDistance();
-        const targetDistance = MathUtils.lerp(currentDistance, newDistance, 1);
-        
-        controlsRef.current.dollyTo(targetDistance, true);
-        setZoom(newZoom);
+    const controls = controlsRef.current;
+    if (controls) {
+      const maxDistance = 20;
+      const minDistance = 2;
+      const newDistance = minDistance + (1 - newZoom / 100) * (maxDistance - minDistance);
+      
+      const direction = new Vector3();
+      controls.object.getWorldDirection(direction);
+      const newPosition = new Vector3();
+      direction.multiplyScalar(-newDistance);
+      newPosition.copy(controls.target).add(direction);
+      
+      controls.object.position.copy(newPosition);
+      controls.update();
+
+      setZoom(newZoom);
     }
   };
 
