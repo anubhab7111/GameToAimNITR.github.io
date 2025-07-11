@@ -75,7 +75,7 @@ const BioIDTerminal = () => {
                 cx="100"
                 cy="100"
                 r="85"
-                stroke="hsl(var(--primary))"
+                stroke="#ff00ff"
                 strokeWidth="2.5"
                 fill="none"
                 strokeDasharray="10 5"
@@ -86,7 +86,7 @@ const BioIDTerminal = () => {
                 cx="100"
                 cy="100"
                 r="60"
-                stroke="hsl(var(--accent))"
+                stroke="#00ffff"
                 strokeWidth="2"
                 fill="none"
                 strokeDasharray="8 4"
@@ -99,7 +99,7 @@ const BioIDTerminal = () => {
               />
               {!scanning && (
                 <g
-                  stroke="hsl(var(--accent))"
+                  stroke="#00ff00"
                   strokeWidth="1.2"
                   opacity={hovering ? '0.8' : '0.6'}
                   className="transition-all duration-300"
@@ -128,9 +128,9 @@ const BioIDTerminal = () => {
                     className="transition-all duration-300"
                     style={{
                       filter: hovering
-                        ? 'drop-shadow(0 0 6px hsl(var(--accent) / 0.8))'
+                        ? 'drop-shadow(0 0 6px rgba(0, 255, 255, 0.8))'
                         : !accessGranted
-                        ? 'drop-shadow(0 0 4px hsl(var(--accent) / 0.5))'
+                        ? 'drop-shadow(0 0 4px rgba(0, 255, 255, 0.5))'
                         : 'none',
                     }}
                   />
@@ -138,21 +138,21 @@ const BioIDTerminal = () => {
               )}
               {scanning && (
                 <>
-                  <line x1="100" y1="20" x2="100" y2="180" stroke="hsl(var(--accent))" strokeWidth="2" opacity="0.8" className="animate-pulse" />
-                  <line x1="20" y1="100" x2="180" y2="100" stroke="hsl(var(--primary))" strokeWidth="2" opacity="0.8" className="animate-pulse" />
+                  <line x1="100" y1="20" x2="100" y2="180" stroke="#00ffff" strokeWidth="2" opacity="0.8" className="animate-pulse" />
+                  <line x1="20" y1="100" x2="180" y2="100" stroke="#ff00ff" strokeWidth="2" opacity="0.8" className="animate-pulse" />
                 </>
               )}
               <defs>
                 <radialGradient id="eyeGradient" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0.4" />
-                  <stop offset="70%" stopColor="hsl(var(--accent))" stopOpacity="0.3" />
-                  <stop offset="100%" stopColor="#000" stopOpacity="0.7" />
+                  <stop offset="0%" stopColor="#ff00ff" opacity="0.4" />
+                  <stop offset="70%" stopColor="#00ffff" opacity="0.3" />
+                  <stop offset="100%" stopColor="#000" opacity="0.7" />
                 </radialGradient>
               </defs>
             </svg>
           </div>
           {!scanning && !accessGranted && (
-            <div className="text-accent text-xs font-code whitespace-nowrap opacity-80 hover:opacity-100 transition-opacity">
+            <div className="text-cyan-400 text-xs font-code whitespace-nowrap opacity-80 hover:opacity-100 transition-opacity">
               CLICK TO SCAN
             </div>
           )}
@@ -162,15 +162,15 @@ const BioIDTerminal = () => {
           {[...Array(4)].map((_, i) => (
             <div
               key={i}
-              className={`w-1.5 h-1.5 mx-0.5 rounded-full ${ i % 2 === 0 ? 'bg-accent' : 'bg-primary' } animate-pulse`}
+              className={`w-1.5 h-1.5 mx-0.5 rounded-full ${ i % 2 === 0 ? 'bg-cyan-400' : 'bg-purple-500' } animate-pulse`}
               style={{ animationDelay: `${i * 0.15}s` }}
             />
           ))}
-          <div className="text-accent text-xs mx-2 font-code">AUTH</div>
+          <div className="text-cyan-400 text-xs mx-2 font-code">AUTH</div>
           {[...Array(4)].map((_, i) => (
             <div
               key={i + 4}
-              className={`w-1.5 h-1.5 mx-0.5 rounded-full ${ i % 2 === 0 ? 'bg-green-400' : 'bg-accent' } animate-pulse`}
+              className={`w-1.5 h-1.5 mx-0.5 rounded-full ${ i % 2 === 0 ? 'bg-green-400' : 'bg-cyan-400' } animate-pulse`}
               style={{ animationDelay: `${(i + 4) * 0.15}s` }}
             />
           ))}
@@ -183,13 +183,13 @@ const BioIDTerminal = () => {
 
           <div className="space-y-2">
             <div className="flex justify-between items-center flex-wrap">
-              <span className="text-accent mr-2">USER:</span>
-              <span className="text-primary text-right font-bold">EDGERUNNERS</span>
+              <span className="text-cyan-400 mr-2">USER:</span>
+              <span className="text-pink-500 text-right font-bold">EDGERUNNERS</span>
             </div>
             <div className="flex justify-between items-center flex-wrap">
-              <span className="text-accent mr-2">STATUS:</span>
+              <span className="text-cyan-400 mr-2">STATUS:</span>
               <span className={cn('text-right font-bold',
-                accessGranted ? 'text-green-400' : scanning ? 'text-tertiary animate-pulse' : 'text-red-500'
+                accessGranted ? 'text-green-400' : scanning ? 'text-yellow-400 animate-pulse' : 'text-red-500'
               )}>
                 {accessGranted ? 'ACCESS GRANTED' : scanning ? 'SCANNING...' : 'AWAITING SCAN'}
               </span>
@@ -199,11 +199,11 @@ const BioIDTerminal = () => {
               <>
                 <div className="border-t border-green-400/30 pt-2 mt-2">
                   <div className="flex justify-between items-center flex-wrap mb-1">
-                    <span className="text-accent mr-2">CLEARANCE:</span>
-                    <span className="text-primary text-right font-bold">ADMIN</span>
+                    <span className="text-cyan-400 mr-2">CLEARANCE:</span>
+                    <span className="text-pink-500 text-right font-bold">ADMIN</span>
                   </div>
                   <div className="flex justify-between items-center flex-wrap">
-                    <span className="text-accent mr-2">LINK:</span>
+                    <span className="text-cyan-400 mr-2">LINK:</span>
                     <button
                       onClick={handleNavigate}
                       className="hover:text-background px-2 py-0.5 cursor-pointer transition-colors text-xs md:text-sm border-none font-code focus:outline-none focus:ring-1 focus:ring-green-500 focus:ring-opacity-50 bg-green-400 text-background rounded-sm whitespace-nowrap font-bold"
@@ -220,7 +220,7 @@ const BioIDTerminal = () => {
             <div className="flex items-center gap-2 text-xs">
               <div
                 className={cn('w-2 h-2 rounded-full',
-                    accessGranted ? 'bg-green-400' : scanning ? 'bg-tertiary animate-pulse' : 'bg-red-500'
+                    accessGranted ? 'bg-green-400' : scanning ? 'bg-yellow-400 animate-pulse' : 'bg-red-500'
                 )}
               ></div>
               <span className="text-green-400">
@@ -235,3 +235,5 @@ const BioIDTerminal = () => {
 };
 
 export default BioIDTerminal;
+
+    
