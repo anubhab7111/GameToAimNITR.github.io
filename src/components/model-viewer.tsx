@@ -17,7 +17,7 @@ import {
   ZoomIn,
   ZoomOut,
 } from 'lucide-react';
-import { MathUtils } from 'three';
+import { MathUtils, Vector3 } from 'three';
 
 
 function FallbackModel({ model }: { model: ModelInfo }) {
@@ -92,8 +92,32 @@ export default function ModelViewer({ model }: { model: ModelInfo }) {
   }, [model]);
 
   const handlePan = (dx: number, dy: number) => {
-    controlsRef.current?.pan(dx * 0.1, dy * 0.1);
-    controlsRef.current?.update();
+    if (!controlsRef.current) return;
+  
+    const controls = controlsRef.current;
+    const camera = controls.object;
+  
+    const offset = new Vector3();
+    offset.copy(camera.position).sub(controls.target);
+    
+    // Y-axis for up/down, X-axis for left/right
+    const target = new Vector3();
+    target.copy(controls.target);
+    
+    const panLeft = new Vector3();
+    panLeft.crossVectors(camera.up, offset).normalize();
+    panLeft.multiplyScalar(dx * -0.05);
+
+    const panUp = new Vector3();
+    panUp.copy(camera.up).multiplyScalar(dy * 0.05);
+
+    const pan = new Vector3();
+    pan.add(panLeft).add(panUp);
+
+    camera.position.add(pan);
+    controls.target.add(pan);
+  
+    controls.update();
   };
 
   const handleZoomChange = (newZoomValue: number[]) => {
@@ -151,7 +175,7 @@ export default function ModelViewer({ model }: { model: ModelInfo }) {
               variant="ghost"
               size="icon"
               className="h-8 w-8"
-              onClick={() => handlePan(0, 5)}
+              onClick={() => handlePan(0, 1)}
             >
               <ArrowUp className="w-5 h-5" />
             </Button>
@@ -161,7 +185,7 @@ export default function ModelViewer({ model }: { model: ModelInfo }) {
               variant="ghost"
               size="icon"
               className="h-8 w-8"
-              onClick={() => handlePan(5, 0)}
+              onClick={() => handlePan(1, 0)}
             >
               <ArrowLeft className="w-5 h-5" />
             </Button>
@@ -169,7 +193,7 @@ export default function ModelViewer({ model }: { model: ModelInfo }) {
               variant="ghost"
               size="icon"
               className="h-8 w-8"
-              onClick={() => handlePan(0, -5)}
+              onClick={() => handlePan(0, -1)}
             >
               <ArrowDown className="w-5 h-5" />
             </Button>
@@ -177,7 +201,7 @@ export default function ModelViewer({ model }: { model: ModelInfo }) {
               variant="ghost"
               size="icon"
               className="h-8 w-8"
-              onClick={() => handlePan(-5, 0)}
+              onClick={() => handlePan(-1, 0)}
             >
               <ArrowRight className="w-5 h-5" />
             </Button>
