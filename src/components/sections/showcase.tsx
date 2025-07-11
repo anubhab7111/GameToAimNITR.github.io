@@ -62,7 +62,7 @@ export default function ShowcaseSection() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
           <div className="lg:col-span-2">
-            <ModelViewer model={selectedModel} />
+            <ModelViewer key={selectedModel.id} model={selectedModel} />
           </div>
 
           <div className="flex flex-col gap-4">
