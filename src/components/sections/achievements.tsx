@@ -5,7 +5,7 @@ import { useState } from 'react';
 import AchievementCard from '@/components/achievement-card';
 import { achievements } from '@/lib/achievements-data';
 import type { Achievement } from '@/lib/achievements-data';
-import AccessTeamButton from '@/components/access-team-button';
+import BioIDTerminal from '@/components/bio-id-terminal';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 export default function AchievementsSection() {
@@ -57,7 +57,7 @@ export default function AchievementsSection() {
             ))}
           </div>
           <div className="mt-20 text-center">
-            <AccessTeamButton />
+            <BioIDTerminal />
           </div>
         </div>
       </section>
