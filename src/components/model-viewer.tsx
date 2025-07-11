@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Suspense } from 'react';
@@ -44,7 +45,9 @@ export default function ModelViewer({ model }: { model: ModelInfo }) {
       <Canvas dpr={[1, 2]} camera={{ position: [0, 2, 6], fov: 45 }}>
         <ambientLight intensity={1.5} />
         <pointLight position={[10, 10, 10]} intensity={2.5} />
-        <pointLight position={[-10, -10, -10]} intensity={1.5} color={model.fallback.color} />
+        {model?.fallback?.color && (
+            <pointLight position={[-10, -10, -10]} intensity={1.5} color={model.fallback.color || '#ffffff'} />
+        )}
         <Suspense fallback={<FallbackModel model={model} />}>
           {model.url ? <LoadedModel url={model.url} /> : <FallbackModel model={model} />}
         </Suspense>
