@@ -29,15 +29,18 @@ const MemberCardFront = ({ member, index }: MemberCardFrontProps) => {
              style={{ clipPath: 'polygon(0 20px, 20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%)' }}>
             <div className="absolute inset-0 transition-all duration-300 group-hover/front:opacity-100 opacity-70"
                  style={{ backgroundColor: colors.primary, clipPath: 'inherit' }} />
-            <div className="relative w-full h-full bg-card" style={{ clipPath: 'inherit' }}>
-                 <Image
-                    src={member.image}
-                    alt={member.name}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 300px"
-                    className="object-cover transition-transform duration-500 ease-in-out group-hover/front:scale-110"
-                    data-ai-hint={member.aiHint}
-                />
+            <div className="relative w-full h-full bg-card p-1" style={{ clipPath: 'inherit' }}>
+                <div className="relative w-full h-full" style={{ clipPath: 'inherit' }}>
+                    <Image
+                        src={member.image}
+                        alt={member.name}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 300px"
+                        className="object-cover transition-transform duration-500 ease-in-out group-hover/front:scale-110"
+                        style={{ clipPath: 'inherit' }}
+                        data-ai-hint={member.aiHint}
+                    />
+                </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
                 <div className="absolute bottom-0 left-0 p-6">
                     <h3 className="text-2xl font-bold text-foreground drop-shadow-lg">{member.name}</h3>
