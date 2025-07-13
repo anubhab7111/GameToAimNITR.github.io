@@ -16,35 +16,33 @@ const MemberCardFront = ({ member, index }: MemberCardFrontProps) => {
     const getVariantStyles = () => {
         const colorCycle = index % 3;
         switch (colorCycle) {
-            case 0: return { primary: 'hsl(var(--accent))', border: 'border-accent/30', hoverBorder: 'group-hover/front:border-accent' };
-            case 1: return { primary: 'hsl(var(--primary))', border: 'border-primary/30', hoverBorder: 'group-hover/front:border-primary' };
-            case 2: return { primary: 'hsl(var(--tertiary))', border: 'border-tertiary/30', hoverBorder: 'group-hover/front:border-tertiary' };
-            default: return { primary: 'hsl(var(--accent))', border: 'border-accent/30', hoverBorder: 'group-hover/front:border-accent' };
+            case 0: return { primary: 'hsl(var(--accent))', from: 'from-accent/80', to: 'to-primary/80' };
+            case 1: return { primary: 'hsl(var(--primary))', from: 'from-primary/80', to: 'to-accent/80' };
+            case 2: return { primary: 'hsl(var(--tertiary))', from: 'from-tertiary/80', to: 'to-primary/80' };
+            default: return { primary: 'hsl(var(--accent))', from: 'from-accent/80', to: 'to-primary/80' };
         }
     };
     const colors = getVariantStyles();
 
     return (
-        <div className={cn(
-            "group/front relative w-full h-full overflow-hidden rounded-lg border-2 transition-all duration-300",
-            colors.border,
-            colors.hoverBorder,
-            "hover:box-glow-primary"
-            )}
-             style={{ '--glow-color': colors.primary } as React.CSSProperties}
-        >
-            <Image
-                src={member.image}
-                alt={member.name}
-                fill
-                sizes="(max-width: 768px) 100vw, 300px"
-                className="object-cover transition-transform duration-500 ease-in-out group-hover/front:scale-110"
-                data-ai-hint={member.aiHint}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-            <div className="absolute bottom-0 left-0 p-6">
-                <h3 className="text-2xl font-bold text-foreground drop-shadow-lg">{member.name}</h3>
-                <p className="text-md font-semibold" style={{ color: colors.primary }}>{member.role}</p>
+        <div className="group/front relative w-full h-full p-0.5"
+             style={{ clipPath: 'polygon(0 20px, 20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%)' }}>
+            <div className={cn("absolute inset-0 bg-gradient-to-br transition-all duration-300", colors.from, colors.to, "group-hover/front:opacity-100 opacity-70")}
+                 style={{ clipPath: 'inherit' }} />
+            <div className="relative w-full h-full bg-card" style={{ clipPath: 'inherit' }}>
+                 <Image
+                    src={member.image}
+                    alt={member.name}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 300px"
+                    className="object-cover transition-transform duration-500 ease-in-out group-hover/front:scale-110"
+                    data-ai-hint={member.aiHint}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                <div className="absolute bottom-0 left-0 p-6">
+                    <h3 className="text-2xl font-bold text-foreground drop-shadow-lg">{member.name}</h3>
+                    <p className="text-md font-semibold" style={{ color: colors.primary }}>{member.role}</p>
+                </div>
             </div>
         </div>
     );
@@ -70,14 +68,18 @@ const TechCardBack = ({ member, index, onFlip }: TechCardBackProps) => {
     const colors = getVariantStyles();
 
     return (
-        <div className="relative w-full h-full font-mono text-white">
+        <div className="relative w-full h-full font-mono text-white p-0.5"
+             style={{ clipPath: 'polygon(0 20px, 20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%)' }}>
             <div
-                className="relative w-full h-full bg-black border-2 flex flex-col p-4"
+                className="absolute inset-0"
                 style={{
-                    borderColor: colors.primary,
-                    clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px))',
-                    boxShadow: `0 0 10px ${colors.primary}40`
+                    background: `linear-gradient(145deg, ${colors.primary}, hsl(var(--accent)))`,
+                    clipPath: 'inherit'
                 }}
+            />
+            <div
+                className="relative w-full h-full bg-black flex flex-col p-4"
+                style={{ clipPath: 'inherit' }}
             >
                 <button
                   onClick={(e) => {
