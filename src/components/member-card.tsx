@@ -3,7 +3,6 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Github, Linkedin, UserSquare2 } from 'lucide-react';
 import type { Member } from '@/lib/members-data';
 import { cn } from '@/lib/utils';
@@ -110,6 +109,67 @@ const TechCardFront = ({ member, index }: TechCardFrontProps) => {
   );
 };
 
+interface TechCardBackProps {
+  member: Member;
+  index: number;
+}
+
+const TechCardBack = ({ member, index }: TechCardBackProps) => {
+    const getVariantStyles = () => {
+        const colorCycle = index % 3;
+        switch (colorCycle) {
+          case 0: return { primary: '#00ffff', secondary: '#ffffff' }; // Cyan
+          case 1: return { primary: '#BE29EC', secondary: '#e1bee7' }; // Purple
+          case 2: return { primary: '#00ff00', secondary: '#c8e6c9' }; // Green
+          default: return { primary: '#00ffff', secondary: '#ffffff' };
+        }
+    };
+    const colors = getVariantStyles();
+
+    return (
+        <div className="relative w-full h-full font-mono text-white">
+            <div
+                className="relative w-full h-full bg-black border-2 flex flex-col p-4"
+                style={{
+                    borderColor: colors.primary,
+                    clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px))',
+                    boxShadow: `0 0 10px ${colors.primary}40`
+                }}
+            >
+                <div className="text-center mb-4 border-b-2 pb-2" style={{ borderColor: colors.primary }}>
+                    <h3 className="text-sm font-bold tracking-widest uppercase" style={{ color: colors.primary }}>Special Ability</h3>
+                    <p className="text-xs font-semibold mt-1">{`"${member.specialAbility}"`}</p>
+                </div>
+                
+                <div className="flex-grow overflow-auto text-center mb-4">
+                    <h4 className="text-sm font-bold tracking-widest uppercase mb-2" style={{ color: colors.primary }}>Bio</h4>
+                    <p className="text-xs text-gray-300 leading-relaxed">{member.bio}</p>
+                </div>
+
+                <div className="flex justify-center items-center gap-6">
+                    {member.githubUrl && (
+                        <a href={member.githubUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors" style={{'--hover-color': colors.primary} as React.CSSProperties} onClick={(e) => e.stopPropagation()}>
+                            <Github className="w-6 h-6" />
+                        </a>
+                    )}
+                    {member.linkedinUrl && (
+                        <a href={member.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors" style={{'--hover-color': colors.primary} as React.CSSProperties} onClick={(e) => e.stopPropagation()}>
+                            <Linkedin className="w-6 h-6" />
+                        </a>
+                    )}
+                </div>
+            </div>
+             <style jsx>{`
+                a:hover {
+                    color: var(--hover-color);
+                    filter: drop-shadow(0 0 4px var(--hover-color));
+                }
+            `}</style>
+        </div>
+    );
+};
+
+
 interface MemberCardProps {
   member: Member;
   index: number;
@@ -134,33 +194,9 @@ export default function MemberCard({ member, index }: MemberCardProps) {
         </div>
 
         {/* Back of the card */}
-        <Card className="flip-card-back bg-card border-2 border-accent/50">
-          <CardHeader className="text-center">
-            <h3 className="text-lg font-bold text-accent mb-2">Special Ability</h3>
-            <p className="text-primary-foreground font-semibold">
-              {`"${member.specialAbility}"`}
-            </p>
-          </CardHeader>
-          <CardContent className="flex-grow overflow-auto text-center px-4">
-            <h4 className="text-lg font-bold text-accent mb-2">Bio</h4>
-            <p className="text-xs text-muted-foreground">{member.bio}</p>
-          </CardContent>
-          <div className="flex justify-center items-center gap-4 p-4 relative">
-            {member.githubUrl && (
-              <a href={member.githubUrl} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" onClick={(e) => e.stopPropagation()}>
-                <Github className="w-6 h-6" />
-              </a>
-            )}
-            {member.linkedinUrl && (
-              <a href={member.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" onClick={(e) => e.stopPropagation()}>
-                <Linkedin className="w-6 h-6" />
-              </a>
-            )}
-            <div className="absolute bottom-4 right-4 text-primary animate-pulse">
-              <UserSquare2 className="w-5 h-5" />
-            </div>
-          </div>
-        </Card>
+        <div className="flip-card-back">
+            <TechCardBack member={member} index={index} />
+        </div>
       </div>
     </div>
   );
