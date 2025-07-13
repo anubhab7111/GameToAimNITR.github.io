@@ -3,7 +3,7 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import { Github, Linkedin } from 'lucide-react';
+import { Github, Linkedin, RotateCcw } from 'lucide-react';
 import type { Member } from '@/lib/members-data';
 import { cn } from '@/lib/utils';
 
@@ -112,9 +112,10 @@ const TechCardFront = ({ member, index }: TechCardFrontProps) => {
 interface TechCardBackProps {
   member: Member;
   index: number;
+  onFlip: () => void;
 }
 
-const TechCardBack = ({ member, index }: TechCardBackProps) => {
+const TechCardBack = ({ member, index, onFlip }: TechCardBackProps) => {
     const getVariantStyles = () => {
         const colorCycle = index % 3;
         switch (colorCycle) {
@@ -136,6 +137,17 @@ const TechCardBack = ({ member, index }: TechCardBackProps) => {
                     boxShadow: `0 0 10px ${colors.primary}40`
                 }}
             >
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onFlip();
+                  }}
+                  className="absolute top-2 left-2 z-10 p-1 rounded-full text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
+                  aria-label="Flip card to front"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                </button>
+
                 <div className="text-center mb-4 border-b-2 pb-2" style={{ borderColor: colors.primary }}>
                     <h3 className="text-base font-bold tracking-widest uppercase" style={{ color: colors.primary }}>Special Ability</h3>
                     <p className="text-sm font-semibold mt-1">{`"${member.specialAbility}"`}</p>
@@ -187,6 +199,7 @@ export default function MemberCard({ member, index }: MemberCardProps) {
       className={cn('flip-card-container group', { 'flipped': isFlipped })}
       onMouseEnter={() => setIsFlipped(true)}
       onMouseLeave={() => setIsFlipped(false)}
+      onClick={() => setIsFlipped(!isFlipped)}
       role="button"
       tabIndex={0}
       aria-label={`View details for ${member.name}`}
@@ -199,7 +212,7 @@ export default function MemberCard({ member, index }: MemberCardProps) {
 
         {/* Back of the card */}
         <div className="flip-card-back">
-            <TechCardBack member={member} index={index} />
+            <TechCardBack member={member} index={index} onFlip={() => setIsFlipped(false)} />
         </div>
       </div>
     </div>
