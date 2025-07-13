@@ -3,9 +3,8 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
-import { Github, Linkedin, UserSquare2, Info } from 'lucide-react';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Github, Linkedin, UserSquare2 } from 'lucide-react';
 import type { Member } from '@/lib/members-data';
 import { cn } from '@/lib/utils';
 
@@ -13,11 +12,107 @@ interface MemberCardProps {
   member: Member;
 }
 
+const TechCardFront = ({ member }: { member: Member }) => {
+  const getVariantStyles = () => {
+    switch (member.year) {
+      case 2024:
+        return { primary: '#00ffff', secondary: '#ffffff' }; // accent
+      case 2023:
+        return { primary: '#BE29EC', secondary: '#e1bee7' }; // primary
+      case 2022:
+        return { primary: '#00ff00', secondary: '#c8e6c9' }; // green
+      default:
+        return { primary: '#00ffff', secondary: '#ffffff' };
+    }
+  };
+
+  const colors = getVariantStyles();
+
+  return (
+    <div className="relative w-full h-full font-mono">
+      {/* Main card with corner cuts */}
+      <div
+        className="relative w-full h-full bg-black border-2"
+        style={{
+          borderColor: colors.primary,
+          clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px))',
+          boxShadow: `0 0 10px ${colors.primary}40`,
+        }}
+      >
+        {/* Left side frame */}
+        <div className="absolute left-0 top-0 w-12 h-full">
+          <div className="absolute top-8 left-2 w-8 h-16" style={{ backgroundColor: colors.primary }} />
+          <div className="absolute top-12 left-4 w-4 h-8 bg-black" />
+          <div className="absolute top-32 left-3 w-1 h-12 bg-white opacity-60" />
+          <div className="absolute top-36 left-5 w-4 h-1 bg-white opacity-60" />
+          <div className="absolute top-40 left-3 w-2 h-2 rounded-full bg-white opacity-60" />
+          <div className="absolute bottom-16 left-2 w-8 h-12" style={{ backgroundColor: colors.primary }} />
+          <div className="absolute bottom-20 left-4 w-4 h-6 bg-black" />
+          <div className="absolute bottom-8 left-3 w-1 h-8 bg-white opacity-60" />
+        </div>
+
+        {/* Right side frame */}
+        <div className="absolute right-0 top-0 w-12 h-full">
+          <div className="absolute top-8 right-2 w-8 h-16" style={{ backgroundColor: colors.primary }} />
+          <div className="absolute top-12 right-4 w-4 h-8 bg-black" />
+          <div className="absolute top-32 right-3 w-1 h-12 bg-white opacity-60" />
+          <div className="absolute top-36 right-5 w-4 h-1 bg-white opacity-60" />
+          <div className="absolute top-40 right-3 w-2 h-2 rounded-full bg-white opacity-60" />
+          <div className="absolute bottom-16 right-2 w-8 h-12" style={{ backgroundColor: colors.primary }} />
+          <div className="absolute bottom-20 right-4 w-4 h-6 bg-black" />
+          <div className="absolute bottom-8 right-3 w-1 h-8 bg-white opacity-60" />
+        </div>
+
+        {/* Central content area */}
+        <div className="absolute left-12 right-12 top-8 bottom-8 flex flex-col">
+          {/* Photo area */}
+          <div className="flex-1 mb-4 relative bg-gray-700">
+            <Image
+              src={member.image}
+              alt={member.name}
+              fill
+              sizes="(max-width: 768px) 100vw, 300px"
+              className="w-full h-full object-cover"
+              data-ai-hint={member.aiHint}
+            />
+          </div>
+
+          {/* Name and designation area */}
+          <div className="h-16 bg-gray-900 flex flex-col justify-center items-center border-t-2" style={{ borderColor: colors.primary }}>
+            <div className="text-white text-sm font-bold tracking-wide uppercase">
+              {member.name}
+            </div>
+            <div
+              className="text-xs mt-1 tracking-wider uppercase"
+              style={{ color: colors.primary }}
+            >
+              {member.role}
+            </div>
+          </div>
+        </div>
+
+        {/* Subtle glow animation */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={
+            {
+              '--glow-color-1': `${colors.primary}20`,
+              '--glow-color-2': `${colors.primary}30`,
+              clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px))',
+              animation: 'tech-card-glow 3s infinite ease-in-out',
+            } as React.CSSProperties
+          }
+        />
+      </div>
+    </div>
+  );
+};
+
 export default function MemberCard({ member }: MemberCardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
 
   return (
-    <div 
+    <div
       className={cn('flip-card-container group', { 'flipped': isFlipped })}
       onClick={() => setIsFlipped(!isFlipped)}
       role="button"
@@ -27,59 +122,37 @@ export default function MemberCard({ member }: MemberCardProps) {
     >
       <div className="flip-card-flipper">
         {/* Front of the card */}
-        <Card className="flip-card-front border-primary/30 transition-all duration-300 group-hover:border-primary">
-          <CardHeader className="items-center text-center p-4">
-            <div className="relative w-28 h-28 rounded-full overflow-hidden border-4 border-accent mb-3">
-              <Image src={member.image} alt={member.name} fill={true} sizes="112px" className="object-cover" data-ai-hint={member.aiHint} />
-            </div>
-            <h3 className="text-xl font-bold text-accent">{member.name}</h3>
-            <p className="font-semibold text-card-foreground">{member.role}</p>
-          </CardHeader>
-          <CardContent className="w-full px-4 space-y-2 flex-grow">
-            {member.skills.slice(0, 3).map((skill) => (
-              <div key={skill.name} className="w-full text-left">
-                <div className="flex justify-between items-center text-xs mb-1">
-                  <span className="font-bold text-foreground">{skill.name}</span>
-                  <span className="text-muted-foreground">{skill.level}/100</span>
-                </div>
-                <Progress value={skill.level} className="h-2 [&>div]:bg-gradient-to-r [&>div]:from-primary [&>div]:to-accent" />
-              </div>
-            ))}
-          </CardContent>
-          <div className="p-4 flex justify-end">
-            <div className="text-accent animate-pulse">
-              <Info className="w-5 h-5" />
-            </div>
-          </div>
-        </Card>
+        <div className="flip-card-front">
+          <TechCardFront member={member} />
+        </div>
 
         {/* Back of the card */}
         <Card className="flip-card-back bg-card border-2 border-accent/50">
-            <CardHeader className="text-center">
-              <h3 className="text-lg font-bold text-accent mb-2">Special Ability</h3>
-              <p className="text-primary-foreground font-semibold">
-                {`"${member.specialAbility}"`}
-              </p>
-            </CardHeader>
-            <CardContent className="flex-grow overflow-auto text-center px-4">
-              <h4 className="text-lg font-bold text-accent mb-2">Bio</h4>
-              <p className="text-xs text-muted-foreground">{member.bio}</p>
-            </CardContent>
-            <div className="flex justify-center items-center gap-4 p-4 relative">
-              {member.githubUrl && (
-                <a href={member.githubUrl} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" onClick={(e) => e.stopPropagation()}>
-                  <Github className="w-6 h-6" />
-                </a>
-              )}
-              {member.linkedinUrl && (
-                <a href={member.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" onClick={(e) => e.stopPropagation()}>
-                  <Linkedin className="w-6 h-6" />
-                </a>
-              )}
-              <div className="absolute bottom-4 right-4 text-primary animate-pulse">
-                  <UserSquare2 className="w-5 h-5" />
-              </div>
+          <CardHeader className="text-center">
+            <h3 className="text-lg font-bold text-accent mb-2">Special Ability</h3>
+            <p className="text-primary-foreground font-semibold">
+              {`"${member.specialAbility}"`}
+            </p>
+          </CardHeader>
+          <CardContent className="flex-grow overflow-auto text-center px-4">
+            <h4 className="text-lg font-bold text-accent mb-2">Bio</h4>
+            <p className="text-xs text-muted-foreground">{member.bio}</p>
+          </CardContent>
+          <div className="flex justify-center items-center gap-4 p-4 relative">
+            {member.githubUrl && (
+              <a href={member.githubUrl} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" onClick={(e) => e.stopPropagation()}>
+                <Github className="w-6 h-6" />
+              </a>
+            )}
+            {member.linkedinUrl && (
+              <a href={member.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" onClick={(e) => e.stopPropagation()}>
+                <Linkedin className="w-6 h-6" />
+              </a>
+            )}
+            <div className="absolute bottom-4 right-4 text-primary animate-pulse">
+              <UserSquare2 className="w-5 h-5" />
             </div>
+          </div>
         </Card>
       </div>
     </div>

@@ -418,7 +418,7 @@
   .flip-card-container {
     perspective: 1000px;
     width: 100%;
-    aspect-ratio: 3 / 4.2;
+    aspect-ratio: 10 / 12;
   }
 
   .flip-card-flipper {
@@ -994,6 +994,14 @@
         clip-path: polygon(0 75%, 100% 75%, 100% 78%, 0 78%);
     }
   }
-}
 
-    
+  @keyframes tech-card-glow {
+    0%,
+    100% {
+      box-shadow: inset 0 0 20px var(--glow-color-1);
+    }
+    50% {
+      box-shadow: inset 0 0 30px var(--glow-color-2);
+    }
+  }
+}
