@@ -18,7 +18,7 @@ const MemberCardFront = ({ member, index }: MemberCardFrontProps) => {
         switch (colorCycle) {
             case 0: return { primary: 'hsl(var(--accent))' };
             case 1: return { primary: 'hsl(var(--primary))' };
-            case 2: return { primary: 'hsl(var(--tertiary))' }; // Assuming a third color, or can cycle two
+            case 2: return { primary: 'hsl(var(--tertiary))' };
             default: return { primary: 'hsl(var(--accent))' };
         }
     };
@@ -59,10 +59,10 @@ const TechCardBack = ({ member, index, onFlip }: TechCardBackProps) => {
     const getVariantStyles = () => {
         const colorCycle = index % 3;
         switch (colorCycle) {
-          case 0: return { primary: '#00ffff', secondary: '#ffffff' }; // Cyan
-          case 1: return { primary: '#BE29EC', secondary: '#e1bee7' }; // Purple
-          case 2: return { primary: '#00ff00', secondary: '#c8e6c9' }; // Green
-          default: return { primary: '#00ffff', secondary: '#ffffff' };
+          case 0: return { primary: '#00ffff' }; // Cyan
+          case 1: return { primary: '#BE29EC' }; // Purple
+          case 2: return { primary: '#00ff00' }; // Green
+          default: return { primary: '#00ffff' };
         }
     };
     const colors = getVariantStyles();
@@ -134,13 +134,15 @@ interface MemberCardProps {
 export default function MemberCard({ member, index }: MemberCardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
 
+  const handleMouseEnter = () => setIsFlipped(true);
+  const handleMouseLeave = () => setIsFlipped(false);
   const handleFlip = () => setIsFlipped(!isFlipped);
-  const handleUnflip = () => setIsFlipped(false);
 
   return (
     <div
       className={cn('flip-card-container group', { 'flipped': isFlipped })}
-      onClick={handleFlip}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       role="button"
       tabIndex={0}
       aria-label={`View details for ${member.name}`}
@@ -153,7 +155,7 @@ export default function MemberCard({ member, index }: MemberCardProps) {
 
         {/* Back of the card */}
         <div className="flip-card-back">
-            <TechCardBack member={member} index={index} onFlip={handleUnflip} />
+            <TechCardBack member={member} index={index} onFlip={handleFlip} />
         </div>
       </div>
     </div>
