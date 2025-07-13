@@ -137,26 +137,30 @@ const TechCardBack = ({ member, index }: TechCardBackProps) => {
                 }}
             >
                 <div className="text-center mb-4 border-b-2 pb-2" style={{ borderColor: colors.primary }}>
-                    <h3 className="text-sm font-bold tracking-widest uppercase" style={{ color: colors.primary }}>Special Ability</h3>
-                    <p className="text-xs font-semibold mt-1">{`"${member.specialAbility}"`}</p>
+                    <h3 className="text-base font-bold tracking-widest uppercase" style={{ color: colors.primary }}>Special Ability</h3>
+                    <p className="text-sm font-semibold mt-1">{`"${member.specialAbility}"`}</p>
                 </div>
                 
-                <div className="flex-grow overflow-auto text-center mb-4">
-                    <h4 className="text-sm font-bold tracking-widest uppercase mb-2" style={{ color: colors.primary }}>Bio</h4>
-                    <p className="text-xs text-gray-300 leading-relaxed">{member.bio}</p>
+                <div className="flex-grow flex flex-col text-center mb-2 overflow-hidden">
+                    <h4 className="text-sm font-bold tracking-widest uppercase mb-2" style={{ color: colors.primary }}>// DATA LOG</h4>
+                    <p className="text-xs text-gray-300 leading-relaxed px-2 flex-grow">
+                        {member.bio}
+                    </p>
                 </div>
 
-                <div className="flex justify-center items-center gap-6">
-                    {member.githubUrl && (
-                        <a href={member.githubUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors" style={{'--hover-color': colors.primary} as React.CSSProperties} onClick={(e) => e.stopPropagation()}>
-                            <Github className="w-6 h-6" />
-                        </a>
-                    )}
-                    {member.linkedinUrl && (
-                        <a href={member.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors" style={{'--hover-color': colors.primary} as React.CSSProperties} onClick={(e) => e.stopPropagation()}>
-                            <Linkedin className="w-6 h-6" />
-                        </a>
-                    )}
+                <div className="border-t-2 pt-3" style={{ borderColor: colors.primary }}>
+                    <div className="flex justify-center items-center gap-6">
+                        {member.githubUrl && (
+                            <a href={member.githubUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors" style={{'--hover-color': colors.primary} as React.CSSProperties} onClick={(e) => e.stopPropagation()}>
+                                <Github className="w-6 h-6" />
+                            </a>
+                        )}
+                        {member.linkedinUrl && (
+                            <a href={member.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors" style={{'--hover-color': colors.primary} as React.CSSProperties} onClick={(e) => e.stopPropagation()}>
+                                <Linkedin className="w-6 h-6" />
+                            </a>
+                        )}
+                    </div>
                 </div>
             </div>
              <style jsx>{`
