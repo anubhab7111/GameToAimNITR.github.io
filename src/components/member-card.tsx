@@ -121,10 +121,10 @@ export default function MemberCard({ member, index }: MemberCardProps) {
   return (
     <div
       className={cn('flip-card-container group', { 'flipped': isFlipped })}
-      onClick={() => setIsFlipped(!isFlipped)}
+      onMouseEnter={() => setIsFlipped(true)}
+      onMouseLeave={() => setIsFlipped(false)}
       role="button"
       tabIndex={0}
-      onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && setIsFlipped(!isFlipped)}
       aria-label={`View details for ${member.name}`}
     >
       <div className="flip-card-flipper">
