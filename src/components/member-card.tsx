@@ -8,21 +8,23 @@ import { Github, Linkedin, UserSquare2 } from 'lucide-react';
 import type { Member } from '@/lib/members-data';
 import { cn } from '@/lib/utils';
 
-interface MemberCardProps {
+interface TechCardFrontProps {
   member: Member;
+  index: number;
 }
 
-const TechCardFront = ({ member }: { member: Member }) => {
+const TechCardFront = ({ member, index }: TechCardFrontProps) => {
   const getVariantStyles = () => {
-    switch (member.year) {
-      case 2024:
-        return { primary: '#00ffff', secondary: '#ffffff' }; // accent
-      case 2023:
-        return { primary: '#BE29EC', secondary: '#e1bee7' }; // primary
-      case 2022:
-        return { primary: '#00ff00', secondary: '#c8e6c9' }; // green
+    const colorCycle = index % 3;
+    switch (colorCycle) {
+      case 0:
+        return { primary: '#00ffff', secondary: '#ffffff' }; // Cyan
+      case 1:
+        return { primary: '#BE29EC', secondary: '#e1bee7' }; // Purple
+      case 2:
+        return { primary: '#00ff00', secondary: '#c8e6c9' }; // Green
       default:
-        return { primary: '#00ffff', secondary: '#ffffff' };
+        return { primary: '#00ffff', secondary: '#ffffff' }; // Default to Cyan
     }
   };
 
@@ -108,7 +110,12 @@ const TechCardFront = ({ member }: { member: Member }) => {
   );
 };
 
-export default function MemberCard({ member }: MemberCardProps) {
+interface MemberCardProps {
+  member: Member;
+  index: number;
+}
+
+export default function MemberCard({ member, index }: MemberCardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
 
   return (
@@ -123,7 +130,7 @@ export default function MemberCard({ member }: MemberCardProps) {
       <div className="flip-card-flipper">
         {/* Front of the card */}
         <div className="flip-card-front">
-          <TechCardFront member={member} />
+          <TechCardFront member={member} index={index} />
         </div>
 
         {/* Back of the card */}

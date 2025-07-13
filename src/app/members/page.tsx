@@ -59,8 +59,8 @@ export default function MembersPage() {
         </div>
 
         <div className="member-grid">
-          {filteredMembers.map(member => (
-            <MemberCard key={member.id} member={member} />
+          {filteredMembers.map((member, index) => (
+            <MemberCard key={member.id} member={member} index={index} />
           ))}
         </div>
       </div>
