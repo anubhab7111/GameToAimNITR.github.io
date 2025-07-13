@@ -7,107 +7,47 @@ import { Github, Linkedin, RotateCcw } from 'lucide-react';
 import type { Member } from '@/lib/members-data';
 import { cn } from '@/lib/utils';
 
-interface TechCardFrontProps {
+interface MemberCardFrontProps {
   member: Member;
   index: number;
 }
 
-const TechCardFront = ({ member, index }: TechCardFrontProps) => {
-  const getVariantStyles = () => {
-    const colorCycle = index % 3;
-    switch (colorCycle) {
-      case 0:
-        return { primary: '#00ffff', secondary: '#ffffff' }; // Cyan
-      case 1:
-        return { primary: '#BE29EC', secondary: '#e1bee7' }; // Purple
-      case 2:
-        return { primary: '#00ff00', secondary: '#c8e6c9' }; // Green
-      default:
-        return { primary: '#00ffff', secondary: '#ffffff' }; // Default to Cyan
-    }
-  };
+const MemberCardFront = ({ member, index }: MemberCardFrontProps) => {
+    const getVariantStyles = () => {
+        const colorCycle = index % 3;
+        switch (colorCycle) {
+            case 0: return { primary: 'hsl(var(--accent))' };
+            case 1: return { primary: 'hsl(var(--primary))' };
+            case 2: return { primary: 'hsl(var(--tertiary))' }; // Assuming a third color, or can cycle two
+            default: return { primary: 'hsl(var(--accent))' };
+        }
+    };
+    const colors = getVariantStyles();
 
-  const colors = getVariantStyles();
-
-  return (
-    <div className="relative w-full h-full font-mono">
-      {/* Main card with corner cuts */}
-      <div
-        className="relative w-full h-full bg-black border-2"
-        style={{
-          borderColor: colors.primary,
-          clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px))',
-          boxShadow: `0 0 10px ${colors.primary}40`,
-        }}
-      >
-        {/* Left side frame */}
-        <div className="absolute left-0 top-0 w-12 h-full">
-          <div className="absolute top-8 left-2 w-8 h-16" style={{ backgroundColor: colors.primary }} />
-          <div className="absolute top-12 left-4 w-4 h-8 bg-black" />
-          <div className="absolute top-32 left-3 w-1 h-12 bg-white opacity-60" />
-          <div className="absolute top-36 left-5 w-4 h-1 bg-white opacity-60" />
-          <div className="absolute top-40 left-3 w-2 h-2 rounded-full bg-white opacity-60" />
-          <div className="absolute bottom-16 left-2 w-8 h-12" style={{ backgroundColor: colors.primary }} />
-          <div className="absolute bottom-20 left-4 w-4 h-6 bg-black" />
-          <div className="absolute bottom-8 left-3 w-1 h-8 bg-white opacity-60" />
-        </div>
-
-        {/* Right side frame */}
-        <div className="absolute right-0 top-0 w-12 h-full">
-          <div className="absolute top-8 right-2 w-8 h-16" style={{ backgroundColor: colors.primary }} />
-          <div className="absolute top-12 right-4 w-4 h-8 bg-black" />
-          <div className="absolute top-32 right-3 w-1 h-12 bg-white opacity-60" />
-          <div className="absolute top-36 right-5 w-4 h-1 bg-white opacity-60" />
-          <div className="absolute top-40 right-3 w-2 h-2 rounded-full bg-white opacity-60" />
-          <div className="absolute bottom-16 right-2 w-8 h-12" style={{ backgroundColor: colors.primary }} />
-          <div className="absolute bottom-20 right-4 w-4 h-6 bg-black" />
-          <div className="absolute bottom-8 right-3 w-1 h-8 bg-white opacity-60" />
-        </div>
-
-        {/* Central content area */}
-        <div className="absolute left-12 right-12 top-8 bottom-8 flex flex-col">
-          {/* Photo area */}
-          <div className="flex-1 mb-4 relative bg-gray-700">
-            <Image
-              src={member.image}
-              alt={member.name}
-              fill
-              sizes="(max-width: 768px) 100vw, 300px"
-              className="w-full h-full object-cover"
-              data-ai-hint={member.aiHint}
+    return (
+        <div className="group/front relative w-full h-full overflow-hidden rounded-lg border-2 border-transparent transition-all"
+             style={{ '--glow-color': colors.primary } as React.CSSProperties}
+        >
+            <div className="absolute inset-0 transition-all duration-500 group-hover/front:border-4"
+                 style={{ borderColor: colors.primary }}
             />
-          </div>
-
-          {/* Name and designation area */}
-          <div className="h-16 bg-gray-900 flex flex-col justify-center items-center border-t-2" style={{ borderColor: colors.primary }}>
-            <div className="text-white text-sm font-bold tracking-wide uppercase">
-              {member.name}
+            <Image
+                src={member.image}
+                alt={member.name}
+                fill
+                sizes="(max-width: 768px) 100vw, 300px"
+                className="object-cover transition-transform duration-500 ease-in-out group-hover/front:scale-110"
+                data-ai-hint={member.aiHint}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+            <div className="absolute bottom-0 left-0 p-6">
+                <h3 className="text-2xl font-bold text-foreground drop-shadow-lg">{member.name}</h3>
+                <p className="text-md font-semibold" style={{ color: colors.primary }}>{member.role}</p>
             </div>
-            <div
-              className="text-xs mt-1 tracking-wider uppercase"
-              style={{ color: colors.primary }}
-            >
-              {member.role}
-            </div>
-          </div>
         </div>
-
-        {/* Subtle glow animation */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={
-            {
-              '--glow-color-1': `${colors.primary}20`,
-              '--glow-color-2': `${colors.primary}30`,
-              clipPath: 'polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px))',
-              animation: 'tech-card-glow 3s infinite ease-in-out',
-            } as React.CSSProperties
-          }
-        />
-      </div>
-    </div>
-  );
+    );
 };
+
 
 interface TechCardBackProps {
   member: Member;
@@ -200,8 +140,6 @@ export default function MemberCard({ member, index }: MemberCardProps) {
   return (
     <div
       className={cn('flip-card-container group', { 'flipped': isFlipped })}
-      onMouseEnter={() => setIsFlipped(true)}
-      onMouseLeave={handleUnflip}
       onClick={handleFlip}
       role="button"
       tabIndex={0}
@@ -210,7 +148,7 @@ export default function MemberCard({ member, index }: MemberCardProps) {
       <div className="flip-card-flipper">
         {/* Front of the card */}
         <div className="flip-card-front">
-          <TechCardFront member={member} index={index} />
+          <MemberCardFront member={member} index={index} />
         </div>
 
         {/* Back of the card */}
