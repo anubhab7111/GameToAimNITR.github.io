@@ -41,116 +41,217 @@ const BioIDTerminal = () => {
   return (
     <>
       <style>{`
-        @keyframes soft-pulse {
-          0%, 100% { opacity: 0.8; }
-          50% { opacity: 0.9; }
+        @keyframes scan-line {
+          0% { transform: translateY(-100px); opacity: 0; }
+          10% { opacity: 1; }
+          90% { opacity: 1; }
+          100% { transform: translateY(100px); opacity: 0; }
         }
-        .animate-soft-pulse {
-          animation: soft-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        @keyframes iris-pulse {
+          0%, 100% { opacity: 0.7; }
+          50% { opacity: 1; }
+        }
+        .animate-scan-line {
+          animation: scan-line 2s ease-in-out;
+        }
+        .animate-iris-pulse {
+          animation: iris-pulse 3s ease-in-out infinite;
         }
       `}</style>
 
       <div className="flex flex-col md:flex-row gap-4 items-center bg-background/90 p-3 md:p-4 rounded-lg border border-primary/30 box-glow-primary w-full max-w-4xl mx-auto">
-        {/* Left Side - Larger Eye Scanner */}
+        {/* Left Side - Iris Scanner */}
         <div className="relative w-48 md:w-56 flex-shrink-0 flex flex-col items-center gap-2">
           <div
-            className={cn(
-                'bio-id-scanner group',
-                {
-                    'animate-pulse': scanning,
-                }
-            )}
+            className="bio-id-scanner group"
             onClick={handleClick}
             onMouseEnter={() => setHovering(true)}
             onMouseLeave={() => setHovering(false)}
           >
             <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 200 200"
-              width="160"
-              height="160"
-              className="transition-transform duration-300 group-hover:scale-105"
-            >
-              <circle
-                cx="100"
-                cy="100"
-                r="85"
-                stroke="#ff00ff"
-                strokeWidth="2.5"
-                fill="none"
-                strokeDasharray="10 5"
-                opacity="0.8"
-                className={`${scanning ? 'animate-spin' : ''}`}
-              />
-              <circle
-                cx="100"
-                cy="100"
-                r="60"
-                stroke="#00ffff"
-                strokeWidth="2"
-                fill="none"
-                strokeDasharray="8 4"
-                opacity="0.7"
-                className={`${scanning ? 'animate-spin' : ''}`}
-                style={{
-                  animationDirection: 'reverse',
-                  animationDuration: '3s',
-                }}
-              />
-              {!scanning && (
-                <g
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 200 200"
+                width="200"
+                height="200"
+                className="transition-transform duration-300 group-hover:scale-105"
+              >
+                {/* Static outer rings with high contrast */}
+                <circle
+                  cx="100"
+                  cy="100"
+                  r="95"
+                  stroke="#00ffff"
+                  strokeWidth="1.5"
+                  fill="none"
+                  strokeDasharray="20 5"
+                  opacity="0.8"
+                />
+                
+                <circle
+                  cx="100"
+                  cy="100"
+                  r="88"
+                  stroke="#ffffff"
+                  strokeWidth="0.8"
+                  fill="none"
+                  strokeDasharray="15 8"
+                  opacity="0.6"
+                />
+                
+                <circle
+                  cx="100"
+                  cy="100"
+                  r="80"
                   stroke="#00ff00"
                   strokeWidth="1.2"
-                  opacity={hovering ? '0.8' : '0.6'}
-                  className="transition-all duration-300"
-                >
-                  <line x1="30" y1="100" x2="170" y2="100" strokeDasharray="5 3" />
-                  <line x1="100" y1="30" x2="100" y2="170" strokeDasharray="5 3" />
+                  fill="none"
+                  strokeDasharray="12 4"
+                  opacity="0.7"
+                />
+
+                <circle
+                  cx="100"
+                  cy="100"
+                  r="72"
+                  stroke="#ff00ff"
+                  strokeWidth="1"
+                  fill="none"
+                  strokeDasharray="10 3"
+                  opacity="0.8"
+                />
+
+                <circle
+                  cx="100"
+                  cy="100"
+                  r="64"
+                  stroke="#ffff00"
+                  strokeWidth="0.8"
+                  fill="none"
+                  strokeDasharray="8 2"
+                  opacity="0.5"
+                />
+
+                <circle
+                  cx="100"
+                  cy="100"
+                  r="56"
+                  stroke="#00ffff"
+                  strokeWidth="1.5"
+                  fill="none"
+                  strokeDasharray="6 2"
+                  opacity="0.9"
+                />
+
+                {/* Corner brackets */}
+                <g stroke="#00ff00" strokeWidth="2.5" opacity={hovering ? "1" : "0.7"} className="transition-opacity duration-300">
+                  {/* Top left */}
+                  <path d="M 40 40 L 40 60 M 40 40 L 60 40" />
+                  {/* Top right */}
+                  <path d="M 160 40 L 140 40 M 160 40 L 160 60" />
+                  {/* Bottom left */}
+                  <path d="M 40 160 L 40 140 M 40 160 L 60 160" />
+                  {/* Bottom right */}
+                  <path d="M 160 160 L 140 160 M 160 160 L 160 140" />
                 </g>
-              )}
-              {!scanning && (
-                <>
-                  <circle
-                    cx="100"
-                    cy="100"
-                    r="45"
-                    fill="url(#eyeGradient)"
-                    opacity={hovering ? '0.9' : '0.8'}
-                    className={cn(
-                      'transition-all duration-300',
-                      !accessGranted && 'animate-soft-pulse'
-                    )}
-                  />
-                  <circle
-                    cx="100"
-                    cy="100"
-                    r="18"
-                    fill="#000"
-                    className="transition-all duration-300"
-                    style={{
-                      filter: hovering
-                        ? 'drop-shadow(0 0 6px rgba(0, 255, 255, 0.8))'
-                        : !accessGranted
-                        ? 'drop-shadow(0 0 4px rgba(0, 255, 255, 0.5))'
-                        : 'none',
-                    }}
-                  />
-                </>
-              )}
-              {scanning && (
-                <>
-                   <line x1="100" y1="20" x2="100" y2="180" stroke="#00ffff" strokeWidth="2" opacity="0.9" className="animate-pulse" />
-                   <line x1="20" y1="100" x2="180" y2="100" stroke="#ff00ff" strokeWidth="2" opacity="0.9" className="animate-pulse" />
-                </>
-              )}
-              <defs>
-                <radialGradient id="eyeGradient" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stopColor="#ff00ff" opacity="0.4" />
-                  <stop offset="70%" stopColor="#00ffff" opacity="0.3" />
-                  <stop offset="100%" stopColor="#000" opacity="0.7" />
-                </radialGradient>
-              </defs>
-            </svg>
+
+                {/* Hover effect - additional targeting lines */}
+                {hovering && !scanning && (
+                  <g stroke="#ff00ff" strokeWidth="1" opacity="0.8">
+                    <line x1="50" y1="100" x2="70" y2="100" strokeDasharray="2 2" />
+                    <line x1="130" y1="100" x2="150" y2="100" strokeDasharray="2 2" />
+                    <line x1="100" y1="50" x2="100" y2="70" strokeDasharray="2 2" />
+                    <line x1="100" y1="130" x2="100" y2="150" strokeDasharray="2 2" />
+                  </g>
+                )}
+
+                {/* Iris structure - multiple colored segments */}
+                <g className={!scanning ? "animate-iris-pulse" : ""}>
+                  {/* Outer iris ring - cyan segments */}
+                  {Array.from({length: 16}).map((_, i) => (
+                    <path
+                      key={`cyan-${i}`}
+                      d={`M 100 100 L ${100 + 40 * Math.cos(i * Math.PI / 8)} ${100 + 40 * Math.sin(i * Math.PI / 8)} A 40 40 0 0 1 ${100 + 40 * Math.cos((i + 1) * Math.PI / 8)} ${100 + 40 * Math.sin((i + 1) * Math.PI / 8)} Z`}
+                      fill="#00ffff"
+                      opacity={i % 3 === 0 ? "0.4" : i % 3 === 1 ? "0.2" : "0.1"}
+                    />
+                  ))}
+                  
+                  {/* Middle iris ring - pink segments */}
+                  {Array.from({length: 12}).map((_, i) => (
+                    <path
+                      key={`pink-${i}`}
+                      d={`M 100 100 L ${100 + 30 * Math.cos(i * Math.PI / 6)} ${100 + 30 * Math.sin(i * Math.PI / 6)} A 30 30 0 0 1 ${100 + 30 * Math.cos((i + 1) * Math.PI / 6)} ${100 + 30 * Math.sin((i + 1) * Math.PI / 6)} Z`}
+                      fill="#ff00ff"
+                      opacity={i % 2 === 0 ? "0.5" : "0.3"}
+                    />
+                  ))}
+                  
+                  {/* Inner iris ring - green segments */}
+                  {Array.from({length: 8}).map((_, i) => (
+                    <path
+                      key={`green-${i}`}
+                      d={`M 100 100 L ${100 + 22 * Math.cos(i * Math.PI / 4)} ${100 + 22 * Math.sin(i * Math.PI / 4)} A 22 22 0 0 1 ${100 + 22 * Math.cos((i + 1) * Math.PI / 4)} ${100 + 22 * Math.sin((i + 1) * Math.PI / 4)} Z`}
+                      fill="#00ff00"
+                      opacity={i % 2 === 0 ? "0.6" : "0.4"}
+                    />
+                  ))}
+                </g>
+
+                {/* Pupil */}
+                <circle
+                  cx="100"
+                  cy="100"
+                  r="15"
+                  fill="#000000"
+                  opacity="0.9"
+                />
+
+                {/* Scanning line effect - top to bottom */}
+                {scanning && (
+                  <g>
+                    <defs>
+                      <linearGradient id="scanGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stopColor="#00ffff" stopOpacity="0" />
+                        <stop offset="45%" stopColor="#00ffff" stopOpacity="0.8" />
+                        <stop offset="55%" stopColor="#ff00ff" stopOpacity="1" />
+                        <stop offset="100%" stopColor="#ff00ff" stopOpacity="0" />
+                      </linearGradient>
+                    </defs>
+                    <rect
+                      x="30"
+                      y="30"
+                      width="140"
+                      height="4"
+                      fill="url(#scanGradient)"
+                      className="animate-scan-line"
+                    />
+                  </g>
+                )}
+
+                {/* Success indicator */}
+                {accessGranted && (
+                  <g>
+                    <circle
+                      cx="100"
+                      cy="100"
+                      r="50"
+                      stroke="#00ff00"
+                      strokeWidth="3"
+                      fill="none"
+                      opacity="0.8"
+                    />
+                    <path
+                      d="M 80 100 L 95 115 L 120 85"
+                      stroke="#00ff00"
+                      strokeWidth="4"
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      opacity="0.9"
+                    />
+                  </g>
+                )}
+              </svg>
           </div>
           {!scanning && !accessGranted && (
             <div className="text-accent text-xs font-code whitespace-nowrap text-glow-accent animate-pulse">
