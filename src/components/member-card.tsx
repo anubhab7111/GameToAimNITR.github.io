@@ -3,7 +3,7 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import { Github, Linkedin, UserSquare2 } from 'lucide-react';
+import { Github, Linkedin } from 'lucide-react';
 import type { Member } from '@/lib/members-data';
 import { cn } from '@/lib/utils';
 
