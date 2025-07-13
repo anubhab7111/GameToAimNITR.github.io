@@ -16,10 +16,10 @@ const MemberCardFront = ({ member, index }: MemberCardFrontProps) => {
     const getVariantStyles = () => {
         const colorCycle = index % 3;
         switch (colorCycle) {
-            case 0: return { primary: 'hsl(var(--accent))', from: 'from-accent/80', to: 'to-primary/80' };
-            case 1: return { primary: 'hsl(var(--primary))', from: 'from-primary/80', to: 'to-accent/80' };
-            case 2: return { primary: 'hsl(var(--tertiary))', from: 'from-tertiary/80', to: 'to-primary/80' };
-            default: return { primary: 'hsl(var(--accent))', from: 'from-accent/80', to: 'to-primary/80' };
+            case 0: return { primary: 'hsl(var(--accent))' };
+            case 1: return { primary: 'hsl(var(--primary))' };
+            case 2: return { primary: 'hsl(var(--tertiary))' };
+            default: return { primary: 'hsl(var(--accent))' };
         }
     };
     const colors = getVariantStyles();
@@ -27,8 +27,8 @@ const MemberCardFront = ({ member, index }: MemberCardFrontProps) => {
     return (
         <div className="group/front relative w-full h-full p-0.5"
              style={{ clipPath: 'polygon(0 20px, 20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%)' }}>
-            <div className={cn("absolute inset-0 bg-gradient-to-br transition-all duration-300", colors.from, colors.to, "group-hover/front:opacity-100 opacity-70")}
-                 style={{ clipPath: 'inherit' }} />
+            <div className="absolute inset-0 transition-all duration-300 group-hover/front:opacity-100 opacity-70"
+                 style={{ backgroundColor: colors.primary, clipPath: 'inherit' }} />
             <div className="relative w-full h-full bg-card" style={{ clipPath: 'inherit' }}>
                  <Image
                     src={member.image}
@@ -73,7 +73,7 @@ const TechCardBack = ({ member, index, onFlip }: TechCardBackProps) => {
             <div
                 className="absolute inset-0"
                 style={{
-                    background: `linear-gradient(145deg, ${colors.primary}, hsl(var(--accent)))`,
+                    backgroundColor: colors.primary,
                     clipPath: 'inherit'
                 }}
             />
@@ -86,7 +86,7 @@ const TechCardBack = ({ member, index, onFlip }: TechCardBackProps) => {
                     e.stopPropagation();
                     onFlip();
                   }}
-                  className="absolute top-2 left-2 z-10 p-2 rounded-full bg-gray-600 text-gray-100 hover:text-white hover:bg-gray-500 transition-colors"
+                  className="absolute top-2 right-2 z-10 p-2 rounded-full bg-gray-600 text-gray-100 hover:text-white hover:bg-gray-500 transition-colors"
                   aria-label="Flip card to front"
                 >
                   <RotateCcw className="w-4 h-4" />
