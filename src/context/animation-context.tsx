@@ -14,8 +14,8 @@ const AnimationContext = createContext<AnimationContextType | undefined>(undefin
 
 export function AnimationProvider({ children }: { children: ReactNode }) {
   const [sequenceState, setSequenceState] = useState(0);
-  // Set sequenceComplete to true to bypass the animation for debugging.
-  const [sequenceComplete, setSequenceComplete] = useState(true);
+  // Set sequenceComplete to false to enable the animation.
+  const [sequenceComplete, setSequenceComplete] = useState(false);
 
   return (
     <AnimationContext.Provider value={{ sequenceState, setSequenceState, sequenceComplete, setSequenceComplete }}>
