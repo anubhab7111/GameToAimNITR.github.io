@@ -26,7 +26,6 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useLenis } from '@studio-freight/react-lenis';
 import type { ElementType } from 'react';
-import { useAnimation } from '@/context/animation-context';
 
 interface NavLink {
   href: string;
@@ -46,7 +45,6 @@ const navLinks: NavLink[] = [
 
 export default function Header() {
   const pathname = usePathname();
-  const { sequenceState } = useAnimation();
   const [activeLink, setActiveLink] = useState('');
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const isNavigatingRef = useRef(false);
@@ -68,7 +66,7 @@ export default function Header() {
     } else {
       setUnderlineStyle({ ...underlineStyle, opacity: 0 });
     }
-  }, [activeLink, navRef]);
+  }, [activeLink, navRef, pathname]);
 
   // Effect for setting active link based on scroll/path
   useEffect(() => {
@@ -99,18 +97,21 @@ export default function Header() {
     sections.forEach((section) => observer.observe(section));
 
     // Set initial active link for homepage
-    setActiveLink('/#hero');
     const heroSection = document.getElementById('hero');
     if (heroSection) {
-      observer.observe(heroSection);
+        observer.observe(heroSection);
+        if (lenis && lenis.scroll === 0) {
+            setActiveLink('/#hero');
+        }
     }
+
 
     return () => {
       sections.forEach((section) => observer.unobserve(section));
       if (heroSection) observer.unobserve(heroSection);
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, [pathname]);
+  }, [pathname, lenis]);
 
   const handleNavLinkClick = (e: React.MouseEvent, href: string) => {
     if (isSheetOpen) setIsSheetOpen(false);
@@ -151,13 +152,8 @@ export default function Header() {
     );
   };
 
-  const isHomePage = pathname === '/';
-
   return (
-    <header className={cn(
-      "sticky top-0 z-50 w-full border-b border-border/40 cyber-header animate-entry",
-      { 'animate-slide-in-top is-visible': isHomePage, 'opacity-100': !isHomePage }
-    )}>
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 cyber-header animate-entry animate-slide-in-top is-visible">
       <div className="container flex h-16 items-center">
         <div className="mr-8 flex items-center">
           <Link href="/" className="flex items-center space-x-2">
