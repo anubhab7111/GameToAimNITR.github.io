@@ -39,7 +39,7 @@ const navLinks: NavLink[] = [
   { href: '/#showcase', label: 'Showcase', Icon: Component },
   { href: '/#events', label: 'Events', Icon: Calendar },
   { href: '/#achievements', label: 'Achievements', Icon: Trophy },
-  { href: '/members', label: 'Members', Icon: Users },
+  { href: '/#member-access', label: 'Members', Icon: Users },
   { href: '/#contact', label: 'Contact', Icon: Send },
 ];
 
@@ -80,7 +80,10 @@ export default function Header() {
         if (isNavigatingRef.current) return;
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setActiveLink(`/#${entry.target.id}`);
+            const link = navLinks.find(l => l.href.endsWith(entry.target.id));
+            if (link) {
+              setActiveLink(link.href);
+            }
           }
         });
       },
@@ -115,8 +118,23 @@ export default function Header() {
 
   const handleNavLinkClick = (e: React.MouseEvent, href: string) => {
     if (isSheetOpen) setIsSheetOpen(false);
-
-    if (href.startsWith('/#') && pathname === '/') {
+  
+    if (href === '/#member-access') {
+       if (pathname === '/') {
+          e.preventDefault();
+          document.body.classList.add('is-nav-scrolling');
+          setTimeout(() => document.body.classList.remove('is-nav-scrolling'), 800);
+          lenis?.scrollTo('#member-access', { offset: -100, duration: 1.5 });
+       } else {
+          // If on another page, just go to the members page.
+          // The bio terminal will likely be on the main page.
+          // Or we decide to navigate to home and then scroll. For now, let's just go to /members.
+          // To prevent default scrolling on the current page if it's a hash link.
+          e.preventDefault();
+          window.location.href = '/members';
+          return;
+       }
+    } else if (href.startsWith('/#') && pathname === '/') {
       e.preventDefault();
       document.body.classList.add('is-nav-scrolling');
       setTimeout(() => document.body.classList.remove('is-nav-scrolling'), 800);
@@ -136,17 +154,24 @@ export default function Header() {
 
   const NavLinkComponent = ({ href, label, Icon, isMobile = false }: NavLink & { isMobile?: boolean }) => {
     const isActive = activeLink === href;
+    const isMemberLinkOnMemberPage = pathname === '/members' && href === '/#member-access';
+    const finalIsActive = isActive || isMemberLinkOnMemberPage;
+    
+    // The actual link href should be correct for direct navigation
+    const linkHref = href === '/#member-access' ? '/members' : href;
+
+
     return (
       <Link
-        href={href}
+        href={linkHref}
         data-href={href}
         onClick={(e) => handleNavLinkClick(e, href)}
         className={cn(
           isMobile ? 'flex items-center gap-3 text-lg font-semibold' : 'cyber-nav-link',
-          isActive && !isMobile && 'text-primary-foreground'
+          finalIsActive && !isMobile && 'text-primary-foreground'
         )}
       >
-        <Icon className={cn("h-4 w-4 transition-colors group-hover:text-primary", isActive ? 'text-primary-foreground' : 'text-muted-foreground')} />
+        <Icon className={cn("h-4 w-4 transition-colors group-hover:text-primary", finalIsActive ? 'text-primary-foreground' : 'text-muted-foreground')} />
         <span className="nav-link-text">{label}</span>
       </Link>
     );

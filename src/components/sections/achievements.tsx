@@ -56,7 +56,7 @@ export default function AchievementsSection() {
               <AchievementCard key={index} achievement={achievement} onCardClick={handleCardClick} />
             ))}
           </div>
-          <div className="mt-20 text-center">
+          <div id="member-access" className="mt-20 text-center pt-10 -mt-10">
             <BioIDTerminal />
           </div>
         </div>
