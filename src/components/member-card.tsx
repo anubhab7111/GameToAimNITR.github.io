@@ -142,7 +142,7 @@ const TechCardBack = ({ member, index, onFlip }: TechCardBackProps) => {
                     e.stopPropagation();
                     onFlip();
                   }}
-                  className="absolute top-2 left-2 z-10 p-1 rounded-full text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
+                  className="absolute top-2 left-2 z-10 p-2 rounded-full bg-gray-800/70 text-gray-300 hover:text-white hover:bg-gray-700/90 transition-colors"
                   aria-label="Flip card to front"
                 >
                   <RotateCcw className="w-4 h-4" />
@@ -194,12 +194,15 @@ interface MemberCardProps {
 export default function MemberCard({ member, index }: MemberCardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
 
+  const handleFlip = () => setIsFlipped(!isFlipped);
+  const handleUnflip = () => setIsFlipped(false);
+
   return (
     <div
       className={cn('flip-card-container group', { 'flipped': isFlipped })}
       onMouseEnter={() => setIsFlipped(true)}
-      onMouseLeave={() => setIsFlipped(false)}
-      onClick={() => setIsFlipped(!isFlipped)}
+      onMouseLeave={handleUnflip}
+      onClick={handleFlip}
       role="button"
       tabIndex={0}
       aria-label={`View details for ${member.name}`}
@@ -212,7 +215,7 @@ export default function MemberCard({ member, index }: MemberCardProps) {
 
         {/* Back of the card */}
         <div className="flip-card-back">
-            <TechCardBack member={member} index={index} onFlip={() => setIsFlipped(false)} />
+            <TechCardBack member={member} index={index} onFlip={handleUnflip} />
         </div>
       </div>
     </div>
