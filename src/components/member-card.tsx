@@ -137,12 +137,12 @@ const TechCardBack = ({ member, index, onFlip }: TechCardBackProps) => {
                     boxShadow: `0 0 10px ${colors.primary}40`
                 }}
             >
-                <button 
+                <button
                   onClick={(e) => {
                     e.stopPropagation();
                     onFlip();
                   }}
-                  className="absolute top-2 left-2 z-10 p-2 rounded-full bg-gray-800/70 text-gray-300 hover:text-white hover:bg-gray-700/90 transition-colors"
+                  className="absolute top-2 left-2 z-10 p-2 rounded-full bg-gray-600 text-gray-100 hover:text-white hover:bg-gray-500 transition-colors"
                   aria-label="Flip card to front"
                 >
                   <RotateCcw className="w-4 h-4" />
