@@ -16,21 +16,23 @@ const MemberCardFront = ({ member, index }: MemberCardFrontProps) => {
     const getVariantStyles = () => {
         const colorCycle = index % 3;
         switch (colorCycle) {
-            case 0: return { primary: 'hsl(var(--accent))' };
-            case 1: return { primary: 'hsl(var(--primary))' };
-            case 2: return { primary: 'hsl(var(--tertiary))' };
-            default: return { primary: 'hsl(var(--accent))' };
+            case 0: return { primary: 'hsl(var(--accent))', border: 'border-accent/30', hoverBorder: 'group-hover/front:border-accent' };
+            case 1: return { primary: 'hsl(var(--primary))', border: 'border-primary/30', hoverBorder: 'group-hover/front:border-primary' };
+            case 2: return { primary: 'hsl(var(--tertiary))', border: 'border-tertiary/30', hoverBorder: 'group-hover/front:border-tertiary' };
+            default: return { primary: 'hsl(var(--accent))', border: 'border-accent/30', hoverBorder: 'group-hover/front:border-accent' };
         }
     };
     const colors = getVariantStyles();
 
     return (
-        <div className="group/front relative w-full h-full overflow-hidden rounded-lg border-2 border-transparent transition-all"
+        <div className={cn(
+            "group/front relative w-full h-full overflow-hidden rounded-lg border-2 transition-all duration-300",
+            colors.border,
+            colors.hoverBorder,
+            "hover:box-glow-primary"
+            )}
              style={{ '--glow-color': colors.primary } as React.CSSProperties}
         >
-            <div className="absolute inset-0 transition-all duration-500 group-hover/front:border-4"
-                 style={{ borderColor: colors.primary }}
-            />
             <Image
                 src={member.image}
                 alt={member.name}
@@ -136,7 +138,7 @@ export default function MemberCard({ member, index }: MemberCardProps) {
 
   const handleMouseEnter = () => setIsFlipped(true);
   const handleMouseLeave = () => setIsFlipped(false);
-  const handleFlip = () => setIsFlipped(!isFlipped);
+  const handleFlip = () => setIsFlipped(false);
 
   return (
     <div
