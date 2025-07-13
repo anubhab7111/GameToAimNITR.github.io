@@ -143,7 +143,7 @@ const TechCardBack = ({ member, index }: TechCardBackProps) => {
                 
                 <div className="flex-grow flex flex-col text-center mb-2 overflow-hidden">
                     <h4 className="text-sm font-bold tracking-widest uppercase mb-2" style={{ color: colors.primary }}>// DATA LOG</h4>
-                    <p className="text-xs text-gray-300 leading-relaxed px-2 flex-grow">
+                    <p className="text-sm text-gray-300 leading-relaxed px-2 flex-grow">
                         {member.bio}
                     </p>
                 </div>
