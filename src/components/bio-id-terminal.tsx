@@ -79,17 +79,6 @@ const BioIDTerminal = () => {
                 <circle
                   cx="100"
                   cy="100"
-                  r="95"
-                  stroke="#00ffff"
-                  strokeWidth="1.5"
-                  fill="none"
-                  strokeDasharray="20 5"
-                  opacity="0.8"
-                />
-                
-                <circle
-                  cx="100"
-                  cy="100"
                   r="88"
                   stroke="#ffffff"
                   strokeWidth="0.8"
