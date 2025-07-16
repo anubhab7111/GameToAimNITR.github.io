@@ -18,7 +18,7 @@ const MemberCardFront = ({ member, index }: MemberCardFrontProps) => {
         switch (colorCycle) {
             case 0: return { primary: 'hsl(var(--accent))' };
             case 1: return { primary: 'hsl(var(--primary))' };
-            case 2: return { primary: 'hsl(var(--tertiary))' };
+            case 2: return { primary: '#00ff00' }; // Green
             default: return { primary: 'hsl(var(--accent))' };
         }
     };
