@@ -4,10 +4,9 @@
 import { Suspense, useRef, useEffect, useMemo, useState } from 'react';
 import { Canvas, useFrame, extend } from '@react-three/fiber';
 import { useGLTF, shaderMaterial, Points, PointMaterial } from '@react-three/drei';
-import { useLenis } from '@studio-freight/react-lenis';
-import type { Group, Mesh } from 'three';
-import { Color, MathUtils, AdditiveBlending, BufferAttribute } from 'three';
 import * as random from 'maath/random/dist/maath-random.esm';
+import type { Group, Mesh } from 'three';
+import { Color, MathUtils, AdditiveBlending } from 'three';
 
 // Define the custom Fresnel shader material with an added opacity uniform
 const FresnelMaterial = shaderMaterial(
@@ -60,8 +59,12 @@ extend({ FresnelMaterial });
 // Particles component
 function FloatingParticles(props: any) {
   const ref = useRef<any>();
-  // Initialize state with a function to ensure it runs only once on the client
-  const [sphere] = useState(() => random.inSphere(new Float32Array(5000), { radius: 4.5 }));
+  const [positions, setPositions] = useState<Float32Array | null>(null);
+
+  useEffect(() => {
+    // Generate positions only on the client, after mount
+    setPositions(random.inSphere(new Float32Array(5000), { radius: 4.5 }));
+  }, []);
 
   useFrame((state, delta) => {
     if (ref.current) {
@@ -72,25 +75,27 @@ function FloatingParticles(props: any) {
 
   return (
     <group rotation={[0, 0, Math.PI / 4]}>
-      <Points ref={ref} positions={sphere} stride={3} frustumCulled={false} {...props}>
-        <PointMaterial
-          transparent
-          color="#ffa0e0"
-          size={0.02}
-          sizeAttenuation={true}
-          depthWrite={false}
-          blending={AdditiveBlending}
-        />
-      </Points>
+      {positions && (
+        <Points ref={ref} positions={positions} stride={3} frustumCulled={false} {...props}>
+          <PointMaterial
+            transparent
+            color="#ffa0e0"
+            size={0.02}
+            sizeAttenuation={true}
+            depthWrite={false}
+            blending={AdditiveBlending}
+          />
+        </Points>
+      )}
     </group>
   );
 }
+
 
 // Model component that animates based on scroll
 function VrHeadset() {
   const groupRef = useRef<Group>(null);
   const { scene } = useGLTF('/models/vrheadset.glb');
-  const lenis = useLenis();
 
   const fresnelMaterial = useMemo(() => new (FresnelMaterial as any)({ transparent: true }), []);
 
@@ -103,11 +108,11 @@ function VrHeadset() {
   }, [scene, fresnelMaterial]);
 
   useFrame((state) => {
-    if (groupRef.current && lenis?.dimensions) {
+    if (groupRef.current) {
       // Animate opacity based on scroll position
-      const scroll = lenis.scroll;
+      const scrollY = window.scrollY || 0;
       const fadeInEnd = 400; // Fade in over first 400px of scroll
-      const targetOpacity = Math.min(scroll / fadeInEnd, 1.0);
+      const targetOpacity = Math.min(scrollY / fadeInEnd, 1.0);
 
       if (fresnelMaterial.uniforms.uOpacity) {
         // Smoothly interpolate to the target opacity
@@ -118,9 +123,9 @@ function VrHeadset() {
         );
       }
       
-      const scrollHeight = lenis.dimensions.scrollHeight - lenis.dimensions.height;
+      const scrollHeight = document.body.scrollHeight - window.innerHeight;
       if (scrollHeight > 0) {
-        const scrollProgress = lenis.scroll / scrollHeight;
+        const scrollProgress = scrollY / scrollHeight;
         
         const targetRotationX = scrollProgress * (Math.PI / 2);
         const targetRotationY = Math.sin(scrollProgress * Math.PI) * 1.75;
