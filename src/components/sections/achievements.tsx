@@ -8,14 +8,11 @@ import { achievements } from '@/lib/achievements-data';
 export default function AchievementsSection() {
   const targetRef = useRef<HTMLDivElement | null>(null);
   const carouselRef = useRef<HTMLDivElement | null>(null);
-  const progressBarRef = useRef<HTMLDivElement | null>(null);
-
   const [carouselWidth, setCarouselWidth] = useState(0);
-  const [progressBarContainerWidth, setProgressBarContainerWidth] = useState(0);
 
   const { scrollYProgress } = useScroll({
     target: targetRef,
-    offset: ['start center', 'end end'],
+    offset: ['start start', 'end end'],
   });
 
   useEffect(() => {
@@ -23,11 +20,9 @@ export default function AchievementsSection() {
       if (carouselRef.current) {
         const parentWidth = carouselRef.current.parentElement?.offsetWidth || 0;
         const scrollWidth = carouselRef.current.scrollWidth;
+        // Calculate the total scrollable width
         const newCarouselWidth = scrollWidth - parentWidth;
         setCarouselWidth(newCarouselWidth);
-      }
-      if (progressBarRef.current) {
-        setProgressBarContainerWidth(progressBarRef.current.offsetWidth);
       }
     };
 
@@ -37,9 +32,16 @@ export default function AchievementsSection() {
   }, []);
 
   const x = useTransform(scrollYProgress, [0, 1], [0, -carouselWidth]);
-  const progressBarWidth = useTransform(scrollYProgress, [0, 1], [0, 100]);
-  const headX = useTransform(scrollYProgress, [0, 1], [0, progressBarContainerWidth]);
 
+  const progressBarWidth = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  const progressBarRef = useRef<HTMLDivElement | null>(null);
+  const [progressBarContainerWidth, setProgressBarContainerWidth] = useState(0);
+
+  useEffect(() => {
+    if (progressBarRef.current) {
+      setProgressBarContainerWidth(progressBarRef.current.offsetWidth);
+    }
+  }, []);
 
   return (
     <section ref={targetRef} id="achievements" className="relative h-[300vh]">
@@ -106,8 +108,8 @@ export default function AchievementsSection() {
           {achievements.map((achievement, index) => (
              <div key={index} className="group relative h-[350px] w-[280px] md:h-[400px] md:w-[320px] flex-shrink-0">
                <div className="cyber-card-container h-full w-full">
-                 <div className="cyber-card-content p-4 flex flex-col">
-                  <div className="relative w-full h-48 cyber-card-shimmer mb-4" style={{ clipPath: 'polygon(0 20px, 20px 0, 100% 0, 100% 100%, 0 100%)' }}>
+                 <div className="cyber-card-content flex flex-col bg-opacity-70">
+                  <div className="relative w-full h-48 cyber-card-shimmer" style={{ clipPath: 'polygon(0 20px, 20px 0, 100% 0, 100% 100%, 0 100%)' }}>
                     <Image
                       src={achievement.image}
                       alt={achievement.title}
@@ -118,12 +120,14 @@ export default function AchievementsSection() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                   </div>
-                  <h3 className="font-bold text-xl text-primary text-glow-primary transition-all duration-300 group-hover:text-accent mb-2">
-                      {achievement.title}
-                  </h3>
-                  <p className="text-muted-foreground text-sm flex-grow">
-                      {achievement.description}
-                  </p>
+                  <div className="p-4 flex flex-col flex-grow">
+                    <h3 className="font-bold text-xl text-primary text-glow-primary transition-all duration-300 group-hover:text-accent mb-2">
+                        {achievement.title}
+                    </h3>
+                    <p className="text-muted-foreground text-sm flex-grow">
+                        {achievement.description}
+                    </p>
+                  </div>
                  </div>
                </div>
              </div>
