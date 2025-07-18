@@ -52,7 +52,7 @@ export default function GameCard({ game, isVisible, index, onClick, onMouseEnter
         getTransformOrigin(index),
         !isVisible || !isMounted ? 'scale-y-0 opacity-0' : 'scale-y-100 opacity-100',
         isHovered && 'scale-105 z-10',
-        isDimmed && 'scale-90 blur-sm opacity-50',
+        isDimmed && 'scale-90 opacity-50',
       )}
       style={{ transitionDelay: `${index * 50}ms` }}
       role="button"
