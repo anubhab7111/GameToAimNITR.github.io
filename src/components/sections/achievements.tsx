@@ -1,19 +1,30 @@
 
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { achievements } from '@/lib/achievements-data';
 
 export default function AchievementsSection() {
   const targetRef = useRef<HTMLDivElement | null>(null);
+  const carouselRef = useRef<HTMLDivElement | null>(null);
+  const [carouselWidth, setCarouselWidth] = useState(0);
+
   const { scrollYProgress } = useScroll({
     target: targetRef,
-    offset: ['start center', 'end center'],
+    offset: ['start start', 'end end'],
   });
 
-  const x = useTransform(scrollYProgress, [0.1, 0.95], ['0%', '-85%']);
+  useEffect(() => {
+    if (carouselRef.current) {
+      const parentWidth = carouselRef.current.parentElement?.offsetWidth || 0;
+      const scrollWidth = carouselRef.current.scrollWidth;
+      setCarouselWidth(scrollWidth - parentWidth);
+    }
+  }, []);
+
+  const x = useTransform(scrollYProgress, [0.1, 0.95], [0, -carouselWidth]);
   const progressBarWidth = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
 
   return (
@@ -38,7 +49,7 @@ export default function AchievementsSection() {
         </div>
 
         {/* Horizontally Scrolling Carousel */}
-        <motion.div style={{ x }} className="flex gap-6 mt-12 pl-16">
+        <motion.div ref={carouselRef} style={{ x }} className="flex gap-6 mt-12 pl-16">
           {achievements.map((achievement, index) => (
             <div
               key={index}
