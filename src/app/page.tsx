@@ -173,12 +173,12 @@ export default function Home() {
       <GamesSection />
       <ShowcaseSection />
       <AchievementsSection />
+      <ContactSection />
       <section id="member-access" className="py-24 bg-background">
         <div className="container mx-auto px-4">
           <BioIDTerminal />
         </div>
       </section>
-      <ContactSection />
     </>
   );
 }
