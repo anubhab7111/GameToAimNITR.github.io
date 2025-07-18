@@ -7,7 +7,8 @@ import { useGLTF, shaderMaterial, Points, PointMaterial } from '@react-three/dre
 import { useLenis } from '@studio-freight/react-lenis';
 import type { Group, Mesh } from 'three';
 import { Color, MathUtils, AdditiveBlending } from 'three';
-import * as random from 'maath/random/dist/maath-random.esm';
+// import * as random from 'maath/random/dist/maath-random.esm';
+import * as random from 'maath/random';
 
 // Define the custom Fresnel shader material with an added opacity uniform
 const FresnelMaterial = shaderMaterial(
@@ -48,7 +49,7 @@ const FresnelMaterial = shaderMaterial(
 
       vec3 finalColor = uBaseColor + (fresnel * uRimStrength * uRimColor);
       float alpha = fresnel * 0.9;
-      
+
       gl_FragColor = vec4(finalColor, alpha * uOpacity); // Apply overall opacity
     }
   `
@@ -61,14 +62,14 @@ extend({ FresnelMaterial });
 function FloatingParticles(props: any) {
     const ref = useRef<any>();
     const [sphere] = useState(() => random.inSphere(new Float32Array(5000), { radius: 4.5 }));
-  
+
     useFrame((state, delta) => {
       if (ref.current) {
         ref.current.rotation.x -= delta / 10;
         ref.current.rotation.y -= delta / 15;
       }
     });
-  
+
     return (
       <group rotation={[0, 0, Math.PI / 4]}>
         <Points ref={ref} positions={sphere} stride={3} frustumCulled={false} {...props}>
@@ -116,20 +117,20 @@ function VrHeadset() {
           0.05
         );
       }
-      
+
       const scrollHeight = lenis.dimensions.scrollHeight - lenis.dimensions.height;
       if (scrollHeight > 0) {
         const scrollProgress = lenis.scroll / scrollHeight;
-        
+
         const targetRotationX = scrollProgress * (Math.PI / 2);
         const targetRotationY = Math.sin(scrollProgress * Math.PI) * 1.75;
         const targetRotationZ = Math.sin(scrollProgress * Math.PI * 2) * 0.25;
-        
+
         groupRef.current.rotation.x = MathUtils.lerp(groupRef.current.rotation.x, targetRotationX, 0.1);
         groupRef.current.rotation.y = MathUtils.lerp(groupRef.current.rotation.y, targetRotationY, 0.1);
         groupRef.current.rotation.z = MathUtils.lerp(groupRef.current.rotation.z, targetRotationZ, 0.1);
       }
-      
+
       groupRef.current.position.y = Math.sin(state.clock.getElapsedTime() * 0.5) * 0.1;
     }
   });
@@ -143,13 +144,13 @@ function VrHeadset() {
 
 export default function BackgroundFX() {
   return (
-    <div 
-      style={{ 
-        position: 'fixed', 
-        top: 0, 
-        left: 0, 
-        width: '100%', 
-        height: '100vh', 
+    <div
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100vh',
         zIndex: -1,
         maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
         WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
