@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useRef } from 'react';
@@ -51,7 +52,7 @@ export default function AchievementsSection() {
                   data-ai-hint={achievement.aiHint}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-                <div className="absolute bottom-0 left-0 p-8">
+                <div className="absolute bottom-0 left-0 pb-6 pl-6">
                   <h3 className="text-xl sm:text-3xl font-bold text-foreground transition-colors group-hover:text-accent">
                     {achievement.title}
                   </h3>
