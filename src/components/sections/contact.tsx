@@ -58,6 +58,10 @@ export default function ContactSection() {
                   </div>
                 </div>
                 <div>
+                  <label htmlFor="project" className="text-accent">&gt; Link to any previous project you have worked on</label>
+                  <Input id="project" type="url" placeholder="// e.g., GitHub, Itch.io, live demo URL" className="bg-transparent border-accent/50 focus:border-accent font-hacker text-lg text-green-400 mt-1" />
+                </div>
+                <div>
                   <label htmlFor="interest" className="text-accent">&gt; What drives your interest in Game to Aim?</label>
                   <Textarea id="interest" placeholder="// Your message payload..." className="bg-transparent border-accent/50 focus:border-accent font-hacker text-lg text-green-400 mt-1 min-h-[120px]" />
                 </div>
