@@ -1036,4 +1036,59 @@
   }
 }
 
+/* New Contact Card Styles */
+@layer components {
+  .contact-card-container {
+    @apply relative overflow-hidden rounded-lg border-2 border-primary/30 bg-card transition-all duration-300 ease-in-out;
+    clip-path: polygon(0 15px, 15px 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 0 100%);
+  }
+  .contact-card-container:hover {
+    @apply border-accent;
+    box-shadow: 0 0 15px hsl(var(--accent) / 0.5), 0 0 30px hsl(var(--accent) / 0.3);
+  }
+
+  .contact-card-content {
+    @apply relative z-10;
+  }
+
+  /* Scanline effect for contact cards */
+  .contact-card-container::before {
+    content: '';
+    @apply absolute top-0 left-0 w-full h-full opacity-0 transition-opacity duration-500 group-hover:opacity-10;
+    background: repeating-linear-gradient(
+      0deg,
+      hsl(var(--accent)),
+      hsl(var(--accent)) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+    animation: scanlines 20s linear infinite;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  /* Shimmer effect for contact cards */
+  .contact-card-container::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -75%;
+    width: 50%;
+    height: 200%;
+    background: linear-gradient(
+      to right,
+      hsl(var(--accent) / 0),
+      hsl(var(--accent) / 0.15),
+      hsl(var(--accent) / 0)
+    );
+    transform: rotate(25deg);
+    transition: left 1s cubic-bezier(0.23, 1, 0.32, 1);
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  .group:hover .contact-card-container::after {
+    left: 125%;
+  }
+}
     
