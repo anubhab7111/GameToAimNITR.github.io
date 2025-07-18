@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useRef } from 'react';
@@ -9,7 +10,7 @@ export default function AchievementsSection() {
   const targetRef = useRef<HTMLDivElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: targetRef,
-    offset: ['start center', 'end end'],
+    offset: ['start center', 'end center'],
   });
 
   const x = useTransform(scrollYProgress, [0.1, 0.95], ['0%', '-85%']);
