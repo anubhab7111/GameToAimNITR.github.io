@@ -138,7 +138,7 @@
     text-shadow: -1px 0 hsl(var(--primary));
     top: 0;
     color: white;
-    background: var(--background);
+    background: hsl(var(--background));
     overflow: hidden;
     clip-path: inset(0 0 0 0);
     animation: glitch-anim 5s infinite linear alternate-reverse;
@@ -151,7 +151,7 @@
     text-shadow: 1px 0 hsl(var(--accent));
     top: 0;
     color: white;
-    background: var(--background);
+    background: hsl(var(--background));
     overflow: hidden;
     clip-path: inset(0 0 0 0);
     animation: glitch-anim-2 5s infinite linear alternate-reverse;
@@ -1052,3 +1052,5 @@
     animation: iris-pulse 3s ease-in-out infinite;
   }
 }
+
+    
