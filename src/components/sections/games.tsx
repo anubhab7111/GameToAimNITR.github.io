@@ -66,7 +66,7 @@ export default function GamesSection() {
         </div>
 
         <div 
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 w-full"
+          className="grid grid-cols-2 md:grid-cols-5 gap-8 w-full"
           onMouseLeave={() => setHoveredIndex(null)}
         >
           {games.map((game, index) => (
@@ -86,7 +86,7 @@ export default function GamesSection() {
 
       <Dialog open={!!selectedGame} onOpenChange={(isOpen) => !isOpen && setSelectedGame(null)}>
         {selectedGame && (
-          <DialogContent className="max-w-4xl w-[90vw] bg-background backdrop-blur-sm border-primary/30 box-glow-primary text-foreground">
+          <DialogContent className="max-w-4xl w-[90vw] bg-background/50 backdrop-blur-sm border-primary/30 box-glow-primary text-foreground">
             <DialogHeader>
               <DialogTitle className="text-3xl font-bold text-glow-primary">{selectedGame.title}</DialogTitle>
               <DialogDescription className="text-muted-foreground pt-2 text-base">
