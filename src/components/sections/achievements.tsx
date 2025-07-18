@@ -52,13 +52,17 @@ export default function AchievementsSection() {
               At <span className="text-primary font-bold">GAME TO AIM</span>, our projects are our pride. The work we do ranges from games and applications to interactive experiences. The most recent achievements are listed below.
             </p>
           </div>
+        </motion.div>
+
+        {/* This div contains the elements that will remain visible during the scroll */}
+        <div className="container mx-auto px-4 md:px-16 relative z-10">
           <div className="mt-8 h-1 w-full bg-border/30 rounded-full">
             <motion.div
               className="h-full bg-primary rounded-full"
               style={{ width: progressBarWidth }}
             />
           </div>
-        </motion.div>
+        </div>
 
         {/* Horizontally Scrolling Carousel */}
         <motion.div ref={carouselRef} style={{ x }} className="flex gap-6 mt-12 pl-16">
