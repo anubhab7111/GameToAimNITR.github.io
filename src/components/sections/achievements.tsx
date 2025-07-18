@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
@@ -9,6 +10,7 @@ export default function AchievementsSection() {
   const targetRef = useRef<HTMLDivElement | null>(null);
   const carouselRef = useRef<HTMLDivElement | null>(null);
   const progressBarRef = useRef<HTMLDivElement | null>(null);
+
   const [carouselWidth, setCarouselWidth] = useState(0);
   const [progressBarContainerWidth, setProgressBarContainerWidth] = useState(0);
 
@@ -18,27 +20,41 @@ export default function AchievementsSection() {
   });
 
   useEffect(() => {
-    if (carouselRef.current) {
-      const parentWidth = carouselRef.current.parentElement?.offsetWidth || 0;
-      const scrollWidth = carouselRef.current.scrollWidth;
-      setCarouselWidth(scrollWidth - parentWidth);
-    }
-    if (progressBarRef.current) {
-      setProgressBarContainerWidth(progressBarRef.current.offsetWidth);
-    }
+    const onResize = () => {
+      if (carouselRef.current) {
+        const parentWidth = carouselRef.current.parentElement?.offsetWidth || 0;
+        const scrollWidth = carouselRef.current.scrollWidth;
+        const newCarouselWidth = scrollWidth - parentWidth;
+        setCarouselWidth(newCarouselWidth);
+
+        // Center the last item
+        const lastItem = carouselRef.current.lastElementChild as HTMLElement;
+        if (lastItem) {
+          const lastItemWidth = lastItem.offsetWidth;
+          const centeredOffset = (parentWidth - lastItemWidth) / 2;
+          setCarouselWidth(scrollWidth - parentWidth + (parentWidth - lastItemWidth) / 2 - (parseFloat(getComputedStyle(carouselRef.current).paddingLeft) || 0) - (parseFloat(getComputedStyle(lastItem).marginRight) || 0));
+
+        }
+      }
+      if (progressBarRef.current) {
+        setProgressBarContainerWidth(progressBarRef.current.offsetWidth);
+      }
+    };
+
+    onResize();
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
   }, []);
 
-  const x = useTransform(scrollYProgress, [0.2, 0.9], [0, -carouselWidth]);
-  const progressBarWidth = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
+  const x = useTransform(scrollYProgress, [0.1, 0.95], [0, -carouselWidth]);
+  const progressBarWidth = useTransform(scrollYProgress, [0, 1], [0, 100]);
   const headX = useTransform(scrollYProgress, [0, 1], [0, progressBarContainerWidth]);
 
 
   return (
     <section ref={targetRef} id="achievements" className="relative h-[300vh]">
       <div className="sticky top-0 h-screen overflow-hidden flex flex-col justify-center">
-        <div
-          className="container mx-auto px-4 md:px-16 pt-16 md:pt-24 relative z-10"
-        >
+        <div className="container mx-auto px-4 md:px-16 pt-16 md:pt-24 relative z-10">
           <div className="text-center">
             <h2 className="text-4xl md:text-5xl font-bold text-glow-accent tracking-wider uppercase">
               Hall of Fame
@@ -52,94 +68,80 @@ export default function AchievementsSection() {
         {/* Enhanced Cyberpunk Progress Bar */}
         <div className="container mx-auto px-4 md:px-16 relative z-10">
           <div ref={progressBarRef} className="mt-8 w-full h-12 relative flex items-center">
-            {/* Outer Container with Cyber Border */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-border/10 to-transparent rounded-sm">
-              <div className="absolute inset-0 border border-border/30 rounded-sm" style={{
-                background: 'linear-gradient(90deg, transparent 0%, rgba(0,255,255,0.1) 50%, transparent 100%)'
-              }} />
-            </div>
+            {/* 1. Track Container */}
+            <div className="absolute w-full h-8 top-1/2 -translate-y-1/2 bg-border/10 rounded-full border border-border/20" />
             
-            {/* Track Background */}
-            <div className="absolute left-4 right-4 top-1/2 h-2 bg-gradient-to-r from-gray-800/50 via-gray-700/50 to-gray-800/50 -translate-y-1/2 rounded-full">
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent rounded-full" />
-            </div>
+            {/* 2. Track Background */}
+            <div className="absolute left-4 right-4 top-1/2 h-2 bg-black/30 -translate-y-1/2 rounded-full" />
             
-            {/* Left Terminal */}
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 bg-gradient-to-r from-primary/30 to-primary/50 rounded-full flex items-center justify-center">
-              <div className="w-4 h-4 bg-primary rounded-full shadow-lg shadow-primary/50" />
+            {/* 3. Terminals */}
+            <div className="absolute left-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-primary/30 flex items-center justify-center">
+              <div className="w-3 h-3 rounded-full bg-primary" />
             </div>
-            
-            {/* Right Terminal */}
-            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-8 h-8 bg-gradient-to-l from-border/30 to-border/50 rounded-full flex items-center justify-center">
-              <div className="w-4 h-4 bg-border/70 rounded-full" />
+            <div className="absolute right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-secondary/40 flex items-center justify-center">
+              <div className="w-3 h-3 rounded-full bg-secondary" />
             </div>
-              
-            {/* Progress Fill */}
-            <motion.div 
-              className="absolute left-4 top-1/2 h-2 -translate-y-1/2"
-              style={{ width: progressBarWidth }}
+
+            {/* 4. Progress Fill */}
+            <motion.div
+              className="absolute left-4 right-4 top-1/2 h-2 -translate-y-1/2 rounded-full"
+              style={{
+                width: useTransform(progressBarWidth, v => `calc(${v}% - 32px)`),
+              }}
             >
-              <div className="w-full h-full relative overflow-hidden rounded-full">
-                {/* Main progress line with gradient */}
-                <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-primary rounded-full">
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent rounded-full" />
-                </div>
-                
-                {/* Animated scanning effect */}
-                <motion.div 
-                  className="absolute top-0 right-0 w-6 h-full bg-gradient-to-r from-transparent to-white/40 rounded-full"
-                  animate={{
-                    x: [0, 10, 0],
-                    opacity: [0.5, 1, 0.5]
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                />
-              </div>
+              <div
+                className="w-full h-full rounded-full"
+                style={{ background: 'linear-gradient(90deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 50%, hsl(var(--primary)) 100%)' }}
+              />
             </motion.div>
-            
-            {/* Progress Head */}
+
+            {/* 5. Progress Head */}
             <motion.div 
-              className="absolute left-0 top-1/2 -translate-y-1/2 flex items-center"
-              style={{ x: headX }}
+              className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center"
+              style={{ x: useTransform(progressBarWidth, v => (progressBarContainerWidth - 24) * (v / 100)) }}
             >
-              <div className="w-6 h-6 bg-gradient-to-r from-primary to-accent rounded-full shadow-lg shadow-primary/50 flex items-center justify-center">
-                <div className="w-3 h-3 bg-white rounded-full animate-pulse" />
+              {/* Main head circle */}
+              <div className="w-6 h-6 rounded-full border-2 border-primary/50 bg-gradient-radial from-accent/80 to-primary/80 flex items-center justify-center shadow-lg shadow-accent/30">
+                {/* Inner white dot */}
+                <div className="w-2 h-2 bg-white rounded-full" />
               </div>
-              <div className="w-8 h-1 bg-gradient-to-r from-primary to-transparent -ml-2" />
+              {/* Emitter line */}
+              <div className="w-3 h-0.5 bg-primary -translate-x-1" />
             </motion.div>
           </div>
         </div>
 
-        <motion.div ref={carouselRef} style={{ x }} className="flex gap-6 mt-12 pl-16">
+        {/* Enhanced Achievement Cards */}
+        <motion.div ref={carouselRef} style={{ x }} className="flex gap-8 mt-16 pl-16">
           {achievements.map((achievement, index) => (
-            <div
-              key={index}
-              className="group relative h-[300px] w-[80vw] sm:h-[300px] sm:w-[450px] flex-shrink-0"
-            >
-              <div className="overflow-hidden rounded-lg border border-border/20 cyber-card-shimmer h-full w-full">
-                <Image
-                  src={achievement.image}
-                  alt={achievement.title}
-                  fill
-                  sizes="(max-width: 640px) 80vw, 450px"
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  data-ai-hint={achievement.aiHint}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-                <div className="absolute bottom-0 left-0 pb-10 pl-6">
-                  <h3 className="text-xl sm:text-3xl font-bold text-foreground transition-colors group-hover:text-accent">
-                    {achievement.title}
+             <div key={index} className="group relative h-[350px] w-[280px] md:h-[400px] md:w-[320px] flex-shrink-0">
+               <div className="cyber-card-container h-full w-full">
+                 <div className="cyber-card-content p-4 flex flex-col">
+                  <div className="relative w-full h-48 cyber-card-shimmer mb-4" style={{ clipPath: 'polygon(0 20px, 20px 0, 100% 0, 100% 100%, 0 100%)' }}>
+                    <Image
+                      src={achievement.image}
+                      alt={achievement.title}
+                      fill
+                      sizes="(max-width: 768px) 50vw, 320px"
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      data-ai-hint={achievement.aiHint}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  </div>
+                  <h3 className="font-bold text-xl text-primary text-glow-primary transition-all duration-300 group-hover:text-accent mb-2">
+                      {achievement.title}
                   </h3>
-                </div>
-              </div>
-            </div>
+                  <p className="text-muted-foreground text-sm flex-grow">
+                      {achievement.description}
+                  </p>
+                 </div>
+               </div>
+             </div>
           ))}
         </motion.div>
       </div>
     </section>
   );
 }
+
+    
