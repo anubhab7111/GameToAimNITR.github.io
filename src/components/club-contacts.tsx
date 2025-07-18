@@ -63,7 +63,7 @@ export default function ClubContacts() {
 
 
   return (
-    <section ref={sectionRef} id="club-contacts" className="py-16 md:py-24 bg-background/80 border-t border-border/40 relative z-10">
+    <section ref={sectionRef} id="club-contacts" className="py-16 md:py-24 bg-background/80 relative z-10">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-glow-accent">Contact Directory</h2>
