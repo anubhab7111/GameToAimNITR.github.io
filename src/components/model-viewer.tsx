@@ -175,42 +175,30 @@ export default function ModelViewer({ model }: { model: ModelInfo }) {
       </Canvas>
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-full max-w-xs px-4">
         <div className="p-2 rounded-lg bg-background/50 backdrop-blur-sm border border-border flex flex-col gap-2">
-          <div className="grid grid-cols-4 gap-1">
-            <div />
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8"
-              onClick={() => handlePan(0, 1)}
-            >
-              <ArrowUp className="w-5 h-5" />
-            </Button>
-            <div />
-            <div />
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8"
-              onClick={() => handlePan(1, 0)}
-            >
-              <ArrowLeft className="w-5 h-5" />
-            </Button>
-             <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8"
-              onClick={() => handlePan(0, -1)}
-            >
-              <ArrowDown className="w-5 h-5" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8"
-              onClick={() => handlePan(-1, 0)}
-            >
-              <ArrowRight className="w-5 h-5" />
-            </Button>
+          <div className="grid grid-cols-3 grid-rows-3 gap-1 h-24 w-24 mx-auto">
+            <div className="col-start-2 row-start-1 flex justify-center items-center">
+                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => handlePan(0, 1)}>
+                  <ArrowUp className="w-5 h-5" />
+                </Button>
+            </div>
+            <div className="col-start-1 row-start-2 flex justify-center items-center">
+                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => handlePan(1, 0)}>
+                  <ArrowLeft className="w-5 h-5" />
+                </Button>
+            </div>
+            <div className="col-start-2 row-start-2 flex justify-center items-center">
+                {/* Center empty */}
+            </div>
+            <div className="col-start-3 row-start-2 flex justify-center items-center">
+                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => handlePan(-1, 0)}>
+                  <ArrowRight className="w-5 h-5" />
+                </Button>
+            </div>
+            <div className="col-start-2 row-start-3 flex justify-center items-center">
+                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => handlePan(0, -1)}>
+                  <ArrowDown className="w-5 h-5" />
+                </Button>
+            </div>
           </div>
           <div className="flex items-center gap-2 px-2">
             <ZoomOut className="w-4 h-4 text-muted-foreground" />

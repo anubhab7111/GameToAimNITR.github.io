@@ -15,7 +15,7 @@ const ModelViewer = dynamic(() => import('@/components/model-viewer'), {
   ssr: false,
 });
 
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 4;
 
 export default function ShowcaseSection() {
   const [selectedModel, setSelectedModel] = useState<ModelInfo>(models[0]);
