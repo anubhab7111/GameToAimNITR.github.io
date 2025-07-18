@@ -29,7 +29,7 @@ export default function GameCard({ game, isVisible, index, onClick, onMouseEnter
   const getTransformOrigin = (i: number) => {
     if (!isMounted) return 'origin-center';
 
-    const cols = isMobile ? 2 : 4;
+    const cols = isMobile ? 2 : 5; // Adjusted to 5 to match games section
     const numRows = Math.ceil(games.length / cols);
     const row = Math.floor(i / cols);
 
@@ -54,7 +54,7 @@ export default function GameCard({ game, isVisible, index, onClick, onMouseEnter
         isHovered && 'scale-105 z-10',
         isDimmed && 'scale-90 opacity-50',
       )}
-      style={{ transitionDelay: `${index * 50}ms` }}
+      style={{ transitionDelay: `${index * 30}ms` }}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onClick(game)}
@@ -65,7 +65,7 @@ export default function GameCard({ game, isVisible, index, onClick, onMouseEnter
             "cyber-card-content flex flex-col transition-opacity duration-300",
             isVisible ? "opacity-100" : "opacity-0"
         )}
-        style={{ transitionDelay: `${(index * 50) + 500}ms`}}
+        style={{ transitionDelay: `${(index * 30) + 100}ms`}}
         >
           <div className="relative w-full h-1/2 cyber-card-shimmer" style={{ clipPath: 'polygon(0 20px, 20px 0, 100% 0, 100% 100%, 0 100%)' }}>
             <Image
