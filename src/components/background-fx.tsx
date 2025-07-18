@@ -59,37 +59,40 @@ extend({ FresnelMaterial });
 
 // Particles component
 function FloatingParticles(props: any) {
-    const ref = useRef<any>();
-    const [sphere] = useState(() => {
-        // Ensure this runs only on the client where 'random' is reliable
-        if (typeof window !== 'undefined') {
-            return random.inSphere(new Float32Array(5000), { radius: 4.5 });
-        }
-        return new Float32Array(5000); // Return empty array on server
-    });
-  
-    useFrame((state, delta) => {
-      if (ref.current) {
-        ref.current.rotation.x -= delta / 10;
-        ref.current.rotation.y -= delta / 15;
-      }
-    });
-  
-    return (
-      <group rotation={[0, 0, Math.PI / 4]}>
-        <Points ref={ref} positions={sphere} stride={3} frustumCulled={false} {...props}>
-          <PointMaterial
-            transparent
-            color="#ffa0e0"
-            size={0.02}
-            sizeAttenuation={true}
-            depthWrite={false}
-            blending={AdditiveBlending}
-          />
-        </Points>
-      </group>
-    );
+  const ref = useRef<any>();
+  const [sphere, setSphere] = useState<Float32Array | null>(null);
+
+  useEffect(() => {
+    // Generate positions only on the client, after mount
+    setSphere(random.inSphere(new Float32Array(5000), { radius: 4.5 }));
+  }, []);
+
+  useFrame((state, delta) => {
+    if (ref.current) {
+      ref.current.rotation.x -= delta / 10;
+      ref.current.rotation.y -= delta / 15;
+    }
+  });
+
+  if (!sphere) {
+    return null;
   }
+
+  return (
+    <group rotation={[0, 0, Math.PI / 4]}>
+      <Points ref={ref} positions={sphere} stride={3} frustumCulled={false} {...props}>
+        <PointMaterial
+          transparent
+          color="#ffa0e0"
+          size={0.02}
+          sizeAttenuation={true}
+          depthWrite={false}
+          blending={AdditiveBlending}
+        />
+      </Points>
+    </group>
+  );
+}
 
 // Model component that animates based on scroll
 function VrHeadset() {
