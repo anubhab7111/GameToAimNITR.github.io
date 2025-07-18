@@ -6,7 +6,7 @@ import { Canvas, useFrame, extend } from '@react-three/fiber';
 import { useGLTF, shaderMaterial, Points, PointMaterial } from '@react-three/drei';
 import { useLenis } from '@studio-freight/react-lenis';
 import type { Group, Mesh } from 'three';
-import { Color, MathUtils, AdditiveBlending } from 'three';
+import { Color, MathUtils, AdditiveBlending, BufferAttribute } from 'three';
 import * as random from 'maath/random/dist/maath-random.esm';
 
 // Define the custom Fresnel shader material with an added opacity uniform
@@ -60,7 +60,13 @@ extend({ FresnelMaterial });
 // Particles component
 function FloatingParticles(props: any) {
     const ref = useRef<any>();
-    const [sphere] = useState(() => random.inSphere(new Float32Array(5000), { radius: 4.5 }));
+    const [sphere] = useState(() => {
+        // Ensure this runs only on the client where 'random' is reliable
+        if (typeof window !== 'undefined') {
+            return random.inSphere(new Float32Array(5000), { radius: 4.5 });
+        }
+        return new Float32Array(5000); // Return empty array on server
+    });
   
     useFrame((state, delta) => {
       if (ref.current) {

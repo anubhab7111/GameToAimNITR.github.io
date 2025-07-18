@@ -49,6 +49,7 @@
     "framer-motion": "^11.3.8",
     "genkit": "^1.13.0",
     "lucide-react": "^0.475.0",
+    "maath": "^0.10.7",
     "next": "^15.0.0-rc.0",
     "react": "^19.0.0-rc.0",
     "react-dom": "^19.0.0-rc.0",
