@@ -152,7 +152,7 @@
   
   .glitch-layers::before {
     left: -2px;
-    color: hsl(var(--accent));
+    color: #000;
     animation: glitch-anim-2 5s infinite linear alternate-reverse;
   }
 
