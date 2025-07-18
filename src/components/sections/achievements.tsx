@@ -9,10 +9,10 @@ export default function AchievementsSection() {
   const targetRef = useRef<HTMLDivElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: targetRef,
-    offset: ['start start', 'end end'],
+    offset: ['start center', 'end end'],
   });
 
-  const x = useTransform(scrollYProgress, [0.1, 0.9], ['0%', '-85%']);
+  const x = useTransform(scrollYProgress, [0.1, 0.95], ['0%', '-85%']);
   const progressBarWidth = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
 
   return (
@@ -39,22 +39,19 @@ export default function AchievementsSection() {
           {achievements.map((achievement, index) => (
             <div
               key={index}
-              className="group relative h-[300px] w-[90vw] sm:h-[400px] sm:w-[600px] flex-shrink-0"
+              className="group relative h-[300px] w-[80vw] sm:h-[300px] sm:w-[450px] flex-shrink-0"
             >
               <div className="overflow-hidden rounded-lg border border-border/20 cyber-card-shimmer h-full w-full">
                 <Image
                   src={achievement.image}
                   alt={achievement.title}
                   fill
-                  sizes="(max-width: 640px) 90vw, 600px"
+                  sizes="(max-width: 640px) 80vw, 450px"
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                   data-ai-hint={achievement.aiHint}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
                 <div className="absolute bottom-0 left-0 p-6">
-                  <p className="text-sm font-semibold uppercase tracking-widest text-primary">
-                    XP GAINED: {achievement.xp}
-                  </p>
                   <h3 className="text-xl sm:text-3xl font-bold text-foreground transition-colors group-hover:text-accent">
                     {achievement.title}
                   </h3>
