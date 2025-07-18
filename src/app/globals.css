@@ -1039,7 +1039,7 @@
 /* Contact Card Styles */
 @layer components {
   .contact-card-container {
-    @apply relative overflow-hidden bg-card p-0.5;
+    @apply relative overflow-hidden bg-transparent;
     clip-path: polygon(
       0 15px, 
       15px 0, 
@@ -1077,6 +1077,12 @@
   .contact-card-content {
     @apply relative z-10 h-full w-full bg-card;
     clip-path: inherit;
+    border: 2px solid hsl(var(--border));
+    transition: border-color 0.3s ease-in-out;
+  }
+
+  .group:hover .contact-card-content {
+    border-color: hsl(var(--accent));
   }
 
   /* Shimmer effect for contact cards */
@@ -1105,5 +1111,7 @@
 }
     
 
+
+    
 
     
