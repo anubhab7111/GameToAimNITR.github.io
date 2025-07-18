@@ -9,7 +9,6 @@ import AchievementsSection from '@/components/sections/achievements';
 import ContactSection from '@/components/sections/contact';
 import GamesSection from '@/components/sections/games';
 import ShowcaseSection from '@/components/sections/showcase';
-import BackgroundFX from '@/components/background-fx';
 import HackerOverlay from '@/components/hacker-overlay';
 import { useAnimation } from '@/context/animation-context';
 import BioIDTerminal from '@/components/bio-id-terminal';
@@ -167,7 +166,6 @@ export default function Home() {
   return (
     <>
       {!sequenceComplete && <HackerOverlay />}
-      <BackgroundFX />
       <HeroSection />
       <AboutSection />
       <GamesSection />

@@ -9,6 +9,7 @@ import CursorFX from '@/components/cursor-fx';
 import LenisProvider from '@/components/lenis-provider';
 import { AnimationProvider } from '@/context/animation-context';
 import ClubContacts from '@/components/club-contacts';
+import BackgroundFX from '@/components/background-fx';
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -45,6 +46,7 @@ export default function RootLayout({
         <AnimationProvider>
           <LenisProvider>
             <CursorFX />
+            <BackgroundFX />
             <div className="relative flex min-h-screen flex-col">
               <Header />
               <main className="flex-1 relative z-10">{children}</main>
