@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
@@ -16,7 +15,7 @@ export default function AchievementsSection() {
 
   const { scrollYProgress } = useScroll({
     target: targetRef,
-    offset: ['start center', 'end center'],
+    offset: ['start center', 'end end'],
   });
 
   useEffect(() => {
@@ -26,15 +25,6 @@ export default function AchievementsSection() {
         const scrollWidth = carouselRef.current.scrollWidth;
         const newCarouselWidth = scrollWidth - parentWidth;
         setCarouselWidth(newCarouselWidth);
-
-        // Center the last item
-        const lastItem = carouselRef.current.lastElementChild as HTMLElement;
-        if (lastItem) {
-          const lastItemWidth = lastItem.offsetWidth;
-          const centeredOffset = (parentWidth - lastItemWidth) / 2;
-          setCarouselWidth(scrollWidth - parentWidth + (parentWidth - lastItemWidth) / 2 - (parseFloat(getComputedStyle(carouselRef.current).paddingLeft) || 0) - (parseFloat(getComputedStyle(lastItem).marginRight) || 0));
-
-        }
       }
       if (progressBarRef.current) {
         setProgressBarContainerWidth(progressBarRef.current.offsetWidth);
@@ -46,7 +36,7 @@ export default function AchievementsSection() {
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
-  const x = useTransform(scrollYProgress, [0.1, 0.95], [0, -carouselWidth]);
+  const x = useTransform(scrollYProgress, [0, 1], [0, -carouselWidth]);
   const progressBarWidth = useTransform(scrollYProgress, [0, 1], [0, 100]);
   const headX = useTransform(scrollYProgress, [0, 1], [0, progressBarContainerWidth]);
 
@@ -143,5 +133,3 @@ export default function AchievementsSection() {
     </section>
   );
 }
-
-    
