@@ -75,66 +75,58 @@ export default function Header() {
       return;
     }
     
-    const observer = new IntersectionObserver(
-      (entries) => {
+    const handleScroll = () => {
         if (isNavigatingRef.current) return;
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const link = navLinks.find(l => l.href.endsWith(entry.target.id));
-            if (link) {
-              setActiveLink(link.href);
+        
+        const scrollPosition = (lenis?.scroll || 0) + window.innerHeight / 2;
+        let currentSectionId = '';
+
+        const sections = navLinks
+          .map(link => document.getElementById(link.href.substring(2)))
+          .filter(Boolean) as HTMLElement[];
+
+        for (const section of sections) {
+            if (section.offsetTop <= scrollPosition) {
+                currentSectionId = '/#' + section.id;
             }
-          }
-        });
-      },
-      {
-        rootMargin: '-50% 0px -50% 0px', 
-      }
-    );
-
-    const sections = navLinks
-      .filter((link) => link.href.startsWith('/#'))
-      .map((link) => document.getElementById(link.href.substring(2)))
-      .filter((section): section is HTMLElement => section !== null);
-
-    sections.forEach((section) => observer.observe(section));
-
-    // Set initial active link for homepage
-    const heroSection = document.getElementById('hero');
-    if (heroSection) {
-        observer.observe(heroSection);
-        if (lenis && lenis.scroll === 0) {
-            setActiveLink('/#hero');
         }
-    }
+        
+        // Handle hero section edge case
+        if ((lenis?.scroll || 0) < window.innerHeight / 2) {
+          currentSectionId = '/#about'; // Or a dedicated hero link
+        }
+        
+        setActiveLink(currentSectionId);
+    };
 
+    if (lenis) {
+        lenis.on('scroll', handleScroll);
+    }
+    
+    // Set initial state
+    handleScroll();
 
     return () => {
-      sections.forEach((section) => observer.unobserve(section));
-      if (heroSection) observer.unobserve(heroSection);
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (lenis) {
+        lenis.off('scroll', handleScroll);
+      }
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
     };
   }, [pathname, lenis]);
 
   const handleNavLinkClick = (e: React.MouseEvent, href: string) => {
     if (isSheetOpen) setIsSheetOpen(false);
   
-    if (href === '/#member-access') {
-       if (pathname === '/') {
-          e.preventDefault();
-          document.body.classList.add('is-nav-scrolling');
-          setTimeout(() => document.body.classList.remove('is-nav-scrolling'), 800);
-          lenis?.scrollTo('#member-access', { offset: -100, duration: 1.5 });
-       } else {
-          // If on another page, just go to the members page.
-          // The bio terminal will likely be on the main page.
-          // Or we decide to navigate to home and then scroll. For now, let's just go to /members.
-          // To prevent default scrolling on the current page if it's a hash link.
-          e.preventDefault();
-          window.location.href = '/members';
-          return;
-       }
-    } else if (href.startsWith('/#') && pathname === '/') {
+    if (href === '/#member-access' && pathname.startsWith('/members')) {
+        e.preventDefault();
+        router.push('/');
+        // The rest of the logic for scrolling will be handled by the main page
+        return;
+    }
+
+    if (href.startsWith('/#') && pathname === '/') {
       e.preventDefault();
       document.body.classList.add('is-nav-scrolling');
       setTimeout(() => document.body.classList.remove('is-nav-scrolling'), 800);
@@ -143,13 +135,18 @@ export default function Header() {
       lenis?.scrollTo(targetId, {
         offset: -80,
         duration: 1.5,
+        onComplete: () => {
+          isNavigatingRef.current = false;
+        }
       });
+
+      isNavigatingRef.current = true;
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => { isNavigatingRef.current = false; }, 1500);
+
+      // Immediately set active link on click for better responsiveness
+      setActiveLink(href);
     }
-    
-    setActiveLink(href);
-    isNavigatingRef.current = true;
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(() => { isNavigatingRef.current = false; }, 1500);
   };
 
   const NavLinkComponent = ({ href, label, Icon, isMobile = false }: NavLink & { isMobile?: boolean }) => {
@@ -157,7 +154,6 @@ export default function Header() {
     const isMemberLinkOnMemberPage = pathname === '/members' && href === '/#member-access';
     const finalIsActive = isActive || isMemberLinkOnMemberPage;
     
-    // The actual link href should be correct for direct navigation
     const linkHref = href === '/#member-access' ? '/members' : href;
 
 

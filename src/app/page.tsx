@@ -13,6 +13,7 @@ import ShowcaseSection from '@/components/sections/showcase';
 import BackgroundFX from '@/components/background-fx';
 import HackerOverlay from '@/components/hacker-overlay';
 import { useAnimation } from '@/context/animation-context';
+import BioIDTerminal from '@/components/bio-id-terminal';
 
 export default function Home() {
   const { sequenceComplete } = useAnimation();
@@ -174,6 +175,11 @@ export default function Home() {
       <ShowcaseSection />
       <EventsSection />
       <AchievementsSection />
+      <section id="member-access" className="py-24 bg-background">
+        <div className="container mx-auto px-4">
+          <BioIDTerminal />
+        </div>
+      </section>
       <ContactSection />
     </>
   );
