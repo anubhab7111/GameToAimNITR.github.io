@@ -9,6 +9,8 @@ export default function AchievementsSection() {
   const targetRef = useRef<HTMLDivElement | null>(null);
   const carouselRef = useRef<HTMLDivElement | null>(null);
   const [carouselWidth, setCarouselWidth] = useState(0);
+  const [progressBarContainerWidth, setProgressBarContainerWidth] = useState(0);
+  const progressBarRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
     target: targetRef,
@@ -20,9 +22,17 @@ export default function AchievementsSection() {
       if (carouselRef.current) {
         const parentWidth = carouselRef.current.parentElement?.offsetWidth || 0;
         const scrollWidth = carouselRef.current.scrollWidth;
-        // Calculate the total scrollable width
+        // Calculate the total scrollable width, leaving space for the last card to be visible
+        const lastCard = carouselRef.current.lastElementChild as HTMLElement;
+        const lastCardWidth = lastCard ? lastCard.offsetWidth : 0;
+        const lastCardMargin = lastCard ? parseInt(window.getComputedStyle(lastCard).marginRight) : 0;
+        
+        // We want the scroll to stop when the last card is fully in view on the left.
         const newCarouselWidth = scrollWidth - parentWidth;
-        setCarouselWidth(newCarouselWidth);
+        setCarouselWidth(newCarouselWidth < 0 ? 0 : newCarouselWidth);
+      }
+      if (progressBarRef.current) {
+        setProgressBarContainerWidth(progressBarRef.current.offsetWidth);
       }
     };
 
@@ -33,15 +43,8 @@ export default function AchievementsSection() {
 
   const x = useTransform(scrollYProgress, [0, 1], [0, -carouselWidth]);
 
-  const progressBarWidth = useTransform(scrollYProgress, [0, 1], [0, 100]);
-  const progressBarRef = useRef<HTMLDivElement | null>(null);
-  const [progressBarContainerWidth, setProgressBarContainerWidth] = useState(0);
-
-  useEffect(() => {
-    if (progressBarRef.current) {
-      setProgressBarContainerWidth(progressBarRef.current.offsetWidth);
-    }
-  }, []);
+  const progressBarWidth = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
+  const progressHeadX = useTransform(scrollYProgress, [0, 1], [0, progressBarContainerWidth - 24]); // 24 is width of head
 
   return (
     <section ref={targetRef} id="achievements" className="relative h-[300vh]">
@@ -76,28 +79,21 @@ export default function AchievementsSection() {
 
             {/* 4. Progress Fill */}
             <motion.div
-              className="absolute left-4 right-4 top-1/2 h-2 -translate-y-1/2 rounded-full"
+              className="absolute left-4 top-1/2 h-2 -translate-y-1/2 rounded-full"
               style={{
-                width: useTransform(progressBarWidth, v => `calc(${v}% - 32px)`),
+                width: progressBarWidth,
+                background: 'linear-gradient(90deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 50%, hsl(var(--primary)) 100%)'
               }}
-            >
-              <div
-                className="w-full h-full rounded-full"
-                style={{ background: 'linear-gradient(90deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 50%, hsl(var(--primary)) 100%)' }}
-              />
-            </motion.div>
+            />
 
             {/* 5. Progress Head */}
             <motion.div 
               className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center"
-              style={{ x: useTransform(progressBarWidth, v => (progressBarContainerWidth - 24) * (v / 100)) }}
+              style={{ x: progressHeadX }}
             >
-              {/* Main head circle */}
               <div className="w-6 h-6 rounded-full border-2 border-primary/50 bg-gradient-radial from-accent/80 to-primary/80 flex items-center justify-center shadow-lg shadow-accent/30">
-                {/* Inner white dot */}
                 <div className="w-2 h-2 bg-white rounded-full" />
               </div>
-              {/* Emitter line */}
               <div className="w-3 h-0.5 bg-primary -translate-x-1" />
             </motion.div>
           </div>
