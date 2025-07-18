@@ -21,9 +21,13 @@ export default function AchievementsSection() {
       if (carouselRef.current) {
         const scrollWidth = carouselRef.current.scrollWidth;
         const parentWidth = carouselRef.current.parentElement?.offsetWidth || 0;
-        // Calculate the total distance the carousel needs to move
-        // It's the total width minus the width of the visible area (the parent)
-        setCarouselWidth(scrollWidth - parentWidth);
+        // Calculate the total distance the carousel needs to move.
+        // It's the total width minus the width of the visible area (the parent).
+        // To center the last card, we need to scroll a bit less.
+        // We subtract half the parent's width to leave that much space on the right.
+        // We also need to account for the card's own width to center it properly.
+        // A simpler approach for centering is to scroll until the end of the carousel is at the center of the screen.
+        setCarouselWidth(scrollWidth - parentWidth / 2);
       }
     };
 
