@@ -5,7 +5,6 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import { useLenis } from '@studio-freight/react-lenis';
 import HeroSection from '@/components/sections/hero';
 import AboutSection from '@/components/sections/about';
-import EventsSection from '@/components/sections/events';
 import AchievementsSection from '@/components/sections/achievements';
 import ContactSection from '@/components/sections/contact';
 import GamesSection from '@/components/sections/games';
@@ -173,7 +172,6 @@ export default function Home() {
       <AboutSection />
       <GamesSection />
       <ShowcaseSection />
-      <EventsSection />
       <AchievementsSection />
       <section id="member-access" className="py-24 bg-background">
         <div className="container mx-auto px-4">
