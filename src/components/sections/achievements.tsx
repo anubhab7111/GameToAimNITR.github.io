@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useRef } from 'react';
@@ -21,12 +20,14 @@ export default function AchievementsSection() {
       <div className="sticky top-0 h-screen overflow-hidden flex flex-col justify-center">
         {/* Static Content: Title, Description, and Progress Bar */}
         <div className="container mx-auto px-4 md:px-16 pt-16 md:pt-24 relative z-10">
-          <h2 className="text-4xl md:text-5xl font-bold text-glow-accent tracking-wider uppercase">
-            Hall of Fame
-          </h2>
-          <p className="mt-4 text-lg text-muted-foreground max-w-3xl">
-            At <span className="text-primary font-bold">GAME TO AIM</span>, our projects are our pride. The work we do ranges from games and applications to interactive experiences. The most recent achievements are listed below.
-          </p>
+          <div className="text-center">
+            <h2 className="text-4xl md:text-5xl font-bold text-glow-accent tracking-wider uppercase">
+              Hall of Fame
+            </h2>
+            <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
+              At <span className="text-primary font-bold">GAME TO AIM</span>, our projects are our pride. The work we do ranges from games and applications to interactive experiences. The most recent achievements are listed below.
+            </p>
+          </div>
           <div className="mt-8 h-1 w-full bg-border/30 rounded-full">
             <motion.div
               className="h-full bg-primary rounded-full"
