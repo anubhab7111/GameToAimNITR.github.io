@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
@@ -20,16 +21,9 @@ export default function AchievementsSection() {
   useEffect(() => {
     const onResize = () => {
       if (carouselRef.current) {
-        const parentWidth = carouselRef.current.parentElement?.offsetWidth || 0;
         const scrollWidth = carouselRef.current.scrollWidth;
-        // Calculate the total scrollable width, leaving space for the last card to be visible
-        const lastCard = carouselRef.current.lastElementChild as HTMLElement;
-        const lastCardWidth = lastCard ? lastCard.offsetWidth : 0;
-        const lastCardMargin = lastCard ? parseInt(window.getComputedStyle(lastCard).marginRight) : 0;
-        
-        // We want the scroll to stop when the last card is fully in view on the left.
-        const newCarouselWidth = scrollWidth - parentWidth;
-        setCarouselWidth(newCarouselWidth < 0 ? 0 : newCarouselWidth);
+        const parentWidth = carouselRef.current.parentElement?.offsetWidth || 0;
+        setCarouselWidth(scrollWidth - parentWidth);
       }
       if (progressBarRef.current) {
         setProgressBarContainerWidth(progressBarRef.current.offsetWidth);
@@ -44,7 +38,7 @@ export default function AchievementsSection() {
   const x = useTransform(scrollYProgress, [0, 1], [0, -carouselWidth]);
 
   const progressBarWidth = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
-  const progressHeadX = useTransform(scrollYProgress, [0, 1], [0, progressBarContainerWidth - 24]); // 24 is width of head
+  const progressHeadX = useTransform(scrollYProgress, [0, 1], [0, progressBarContainerWidth > 0 ? progressBarContainerWidth - 24 : 0]);
 
   return (
     <section ref={targetRef} id="achievements" className="relative h-[300vh]">
