@@ -40,7 +40,7 @@ export default function AchievementsSection() {
           {achievements.map((achievement, index) => (
             <div
               key={index}
-              className="group relative h-[300px] w-[450px] sm:h-[400px] sm:w-[600px] flex-shrink-0"
+              className="group relative h-[300px] w-[90vw] sm:h-[400px] sm:w-[600px] flex-shrink-0"
             >
               <div className="overflow-hidden rounded-lg border border-border/20 cyber-card-shimmer h-full w-full">
                 <Image
