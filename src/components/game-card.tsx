@@ -62,7 +62,7 @@ export default function GameCard({ game, isVisible, index, onClick, onMouseEnter
     >
       <div className="cyber-card-container h-full w-full">
         <div className={cn(
-            "cyber-card-content flex flex-col transition-opacity duration-300 p-1",
+            "cyber-card-content flex flex-col transition-opacity duration-300",
             isVisible ? "opacity-100" : "opacity-0"
         )}
         style={{ transitionDelay: `${(index * 50) + 500}ms`}}
