@@ -13,11 +13,11 @@ export default function AchievementsSection() {
     offset: ['start start', 'end end'],
   });
 
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-80%"]);
+  const x = useTransform(scrollYProgress, [0, 1], ["1rem", "calc(-100% + 100vw - 1rem)"]);
   const progressBarWidth = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
 
   return (
-    <section ref={targetRef} id="achievements" className="relative h-[400vh]">
+    <section ref={targetRef} id="achievements" className="relative h-[300vh]">
       <div className="sticky top-0 h-screen overflow-hidden flex flex-col justify-center">
         {/* Static Content: Title, Description, and Progress Bar */}
         <div className="container mx-auto px-4 md:px-16 pt-16 md:pt-24 relative z-10">
@@ -36,18 +36,18 @@ export default function AchievementsSection() {
         </div>
 
         {/* Horizontally Scrolling Carousel */}
-        <motion.div style={{ x }} className="flex gap-8 pl-16 mt-12">
+        <motion.div style={{ x }} className="flex gap-6 mt-12">
           {achievements.map((achievement, index) => (
             <div
               key={index}
-              className="group relative h-[400px] w-[600px] flex-shrink-0"
+              className="group relative h-[300px] w-[450px] sm:h-[400px] sm:w-[600px] flex-shrink-0"
             >
               <div className="overflow-hidden rounded-lg border border-border/20 cyber-card-shimmer h-full w-full">
                 <Image
                   src={achievement.image}
                   alt={achievement.title}
                   fill
-                  sizes="600px"
+                  sizes="(max-width: 640px) 90vw, 600px"
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                   data-ai-hint={achievement.aiHint}
                 />
@@ -56,21 +56,13 @@ export default function AchievementsSection() {
                   <p className="text-sm font-semibold uppercase tracking-widest text-primary">
                     XP GAINED: {achievement.xp}
                   </p>
-                  <h3 className="text-3xl font-bold text-foreground transition-colors group-hover:text-accent">
+                  <h3 className="text-xl sm:text-3xl font-bold text-foreground transition-colors group-hover:text-accent">
                     {achievement.title}
                   </h3>
                 </div>
               </div>
             </div>
           ))}
-          <div className="flex-shrink-0 w-[40vw] flex items-center justify-center pr-16">
-            <a href="#" className="group">
-              <span className="text-2xl font-bold uppercase tracking-widest text-accent transition-all group-hover:text-glow-accent border-b-2 border-accent/50 group-hover:border-accent pb-1">
-                View Full Archives
-              </span>
-              <span className="ml-3 text-3xl font-bold text-accent transition-all group-hover:text-glow-accent">&gt;</span>
-            </a>
-          </div>
         </motion.div>
       </div>
     </section>
