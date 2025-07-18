@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useRef } from 'react';
@@ -13,7 +12,7 @@ export default function AchievementsSection() {
     offset: ['start start', 'end end'],
   });
 
-  const x = useTransform(scrollYProgress, [0, 1], ["1rem", "calc(-100% + 100vw - 1rem)"]);
+  const x = useTransform(scrollYProgress, [0.1, 0.9], ['0%', '-85%']);
   const progressBarWidth = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
 
   return (
@@ -36,7 +35,7 @@ export default function AchievementsSection() {
         </div>
 
         {/* Horizontally Scrolling Carousel */}
-        <motion.div style={{ x }} className="flex gap-6 mt-12">
+        <motion.div style={{ x }} className="flex gap-6 mt-12 pl-16">
           {achievements.map((achievement, index) => (
             <div
               key={index}
