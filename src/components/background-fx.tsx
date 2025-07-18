@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Suspense, useRef, useEffect, useMemo, useState } from 'react';
@@ -60,7 +59,7 @@ extend({ FresnelMaterial });
 
 // Particles component
 function FloatingParticles(props: any) {
-    const ref = useRef<any>();
+    const ref = useRef<any>(null);
     const [sphere] = useState(() => random.inSphere(new Float32Array(5000), { radius: 4.5 }));
 
     useFrame((state, delta) => {
