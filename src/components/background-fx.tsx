@@ -60,12 +60,8 @@ extend({ FresnelMaterial });
 // Particles component
 function FloatingParticles(props: any) {
   const ref = useRef<any>();
-  const [sphere, setSphere] = useState<Float32Array | null>(null);
-
-  useEffect(() => {
-    // Generate positions only on the client, after mount
-    setSphere(random.inSphere(new Float32Array(5000), { radius: 4.5 }));
-  }, []);
+  // Initialize state with a function to ensure it runs only once on the client
+  const [sphere] = useState(() => random.inSphere(new Float32Array(5000), { radius: 4.5 }));
 
   useFrame((state, delta) => {
     if (ref.current) {
@@ -73,10 +69,6 @@ function FloatingParticles(props: any) {
       ref.current.rotation.y -= delta / 15;
     }
   });
-
-  if (!sphere) {
-    return null;
-  }
 
   return (
     <group rotation={[0, 0, Math.PI / 4]}>
