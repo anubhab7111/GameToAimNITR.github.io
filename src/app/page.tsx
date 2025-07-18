@@ -172,7 +172,7 @@ export default function Home() {
       <ShowcaseSection />
       <AchievementsSection />
       <ContactSection />
-      <section id="member-access" className="py-24 bg-background">
+      <section id="member-access" className="py-24">
         <div className="container mx-auto px-4">
           <BioIDTerminal />
         </div>
