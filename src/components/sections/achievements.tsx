@@ -26,12 +26,24 @@ export default function AchievementsSection() {
 
   const x = useTransform(scrollYProgress, [0.1, 0.95], [0, -carouselWidth]);
   const progressBarWidth = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
+  
+  // New transform for the text opacity
+  const textOpacity = useTransform(
+    scrollYProgress,
+    // At 10% scrolled, start fading out. Fully faded out at 20%.
+    // Start fading back in at 80%, fully visible at 90%.
+    [0.1, 0.2, 0.8, 0.9],
+    [1, 0, 0, 1]
+  );
 
   return (
     <section ref={targetRef} id="achievements" className="relative h-[300vh]">
       <div className="sticky top-0 h-screen overflow-hidden flex flex-col justify-center">
         {/* Static Content: Title, Description, and Progress Bar */}
-        <div className="container mx-auto px-4 md:px-16 pt-16 md:pt-24 relative z-10">
+        <motion.div
+          style={{ opacity: textOpacity }}
+          className="container mx-auto px-4 md:px-16 pt-16 md:pt-24 relative z-10"
+        >
           <div className="text-center">
             <h2 className="text-4xl md:text-5xl font-bold text-glow-accent tracking-wider uppercase">
               Hall of Fame
@@ -46,7 +58,7 @@ export default function AchievementsSection() {
               style={{ width: progressBarWidth }}
             />
           </div>
-        </div>
+        </motion.div>
 
         {/* Horizontally Scrolling Carousel */}
         <motion.div ref={carouselRef} style={{ x }} className="flex gap-6 mt-12 pl-16">
