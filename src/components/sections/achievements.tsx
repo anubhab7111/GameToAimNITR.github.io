@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
@@ -9,12 +8,13 @@ import { achievements } from '@/lib/achievements-data';
 export default function AchievementsSection() {
   const targetRef = useRef<HTMLDivElement | null>(null);
   const carouselRef = useRef<HTMLDivElement | null>(null);
+  const progressBarRef = useRef<HTMLDivElement | null>(null);
   const [carouselWidth, setCarouselWidth] = useState(0);
+  const [progressBarContainerWidth, setProgressBarContainerWidth] = useState(0);
 
   const { scrollYProgress } = useScroll({
     target: targetRef,
     offset: ['start center', 'end center'],
-
   });
 
   useEffect(() => {
@@ -23,10 +23,15 @@ export default function AchievementsSection() {
       const scrollWidth = carouselRef.current.scrollWidth;
       setCarouselWidth(scrollWidth - parentWidth);
     }
+    if (progressBarRef.current) {
+      setProgressBarContainerWidth(progressBarRef.current.offsetWidth);
+    }
   }, []);
 
   const x = useTransform(scrollYProgress, [0.2, 0.9], [0, -carouselWidth]);
   const progressBarWidth = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
+  const headX = useTransform(scrollYProgress, [0, 1], [0, progressBarContainerWidth]);
+
 
   return (
     <section ref={targetRef} id="achievements" className="relative h-[300vh]">
@@ -44,32 +49,68 @@ export default function AchievementsSection() {
           </div>
         </div>
 
+        {/* Enhanced Cyberpunk Progress Bar */}
         <div className="container mx-auto px-4 md:px-16 relative z-10">
-          <div className="mt-8 w-full h-8 relative flex items-center">
-              {/* Track Background */}
-              <div className="absolute left-0 top-1/2 w-full h-1 bg-border/20 -translate-y-1/2" />
-              <div className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-border/20" style={{ clipPath: 'polygon(0 0, 100% 50%, 0 100%)' }} />
-              <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-border/20" style={{ clipPath: 'polygon(100% 0, 0 50%, 100% 100%)' }} />
+          <div ref={progressBarRef} className="mt-8 w-full h-12 relative flex items-center">
+            {/* Outer Container with Cyber Border */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-border/10 to-transparent rounded-sm">
+              <div className="absolute inset-0 border border-border/30 rounded-sm" style={{
+                background: 'linear-gradient(90deg, transparent 0%, rgba(0,255,255,0.1) 50%, transparent 100%)'
+              }} />
+            </div>
+            
+            {/* Track Background */}
+            <div className="absolute left-4 right-4 top-1/2 h-2 bg-gradient-to-r from-gray-800/50 via-gray-700/50 to-gray-800/50 -translate-y-1/2 rounded-full">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent rounded-full" />
+            </div>
+            
+            {/* Left Terminal */}
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 bg-gradient-to-r from-primary/30 to-primary/50 rounded-full flex items-center justify-center">
+              <div className="w-4 h-4 bg-primary rounded-full shadow-lg shadow-primary/50" />
+            </div>
+            
+            {/* Right Terminal */}
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-8 h-8 bg-gradient-to-l from-border/30 to-border/50 rounded-full flex items-center justify-center">
+              <div className="w-4 h-4 bg-border/70 rounded-full" />
+            </div>
               
-              {/* Progress Fill */}
-              <motion.div 
-                  className="absolute left-0 top-0 h-full"
-                  style={{ width: progressBarWidth }}
-              >
-                  <div className="w-full h-full relative overflow-hidden">
-                      {/* Main progress line */}
-                      <div className="absolute left-0 top-1/2 w-full h-1 bg-primary box-glow-primary -translate-y-1/2" />
-                      
-                      {/* Left terminal */}
-                      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-primary" style={{ clipPath: 'polygon(0 0, 100% 50%, 0 100%)' }} />
-
-                      {/* Right-side glowing head */}
-                      <div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center">
-                        <div className="w-4 h-4 bg-primary box-glow-primary" style={{ clipPath: 'polygon(100% 0, 0 50%, 100% 100%)' }} />
-                        <div className="w-3 h-8 bg-primary/80 -translate-x-2" style={{ clipPath: 'polygon(0 0, 100% 25%, 100% 75%, 0 100%)'}} />
-                      </div>
-                  </div>
-              </motion.div>
+            {/* Progress Fill */}
+            <motion.div 
+              className="absolute left-4 top-1/2 h-2 -translate-y-1/2"
+              style={{ width: progressBarWidth }}
+            >
+              <div className="w-full h-full relative overflow-hidden rounded-full">
+                {/* Main progress line with gradient */}
+                <div className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-primary rounded-full">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent rounded-full" />
+                </div>
+                
+                {/* Animated scanning effect */}
+                <motion.div 
+                  className="absolute top-0 right-0 w-6 h-full bg-gradient-to-r from-transparent to-white/40 rounded-full"
+                  animate={{
+                    x: [0, 10, 0],
+                    opacity: [0.5, 1, 0.5]
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                />
+              </div>
+            </motion.div>
+            
+            {/* Progress Head */}
+            <motion.div 
+              className="absolute left-0 top-1/2 -translate-y-1/2 flex items-center"
+              style={{ x: headX }}
+            >
+              <div className="w-6 h-6 bg-gradient-to-r from-primary to-accent rounded-full shadow-lg shadow-primary/50 flex items-center justify-center">
+                <div className="w-3 h-3 bg-white rounded-full animate-pulse" />
+              </div>
+              <div className="w-8 h-1 bg-gradient-to-r from-primary to-transparent -ml-2" />
+            </motion.div>
           </div>
         </div>
 
