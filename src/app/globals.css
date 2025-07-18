@@ -1006,4 +1006,22 @@
       border-color: var(--glow-color);
     }
   }
+
+  /* Bio-ID Terminal Animations */
+  @keyframes scan-line {
+    0% { transform: translateY(-100px); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(100px); opacity: 0; }
+  }
+  @keyframes iris-pulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+  }
+  .animate-scan-line {
+    animation: scan-line 2s ease-in-out;
+  }
+  .animate-iris-pulse {
+    animation: iris-pulse 3s ease-in-out infinite;
+  }
 }

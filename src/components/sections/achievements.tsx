@@ -13,7 +13,8 @@ export default function AchievementsSection() {
 
   const { scrollYProgress } = useScroll({
     target: targetRef,
-    offset: ['start start', 'end end'],
+    offset: ['start center', 'end center'],
+
   });
 
   useEffect(() => {
@@ -24,12 +25,12 @@ export default function AchievementsSection() {
     }
   }, []);
 
-  const x = useTransform(scrollYProgress, [0.1, 0.95], [0, -carouselWidth]);
+  const x = useTransform(scrollYProgress, [0.2, 0.9], [0, -carouselWidth]);
   const progressBarWidth = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
   
   const textOpacity = useTransform(
     scrollYProgress,
-    [0.1, 0.2, 0.8, 0.9],
+    [0.1, 0.2, 0.9, 1],
     [1, 0, 0, 1]
   );
 

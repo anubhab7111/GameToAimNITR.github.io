@@ -40,25 +40,6 @@ const BioIDTerminal = () => {
 
   return (
     <>
-      <style>{`
-        @keyframes scan-line {
-          0% { transform: translateY(-100px); opacity: 0; }
-          10% { opacity: 1; }
-          90% { opacity: 1; }
-          100% { transform: translateY(100px); opacity: 0; }
-        }
-        @keyframes iris-pulse {
-          0%, 100% { opacity: 0.7; }
-          50% { opacity: 1; }
-        }
-        .animate-scan-line {
-          animation: scan-line 2s ease-in-out;
-        }
-        .animate-iris-pulse {
-          animation: iris-pulse 3s ease-in-out infinite;
-        }
-      `}</style>
-
       <div className="flex flex-col md:flex-row gap-4 items-center bg-background/90 p-3 md:p-4 rounded-lg border border-primary/30 box-glow-primary w-full max-w-4xl mx-auto">
         {/* Left Side - Iris Scanner */}
         <div className="relative w-48 md:w-56 flex-shrink-0 flex flex-col items-center gap-2">
