@@ -45,11 +45,22 @@ export default function AchievementsSection() {
         </div>
 
         <div className="container mx-auto px-4 md:px-16 relative z-10">
-          <div className="mt-8 h-1 w-full bg-border/30 rounded-full">
-            <motion.div
-              className="h-full bg-primary rounded-full"
-              style={{ width: progressBarWidth }}
-            />
+          <div className="mt-8 w-full h-4 relative">
+              {/* Track */}
+              <div className="absolute top-1/2 left-0 w-full h-[2px] bg-border/30 -translate-y-1/2"></div>
+              <div className="absolute top-1/2 left-0 w-8 h-8 -translate-y-1/2 rounded-full border-2 border-border/30"></div>
+              <div className="absolute top-1/2 right-0 w-8 h-8 -translate-y-1/2 rounded-full border-2 border-border/30"></div>
+              
+              {/* Progress */}
+              <motion.div 
+                  className="absolute top-0 left-0 h-full"
+                  style={{ width: progressBarWidth }}
+              >
+                  <div className="w-full h-full relative overflow-hidden">
+                      <div className="absolute top-1/2 left-0 w-full h-[2px] bg-primary box-glow-primary -translate-y-1/2"></div>
+                      <div className="absolute top-1/2 left-0 w-8 h-8 -translate-y-1/2 rounded-full border-2 border-primary box-glow-primary bg-background"></div>
+                  </div>
+              </motion.div>
           </div>
         </div>
 
