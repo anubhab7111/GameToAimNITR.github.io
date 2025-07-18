@@ -1,12 +1,11 @@
 
 'use client';
 
-import { Suspense, useRef, useEffect, useMemo, useState } from 'react';
+import { Suspense, useRef, useEffect, useMemo } from 'react';
 import { Canvas, useFrame, extend } from '@react-three/fiber';
-import { useGLTF, shaderMaterial, Points, PointMaterial } from '@react-three/drei';
-import * as random from 'maath/random/dist/maath-random.esm';
+import { useGLTF, shaderMaterial } from '@react-three/drei';
 import type { Group, Mesh } from 'three';
-import { Color, MathUtils, AdditiveBlending } from 'three';
+import { Color, MathUtils } from 'three';
 
 // Define the custom Fresnel shader material with an added opacity uniform
 const FresnelMaterial = shaderMaterial(
@@ -55,42 +54,6 @@ const FresnelMaterial = shaderMaterial(
 
 // Make the custom material available to JSX
 extend({ FresnelMaterial });
-
-// Particles component
-function FloatingParticles(props: any) {
-  const ref = useRef<any>();
-  const [positions, setPositions] = useState<Float32Array | null>(null);
-
-  useEffect(() => {
-    // Generate positions only on the client, after mount
-    setPositions(random.inSphere(new Float32Array(5000), { radius: 4.5 }));
-  }, []);
-
-  useFrame((state, delta) => {
-    if (ref.current) {
-      ref.current.rotation.x -= delta / 10;
-      ref.current.rotation.y -= delta / 15;
-    }
-  });
-
-  return (
-    <group rotation={[0, 0, Math.PI / 4]}>
-      {positions && (
-        <Points ref={ref} positions={positions} stride={3} frustumCulled={false} {...props}>
-          <PointMaterial
-            transparent
-            color="#ffa0e0"
-            size={0.02}
-            sizeAttenuation={true}
-            depthWrite={false}
-            blending={AdditiveBlending}
-          />
-        </Points>
-      )}
-    </group>
-  );
-}
-
 
 // Model component that animates based on scroll
 function VrHeadset() {
@@ -164,7 +127,6 @@ export default function BackgroundFX() {
     >
       <Canvas>
         <Suspense fallback={null}>
-          <FloatingParticles />
           <VrHeadset />
         </Suspense>
       </Canvas>
