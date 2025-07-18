@@ -27,11 +27,8 @@ export default function AchievementsSection() {
   const x = useTransform(scrollYProgress, [0.1, 0.95], [0, -carouselWidth]);
   const progressBarWidth = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
   
-  // New transform for the text opacity
   const textOpacity = useTransform(
     scrollYProgress,
-    // At 10% scrolled, start fading out. Fully faded out at 20%.
-    // Start fading back in at 80%, fully visible at 90%.
     [0.1, 0.2, 0.8, 0.9],
     [1, 0, 0, 1]
   );
@@ -39,7 +36,6 @@ export default function AchievementsSection() {
   return (
     <section ref={targetRef} id="achievements" className="relative h-[300vh]">
       <div className="sticky top-0 h-screen overflow-hidden flex flex-col justify-center">
-        {/* Static Content: Title, Description, and Progress Bar */}
         <motion.div
           style={{ opacity: textOpacity }}
           className="container mx-auto px-4 md:px-16 pt-16 md:pt-24 relative z-10"
@@ -54,7 +50,6 @@ export default function AchievementsSection() {
           </div>
         </motion.div>
 
-        {/* This div contains the elements that will remain visible during the scroll */}
         <div className="container mx-auto px-4 md:px-16 relative z-10">
           <div className="mt-8 h-1 w-full bg-border/30 rounded-full">
             <motion.div
@@ -64,7 +59,6 @@ export default function AchievementsSection() {
           </div>
         </div>
 
-        {/* Horizontally Scrolling Carousel */}
         <motion.div ref={carouselRef} style={{ x }} className="flex gap-6 mt-12 pl-16">
           {achievements.map((achievement, index) => (
             <div
