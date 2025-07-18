@@ -76,60 +76,28 @@ const BioIDTerminal = () => {
                 className="transition-transform duration-300 group-hover:scale-105"
               >
                 {/* Static outer rings with high contrast */}
-                <circle
-                  cx="100"
-                  cy="100"
-                  r="88"
-                  stroke="#ffffff"
-                  strokeWidth="0.8"
-                  fill="none"
-                  strokeDasharray="15 8"
-                  opacity="0.6"
-                />
+                <rect x="20" y="20" width="160" height="160" rx="5" stroke="hsl(var(--accent) / 0.4)" strokeWidth="1" fill="none" />
+                <rect x="30" y="30" width="140" height="140" rx="3" stroke="hsl(var(--primary) / 0.3)" strokeWidth="1" fill="none" />
                 
-                <circle
-                  cx="100"
-                  cy="100"
-                  r="80"
-                  stroke="#00ff00"
-                  strokeWidth="1.2"
-                  fill="none"
-                  strokeDasharray="12 4"
-                  opacity="0.7"
+                 {/* Reticle lines */}
+                <g stroke="hsl(var(--accent) / 0.2)" strokeWidth="1">
+                    <line x1="100" y1="10" x2="100" y2="40" />
+                    <line x1="100" y1="160" x2="100" y2="190" />
+                    <line x1="10" y1="100" x2="40" y2="100" />
+                    <line x1="160" y1="100" x2="190" y2="100" />
+                </g>
+
+                {/* Rotated Square */}
+                 <rect 
+                    x="65" y="65" 
+                    width="70" height="70" 
+                    rx="2" 
+                    stroke="hsl(var(--primary) / 0.5)" 
+                    strokeWidth="1.5" 
+                    fill="none" 
+                    transform="rotate(45 100 100)"
                 />
 
-                <circle
-                  cx="100"
-                  cy="100"
-                  r="72"
-                  stroke="#ff00ff"
-                  strokeWidth="1"
-                  fill="none"
-                  strokeDasharray="10 3"
-                  opacity="0.8"
-                />
-
-                <circle
-                  cx="100"
-                  cy="100"
-                  r="64"
-                  stroke="#ffff00"
-                  strokeWidth="0.8"
-                  fill="none"
-                  strokeDasharray="8 2"
-                  opacity="0.5"
-                />
-
-                <circle
-                  cx="100"
-                  cy="100"
-                  r="56"
-                  stroke="#00ffff"
-                  strokeWidth="1.5"
-                  fill="none"
-                  strokeDasharray="6 2"
-                  opacity="0.9"
-                />
 
                 {/* Corner brackets */}
                 <g stroke="#00ff00" strokeWidth="2.5" opacity={hovering ? "1" : "0.7"} className="transition-opacity duration-300">
