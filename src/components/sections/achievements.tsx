@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useRef } from 'react';
@@ -11,22 +10,33 @@ export default function AchievementsSection() {
   const targetRef = useRef<HTMLDivElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: targetRef,
+    offset: ['start start', 'end end'],
   });
 
-  const x = useTransform(scrollYProgress, [0, 1], ["1%", "-80%"]);
+  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-80%"]);
+  const progressBarWidth = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
 
   return (
-    <section ref={targetRef} id="achievements" className="relative h-[300vh]">
-        <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-            <motion.div style={{ x }} className="flex gap-8">
-                <div className="w-screen flex-shrink-0 flex flex-col justify-center px-4 md:px-16">
-                    <h2 className="text-4xl md:text-5xl font-bold text-glow-accent tracking-wider uppercase">
-                        Hall of Fame
-                    </h2>
-                    <p className="mt-4 text-lg text-muted-foreground max-w-3xl">
-                        At <span className="text-primary font-bold">GAME TO AIM</span>, our projects are our pride. The work we do ranges from games and applications to interactive experiences. The most recent achievements are listed below.
-                    </p>
+    <section ref={targetRef} id="achievements" className="relative h-[400vh]">
+        <div className="sticky top-0 h-screen overflow-hidden">
+            {/* Static Content: Title, Description, and Progress Bar */}
+            <div className="container mx-auto px-4 md:px-16 pt-16 md:pt-24 relative z-10">
+                <h2 className="text-4xl md:text-5xl font-bold text-glow-accent tracking-wider uppercase">
+                    Hall of Fame
+                </h2>
+                <p className="mt-4 text-lg text-muted-foreground max-w-3xl">
+                    At <span className="text-primary font-bold">GAME TO AIM</span>, our projects are our pride. The work we do ranges from games and applications to interactive experiences. The most recent achievements are listed below.
+                </p>
+                <div className="mt-8 h-1 w-full bg-border/30 rounded-full">
+                    <motion.div
+                        className="h-full bg-primary rounded-full"
+                        style={{ width: progressBarWidth }}
+                    />
                 </div>
+            </div>
+
+            {/* Horizontally Scrolling Carousel */}
+            <motion.div style={{ x }} className="absolute top-1/2 -translate-y-1/2 flex gap-8 pl-16">
                 {achievements.map((achievement, index) => (
                     <div
                         key={index}
@@ -53,7 +63,7 @@ export default function AchievementsSection() {
                         </div>
                     </div>
                 ))}
-                <div className="flex-shrink-0 w-[40vw] flex items-center justify-center">
+                <div className="flex-shrink-0 w-[40vw] flex items-center justify-center pr-16">
                     <a href="#" className="group">
                         <span className="text-2xl font-bold uppercase tracking-widest text-accent transition-all group-hover:text-glow-accent border-b-2 border-accent/50 group-hover:border-accent pb-1">
                             View Full Archives
