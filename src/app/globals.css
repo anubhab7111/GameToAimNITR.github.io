@@ -766,7 +766,7 @@
 
   /* Cyberpunk Card Styles */
   .cyber-card-container {
-    clip-path: polygon(0 20px, 20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+    clip-path: polygon(0 20px, 20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
     position: relative;
     background: hsl(var(--card));
     padding: 2px; /* This creates the border */
@@ -1036,35 +1036,47 @@
   }
 }
 
-/* New Contact Card Styles */
+/* Contact Card Styles */
 @layer components {
   .contact-card-container {
-    @apply relative overflow-hidden rounded-lg border-2 border-primary/30 bg-card transition-all duration-300 ease-in-out;
-    clip-path: polygon(0 15px, 15px 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 0 100%);
+    @apply relative overflow-hidden bg-card p-0.5;
+    clip-path: polygon(
+      0 15px, 
+      15px 0, 
+      calc(100% - 15px) 0, 
+      100% 15px, 
+      100% calc(100% - 15px), 
+      calc(100% - 15px) 100%, 
+      15px 100%,
+      0 calc(100% - 15px)
+    );
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   }
+
   .contact-card-container:hover {
-    @apply border-accent;
+    @apply -translate-y-2;
     box-shadow: 0 0 15px hsl(var(--accent) / 0.5), 0 0 30px hsl(var(--accent) / 0.3);
+  }
+  
+  .contact-card-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(145deg, hsl(var(--primary) / 0.6), hsl(var(--accent) / 0.6));
+    clip-path: inherit;
+    z-index: 1;
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0;
+  }
+  
+  .group:hover .contact-card-container::before {
+    opacity: 1;
+    animation: cyber-glow-flicker 2s infinite linear;
   }
 
   .contact-card-content {
-    @apply relative z-10;
-  }
-
-  /* Scanline effect for contact cards */
-  .contact-card-container::before {
-    content: '';
-    @apply absolute top-0 left-0 w-full h-full opacity-0 transition-opacity duration-500 group-hover:opacity-10;
-    background: repeating-linear-gradient(
-      0deg,
-      hsl(var(--accent)),
-      hsl(var(--accent)) 1px,
-      transparent 1px,
-      transparent 4px
-    );
-    animation: scanlines 20s linear infinite;
-    pointer-events: none;
-    z-index: 5;
+    @apply relative z-10 h-full w-full bg-card;
+    clip-path: inherit;
   }
 
   /* Shimmer effect for contact cards */
@@ -1072,23 +1084,26 @@
     content: '';
     position: absolute;
     top: -50%;
-    left: -75%;
-    width: 50%;
+    left: -150%;
+    width: 75%;
     height: 200%;
     background: linear-gradient(
       to right,
       hsl(var(--accent) / 0),
-      hsl(var(--accent) / 0.15),
+      hsl(var(--accent) / 0.2),
       hsl(var(--accent) / 0)
     );
     transform: rotate(25deg);
     transition: left 1s cubic-bezier(0.23, 1, 0.32, 1);
     pointer-events: none;
-    z-index: 5;
+    z-index: 10;
   }
 
   .group:hover .contact-card-container::after {
-    left: 125%;
+    left: 150%;
   }
 }
+    
+
+
     
