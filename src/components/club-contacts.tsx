@@ -82,9 +82,9 @@ export default function ClubContacts() {
               )}
               style={{ animationDelay: `${200 + index * 150}ms` }}
             >
-              <div className="contact-card-container group">
-                <div className="contact-card-content">
-                  <div className="p-6 text-center">
+              <div className="contact-card-container group h-full">
+                <div className="contact-card-content flex flex-col">
+                  <div className="p-6 text-center flex-grow">
                     <div className="mb-4">
                         <User className="h-10 w-10 text-primary mx-auto transition-all duration-300 group-hover:text-accent group-hover:scale-110" />
                     </div>
