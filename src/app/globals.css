@@ -1,4 +1,5 @@
 
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -777,16 +778,23 @@
     position: relative;
     background: hsl(var(--card));
     padding: 2px; /* This creates the border */
+    transition: all 0.3s ease-in-out;
   }
   
   .cyber-card-container::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(145deg, hsl(var(--primary) / 0.8), hsl(var(--accent) / 0.8));
+    background: linear-gradient(145deg, hsl(var(--primary) / 0.5), hsl(var(--accent) / 0.5));
     clip-path: inherit;
     z-index: 0;
-    animation: cyber-glow-flicker 4s linear infinite;
+    transition: all 0.3s ease-in-out;
+    opacity: 0.8;
+  }
+  
+  .group:hover .cyber-card-container::before {
+    background: linear-gradient(145deg, hsl(var(--primary)), hsl(var(--accent)));
+    opacity: 1;
   }
 
   .cyber-card-content {
@@ -1009,17 +1017,27 @@
 
   /* Bio-ID Terminal Animations */
   @keyframes scan-line {
-    0% { transform: translateY(-100px); opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
-    100% { transform: translateY(100px); opacity: 0; }
+    0% {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100%);
+      opacity: 0;
+    }
   }
   @keyframes iris-pulse {
     0%, 100% { opacity: 0.7; }
     50% { opacity: 1; }
   }
   .animate-scan-line {
-    animation: scan-line 2s ease-in-out;
+    animation: scan-line 2s ease-in-out infinite;
   }
   .animate-iris-pulse {
     animation: iris-pulse 3s ease-in-out infinite;

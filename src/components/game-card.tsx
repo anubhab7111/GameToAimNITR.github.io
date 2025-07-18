@@ -7,7 +7,6 @@ import type { Game } from '@/lib/games-data';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { games } from '@/lib/games-data';
-import Typewriter from '@/components/typewriter';
 
 interface GameCardProps {
   game: Game;
@@ -22,24 +21,10 @@ interface GameCardProps {
 export default function GameCard({ game, isVisible, index, onClick, onMouseEnter, isHovered, isDimmed }: GameCardProps) {
   const isMobile = useIsMobile();
   const [isMounted, setIsMounted] = useState(false);
-  const [startTyping, setStartTyping] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
-
-  useEffect(() => {
-    if (isVisible) {
-      // Start typing after the card content has faded in.
-      // Card scale (500ms) + content fade-in delay (500ms) + content fade-in duration (300ms)
-      const timer = setTimeout(() => {
-        setStartTyping(true);
-      }, (index * 50) + 500 + 300);
-      return () => clearTimeout(timer);
-    } else {
-      setStartTyping(false);
-    }
-  }, [isVisible, index]);
 
   const getTransformOrigin = (i: number) => {
     if (!isMounted) return 'origin-center';
@@ -62,7 +47,7 @@ export default function GameCard({ game, isVisible, index, onClick, onMouseEnter
       onClick={() => onClick(game)}
       onMouseEnter={onMouseEnter}
       className={cn(
-        "relative aspect-[3/4] w-full",
+        "relative aspect-[3/4] w-full group",
         'transition-all duration-300 ease-in-out',
         getTransformOrigin(index),
         !isVisible || !isMounted ? 'scale-y-0 opacity-0' : 'scale-y-100 opacity-100',
@@ -77,12 +62,12 @@ export default function GameCard({ game, isVisible, index, onClick, onMouseEnter
     >
       <div className="cyber-card-container h-full w-full">
         <div className={cn(
-            "cyber-card-content transition-opacity duration-300",
+            "cyber-card-content flex flex-col transition-opacity duration-300 p-1",
             isVisible ? "opacity-100" : "opacity-0"
         )}
         style={{ transitionDelay: `${(index * 50) + 500}ms`}}
         >
-          <div className="relative h-full w-full cyber-card-shimmer">
+          <div className="relative w-full h-1/2 cyber-card-shimmer" style={{ clipPath: 'polygon(0 20px, 20px 0, 100% 0, 100% 100%, 0 100%)' }}>
             <Image
               src={game.image}
               alt={game.title}
@@ -91,16 +76,15 @@ export default function GameCard({ game, isVisible, index, onClick, onMouseEnter
               className="object-cover transition-transform duration-500"
               data-ai-hint={game.aiHint}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-80 transition-opacity duration-300" />
-            <div className="absolute bottom-0 left-0 p-4">
-              <h3 className="font-bold text-lg text-foreground text-glow-accent transition-all duration-300">
-                {startTyping ? (
-                  <Typewriter text={game.title} />
-                ) : (
-                  <>&nbsp;</>
-                )}
-              </h3>
-            </div>
+             <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-black/10 to-transparent opacity-80 transition-opacity duration-300" />
+          </div>
+          <div className="p-4 flex-grow flex flex-col justify-center">
+            <h3 className="font-bold text-xl text-primary text-glow-primary transition-all duration-300 group-hover:text-accent">
+                {game.title}
+            </h3>
+            <p className="text-muted-foreground mt-2 text-sm">
+                {game.description}
+            </p>
           </div>
         </div>
       </div>
