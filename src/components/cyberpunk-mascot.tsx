@@ -139,7 +139,6 @@ export default function CyberpunkMascot({ sectionIds }: { sectionIds: string[] }
 
   const currentTimeout = useRef<NodeJS.Timeout | null>(null);
   const lastShownSection = useRef<string | null>(null);
-  const observerRef = useRef<IntersectionObserver | null>(null);
   const intersectingSections = useRef(new Set<string>());
   
   useEffect(() => {
@@ -194,20 +193,27 @@ export default function CyberpunkMascot({ sectionIds }: { sectionIds: string[] }
       }
     };
     
-    observerRef.current = new IntersectionObserver(handleIntersect, {
+    // Defer observer setup to client-side only
+    const observer = new IntersectionObserver(handleIntersect, {
       rootMargin: '-50% 0px -50% 0px', // Triggers when section is in the middle of the viewport
       threshold: 0,
     });
 
     const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
-    sections.forEach(sec => observerRef.current?.observe(sec!));
+    sections.forEach(sec => observer.observe(sec!));
 
     return () => {
       clearTimeout(entryTimer);
-      observerRef.current?.disconnect();
       if (currentTimeout.current) {
         clearTimeout(currentTimeout.current);
       }
+      // Cleanup observer
+      sections.forEach(sec => {
+        if (sec) {
+            observer.unobserve(sec);
+        }
+      });
+      observer.disconnect();
     };
   }, [sectionIds]);
 
