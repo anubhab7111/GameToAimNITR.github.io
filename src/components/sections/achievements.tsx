@@ -27,18 +27,11 @@ export default function AchievementsSection() {
 
   const x = useTransform(scrollYProgress, [0.2, 0.9], [0, -carouselWidth]);
   const progressBarWidth = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
-  
-  const textOpacity = useTransform(
-    scrollYProgress,
-    [0.1, 0.2, 0.9, 1],
-    [1, 0, 0, 1]
-  );
 
   return (
     <section ref={targetRef} id="achievements" className="relative h-[300vh]">
       <div className="sticky top-0 h-screen overflow-hidden flex flex-col justify-center">
-        <motion.div
-          style={{ opacity: textOpacity }}
+        <div
           className="container mx-auto px-4 md:px-16 pt-16 md:pt-24 relative z-10"
         >
           <div className="text-center">
@@ -49,7 +42,7 @@ export default function AchievementsSection() {
               At <span className="text-primary font-bold">GAME TO AIM</span>, our projects are our pride. The work we do ranges from games and applications to interactive experiences. The most recent achievements are listed below.
             </p>
           </div>
-        </motion.div>
+        </div>
 
         <div className="container mx-auto px-4 md:px-16 relative z-10">
           <div className="mt-8 h-1 w-full bg-border/30 rounded-full">
