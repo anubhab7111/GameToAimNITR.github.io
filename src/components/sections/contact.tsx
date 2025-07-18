@@ -47,9 +47,19 @@ export default function ContactSection() {
                     <Input id="email" type="email" placeholder="// Your secure email address" className="bg-transparent border-accent/50 focus:border-accent font-hacker text-lg text-green-400 mt-1" />
                   </div>
                 </div>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <div className="w-full">
+                    <label htmlFor="contact" className="text-accent">&gt; Contact Number</label>
+                    <Input id="contact" type="tel" placeholder="// Your contact number" className="bg-transparent border-accent/50 focus:border-accent font-hacker text-lg text-green-400 mt-1" />
+                  </div>
+                  <div className="w-full">
+                    <label htmlFor="roll" className="text-accent">&gt; Roll Number</label>
+                    <Input id="roll" type="text" placeholder="// Your NITR roll number" className="bg-transparent border-accent/50 focus:border-accent font-hacker text-lg text-green-400 mt-1" />
+                  </div>
+                </div>
                 <div>
-                  <label htmlFor="message" className="text-accent">&gt; Message</label>
-                  <Textarea id="message" placeholder="// Your message payload..." className="bg-transparent border-accent/50 focus:border-accent font-hacker text-lg text-green-400 mt-1 min-h-[120px]" />
+                  <label htmlFor="interest" className="text-accent">&gt; What drives your interest in Game to Aim?</label>
+                  <Textarea id="interest" placeholder="// Your message payload..." className="bg-transparent border-accent/50 focus:border-accent font-hacker text-lg text-green-400 mt-1 min-h-[120px]" />
                 </div>
                 <div className="flex justify-end">
                    <Button type="submit" variant="outline" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground font-hacker text-lg">
