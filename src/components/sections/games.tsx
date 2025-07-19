@@ -101,41 +101,44 @@ export default function GamesSection() {
 
       <Dialog open={isDialogOpen} onOpenChange={handleDialogChange}>
         {selectedGame && (
-          <DialogContent className="max-w-2xl w-[90vw] bg-background/50 backdrop-blur-sm border-primary/30 box-glow-primary text-foreground">
+          <DialogContent className="max-w-4xl w-[90vw] bg-background/50 backdrop-blur-sm border-primary/30 box-glow-primary text-foreground">
             <DialogHeader>
               <DialogTitle className="text-3xl font-bold text-glow-primary">{selectedGame.title}</DialogTitle>
               <DialogDescription className="text-muted-foreground pt-2 text-base">
                 {selectedGame.description}
               </DialogDescription>
             </DialogHeader>
-            <div className="mt-4 max-h-[70vh] overflow-y-auto pr-2 space-y-6">
-               <div className={cn("relative w-full aspect-video rounded-lg overflow-hidden border border-primary/20 animate-entry animate-fade-in", { 'is-visible': isDialogOpen })} style={{ animationDelay: '100ms' }}>
+            <div className="mt-4 max-h-[70vh] overflow-y-auto pr-2 grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {/* Left Column: Image */}
+              <div className={cn("relative w-full aspect-square rounded-lg overflow-hidden border border-primary/20 animate-entry animate-fade-in", { 'is-visible': isDialogOpen })} style={{ animationDelay: '100ms' }}>
                 <Image
                   src={selectedGame.image}
                   alt={selectedGame.title}
                   fill
-                  sizes="(max-width: 768px) 100vw, 80vw"
+                  sizes="(max-width: 1024px) 90vw, 50vw"
                   className="object-cover"
                   data-ai-hint={selectedGame.aiHint}
                 />
               </div>
 
-               <div className={cn("flex flex-col items-center gap-4 text-center animate-entry animate-slide-up-fade", { 'is-visible': isDialogOpen })} style={{ animationDelay: '200ms' }}>
-                 <div className="flex items-center gap-2">
+              {/* Right Column: Details */}
+              <div className="flex flex-col gap-6">
+                <div className={cn("flex flex-col items-start gap-4 text-left animate-entry animate-slide-up-fade", { 'is-visible': isDialogOpen })} style={{ animationDelay: '200ms' }}>
+                  <div className="flex items-center gap-2">
                     <Users className="w-5 h-5 text-primary" />
                     <h4 className="font-semibold text-lg">Developed by</h4>
                   </div>
-                  <div className="flex flex-wrap justify-center gap-2">
+                  <div className="flex flex-wrap justify-start gap-2">
                     {selectedGame.developers.map((dev) => (
                       <Badge key={dev} variant="secondary" className="text-sm">{dev}</Badge>
                     ))}
                   </div>
-               </div>
+                </div>
 
                 <div className="space-y-4 text-left">
-                  <div className={cn("flex items-center justify-center gap-2 animate-entry animate-slide-up-fade", { 'is-visible': isDialogOpen })} style={{ animationDelay: '300ms' }}>
+                  <div className={cn("flex items-center gap-2 animate-entry animate-slide-up-fade", { 'is-visible': isDialogOpen })} style={{ animationDelay: '300ms' }}>
                     <Code className="w-5 h-5 text-primary" />
-                    <h4 className="font-semibold text-lg text-center">Tech Stack</h4>
+                    <h4 className="font-semibold text-lg text-left">Tech Stack</h4>
                   </div>
                   {selectedGame.techStack.map((tech, index) => (
                     <div 
@@ -153,13 +156,15 @@ export default function GamesSection() {
                     </div>
                   ))}
                 </div>
-              <div className={cn("animate-entry animate-fade-in", { 'is-visible': isDialogOpen })} style={{ animationDelay: '600ms' }}>
-                <Button asChild variant="outline" className="w-full border-accent text-accent hover:bg-accent hover:text-accent-foreground">
-                  <a href={selectedGame.githubUrl} target="_blank" rel="noopener noreferrer">
-                    <Github className="mr-2 h-4 w-4" />
-                    View on GitHub
-                  </a>
-                </Button>
+
+                <div className={cn("mt-auto animate-entry animate-fade-in", { 'is-visible': isDialogOpen })} style={{ animationDelay: '600ms' }}>
+                  <Button asChild variant="outline" className="w-full border-accent text-accent hover:bg-accent hover:text-accent-foreground">
+                    <a href={selectedGame.githubUrl} target="_blank" rel="noopener noreferrer">
+                      <Github className="mr-2 h-4 w-4" />
+                      View on GitHub
+                    </a>
+                  </Button>
+                </div>
               </div>
             </div>
           </DialogContent>
