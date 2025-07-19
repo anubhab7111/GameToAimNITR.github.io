@@ -1,3 +1,4 @@
+
 import type { ComponentType, SVGProps } from "react";
 import { Code2 } from 'lucide-react';
 
@@ -22,6 +23,7 @@ export interface Game {
     techStack: TechStack[];
     status: 'Alpha' | 'Beta' | 'Released';
     activeDevs: number;
+    developers: string[];
 }
 
 export const games: Game[] = [
@@ -35,6 +37,7 @@ export const games: Game[] = [
     githubUrl: '#',
     status: 'Released',
     activeDevs: 5,
+    developers: ['Jax', 'Vesper', 'Glitch', 'Vertex', 'Cipher'],
     techStack: [
       { name: 'Unreal Engine', reason: 'Chosen for its high-fidelity graphics and robust VR support, allowing us to build a truly immersive dystopian world.', icon: UnrealEngineIcon },
       { name: 'C++', reason: 'The core game logic is built in C++ for maximum performance and control over complex game mechanics.', icon: Code2 },
@@ -50,6 +53,7 @@ export const games: Game[] = [
     githubUrl: '#',
     status: 'Beta',
     activeDevs: 8,
+    developers: ['Scribe', 'Cipher', 'Glitch', 'Byte'],
     techStack: [
       { name: 'Unity', reason: 'Unity\'s versatile C# scripting and strong 2D/3D capabilities were ideal for our narrative-heavy, systems-driven gameplay.', icon: UnityIcon },
       { name: 'Blender', reason: 'All 3D models for starships and environments were crafted in Blender, leveraging its powerful modeling and texturing tools.', icon: BlenderIcon },
@@ -65,6 +69,7 @@ export const games: Game[] = [
     githubUrl: '#',
     status: 'Alpha',
     activeDevs: 3,
+    developers: ['Vesper', 'Glitch', 'Shard'],
     techStack: [
       { name: 'Unity', reason: 'Unity\'s physics engine and asset pipeline allowed for rapid prototyping and iteration on the core driving mechanics.', icon: UnityIcon },
       { name: 'C#', reason: 'C# was used for all gameplay scripting, from vehicle handling to the dynamic event system.', icon: Code2 },
@@ -80,6 +85,7 @@ export const games: Game[] = [
     githubUrl: '#',
     status: 'Alpha',
     activeDevs: 6,
+    developers: ['Cipher', 'Glitch', 'Vertex', 'Scribe'],
     techStack: [
       { name: 'Unreal Engine', reason: 'Unreal Engine\'s powerful lighting and particle systems were perfect for creating the game\'s dark, atmospheric environments.', icon: UnrealEngineIcon },
       { name: 'C++', reason: 'Core systems were built in C++ for performance, with Blueprints used for rapid prototyping of abilities.', icon: Code2 },
@@ -95,6 +101,7 @@ export const games: Game[] = [
     githubUrl: '#',
     status: 'Released',
     activeDevs: 4,
+    developers: ['Jax', 'Cipher', 'Vertex', 'Byte'],
     techStack: [
       { name: 'Unity', reason: 'Unity\'s UI tools and 2D capabilities made it the ideal choice for a complex card game interface and animations.', icon: UnityIcon },
       { name: 'Blender', reason: 'All card art and battlefield assets were created in Blender.', icon: BlenderIcon },
@@ -110,6 +117,7 @@ export const games: Game[] = [
     githubUrl: '#',
     status: 'Beta',
     activeDevs: 2,
+    developers: ['Glitch', 'Cipher'],
     techStack: [
       { name: 'Unity', reason: 'The physics engine and C# scripting in Unity provided the flexibility needed to implement our unique quantum mechanics.', icon: UnityIcon },
       { name: 'C#', reason: 'All puzzle logic and player abilities were scripted in C#.', icon: Code2 },
@@ -125,6 +133,7 @@ export const games: Game[] = [
     githubUrl: '#',
     status: 'Released',
     activeDevs: 7,
+    developers: ['Vesper', 'Scribe', 'Shard', 'Byte', 'Vertex'],
     techStack: [
       { name: 'Unreal Engine', reason: 'The scale of the galaxy required an engine capable of handling large, open worlds, and Unreal Engine delivered.', icon: UnrealEngineIcon },
       { name: 'Blender', reason: 'Used for designing a wide variety of modular spaceship parts and celestial bodies.', icon: BlenderIcon },
@@ -140,6 +149,7 @@ export const games: Game[] = [
     githubUrl: '#',
     status: 'Alpha',
     activeDevs: 4,
+    developers: ['Scribe', 'Cipher', 'Shard', 'Glitch'],
     techStack: [
       { name: 'Unity', reason: 'Unity\'s 2D lighting and post-processing effects were essential for achieving the game\'s distinct noir visual style.', icon: UnityIcon },
       { name: 'C#', reason: 'The branching dialogue system and case management logic were all handled in C#.', icon: Code2 },
@@ -155,6 +165,7 @@ export const games: Game[] = [
     githubUrl: '#',
     status: 'Beta',
     activeDevs: 10,
+    developers: ['Jax', 'Vesper', 'Glitch', 'Vertex', 'Shard', 'Byte'],
     techStack: [
       { name: 'Unreal Engine', reason: 'Chosen for its robust networking capabilities for co-op multiplayer and its ability to render dense, detailed environments.', icon: UnrealEngineIcon },
       { name: 'C++', reason: 'Core survival and crafting systems were implemented in C++ for optimal server performance.', icon: Code2 },
@@ -170,6 +181,7 @@ export const games: Game[] = [
     githubUrl: '#',
     status: 'Alpha',
     activeDevs: 3,
+    developers: ['Glitch', 'Byte', 'Cipher'],
     techStack: [
       { name: 'Unity', reason: 'Chosen for its rapid prototyping capabilities and asset store resources, which allowed for quick development of puzzle mechanics.', icon: UnityIcon },
       { name: 'C#', reason: 'All puzzle logic, scoring, and level progression are handled with C# scripts.', icon: Code2 },
@@ -185,6 +197,7 @@ export const games: Game[] = [
     githubUrl: '#',
     status: 'Beta',
     activeDevs: 4,
+    developers: ['Glitch', 'Cipher', 'Vertex', 'Byte'],
     techStack: [
       { name: 'Unity', reason: 'Unity\'s component-based architecture was perfect for managing the modular robot parts and abilities.', icon: UnityIcon },
       { name: 'C#', reason: 'The procedural generation of levels and enemy AI were all scripted in C#.', icon: Code2 },
@@ -200,6 +213,7 @@ export const games: Game[] = [
     githubUrl: '#',
     status: 'Released',
     activeDevs: 9,
+    developers: ['Jax', 'Vesper', 'Glitch', 'Cipher', 'Scribe', 'Vertex', 'Shard'],
     techStack: [
       { name: 'Unreal Engine', reason: 'The visual power of Unreal Engine was essential to bring the epic scale of mythological battles to life.', icon: UnrealEngineIcon },
       { name: 'C++', reason: 'For the fast-paced, network-intensive combat, C++ provided the necessary performance and low-level control.', icon: Code2 },

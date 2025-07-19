@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Github, Users } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 
 export default function GamesSection() {
   const [isVisible, setIsVisible] = useState(false);
@@ -93,7 +94,18 @@ export default function GamesSection() {
                 {selectedGame.description}
               </DialogDescription>
             </DialogHeader>
-            <div className="mt-4 max-h-[70vh] overflow-y-auto pr-2 space-y-6">
+            <div className="mt-4 max-h-[70vh] overflow-y-auto pr-2 space-y-6 text-center">
+               <div className="flex flex-col items-center gap-4">
+                 <div className="flex items-center gap-2">
+                    <Users className="w-5 h-5 text-primary" />
+                    <h4 className="font-semibold text-lg">Developed by</h4>
+                  </div>
+                  <div className="flex flex-wrap justify-center gap-2">
+                    {selectedGame.developers.map((dev) => (
+                      <Badge key={dev} variant="secondary" className="text-sm">{dev}</Badge>
+                    ))}
+                  </div>
+               </div>
               <div className="aspect-video rounded-lg overflow-hidden border border-primary/20">
                 <iframe
                   className="w-full h-full"
