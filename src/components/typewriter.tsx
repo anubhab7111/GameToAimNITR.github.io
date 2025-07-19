@@ -25,7 +25,13 @@ export default function Typewriter({
     setDisplayedText('');
     setIsTyping(true);
     
+    if (delay > 90000) { // A large delay means we are waiting for visibility
+        setIsTyping(false);
+        return;
+    }
+
     const startTypingTimeout = setTimeout(() => {
+      setIsTyping(true);
       let i = 0;
       const type = () => {
         if (i < text.length) {
