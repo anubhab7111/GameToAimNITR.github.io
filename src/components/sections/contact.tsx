@@ -2,10 +2,10 @@
 'use client';
 
 import { Mail, Phone, User, Handshake, UserPlus } from 'lucide-react';
-import Link from 'next/link';
-import { useState, useRef, MouseEvent, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import Typewriter from '@/components/typewriter';
+import CyberButton from '@/components/cyber-button';
 
 const presidentInfo = {
   role: 'President',
@@ -17,28 +17,10 @@ const presidentInfo = {
 const JOIN_US_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfaKcVCfLCq4Nt5klTXbhhFj6ox1dpbwPSeGUJQbCbhN7iOuQ/viewform?usp=sf_link';
 const COLLABORATE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfaKcVCfLCq4Nt5klTXbhhFj6ox1dpbwPSeGUJQbCbhN7iOuQ/viewform?usp=sf_link';
 
-
-const ContactLinkButton = ({ href, icon, title, subtitle }: { href: string; icon: React.ReactNode; title: string; subtitle: string; }) => {
-  return (
-    <Link
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="contact-link-button group"
-    >
-        <div className="text-accent h-12 w-12 mb-2 transition-transform duration-300 group-hover:scale-110">
-          {icon}
-        </div>
-        <h3 className="text-2xl font-bold font-display text-glow-primary">{title}</h3>
-        <p className="font-code text-accent tracking-widest">{subtitle}</p>
-    </Link>
-  );
-};
-
-
 export default function ContactSection() {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [selectedButton, setSelectedButton] = useState<'join' | 'collaborate'>('join');
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -64,6 +46,26 @@ export default function ContactSection() {
       }
     };
   }, []);
+  
+  useEffect(() => {
+    if (!isVisible) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft' || e.key === 'a') {
+        setSelectedButton('join');
+      } else if (e.key === 'ArrowRight' || e.key === 'd') {
+        setSelectedButton('collaborate');
+      } else if (e.key === 'Enter') {
+        const url = selectedButton === 'join' ? JOIN_US_FORM_URL : COLLABORATE_FORM_URL;
+        window.open(url, '_blank');
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isVisible, selectedButton]);
 
   return (
     <section ref={sectionRef} id="contact" className="py-16 md:py-24 flex items-center justify-center min-h-screen parallax-section">
@@ -76,17 +78,17 @@ export default function ContactSection() {
           </div>
           <p className="text-sm text-muted-foreground font-code">/dev/tty.contact</p>
         </div>
-        <div className="terminal-body">
+        <div className="terminal-body space-y-8">
           <div className="text-center">
             <h2 className="text-4xl md:text-5xl font-bold text-glow-accent">
               <Typewriter text="Get In Touch" speed={50} delay={500} />
             </h2>
-            <p className="mt-4 text-lg text-muted-foreground animate-text-reveal" style={{ animationDelay: '1.2s' }}>
+            <p className="mt-4 text-lg text-muted-foreground animate-content-slide-in" style={{ animationDelay: '1.2s' }}>
               Ready to create the future? Connect with us.
             </p>
           </div>
           
-          <div className="max-w-4xl mx-auto p-4 md:p-6 my-12 border border-primary/20 bg-card/50 backdrop-blur-sm rounded-lg animate-text-reveal" style={{ animationDelay: '1.6s' }}>
+          <div className="max-w-4xl mx-auto p-4 md:p-6 border border-primary/20 bg-card/50 backdrop-blur-sm rounded-lg animate-content-slide-in" style={{ animationDelay: '1.5s' }}>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-x-12 gap-y-4 text-center">
               <div className="flex items-center gap-3">
                 <User className="w-5 h-5 text-primary" />
@@ -106,23 +108,32 @@ export default function ContactSection() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 max-w-4xl mx-auto">
-            <div className="animate-text-reveal" style={{ animationDelay: '2.0s' }}>
-              <ContactLinkButton
-                href={JOIN_US_FORM_URL}
-                icon={<UserPlus size={48} />}
-                title="Join Us"
-                subtitle="Become a Member"
-              />
+          <div className="flex flex-col items-center gap-8">
+            <div className="flex flex-col md:flex-row items-center gap-8">
+                <div className="animate-content-slide-in" style={{ animationDelay: '1.8s' }}>
+                    <CyberButton
+                        icon={<UserPlus size={24} />}
+                        label="Join Us"
+                        href={JOIN_US_FORM_URL}
+                        isSelected={selectedButton === 'join'}
+                        onMouseEnter={() => setSelectedButton('join')}
+                    />
+                </div>
+                <div className="animate-content-slide-in" style={{ animationDelay: '2.0s' }}>
+                     <CyberButton
+                        icon={<Handshake size={24} />}
+                        label="Collaborate"
+                        href={COLLABORATE_FORM_URL}
+                        isSelected={selectedButton === 'collaborate'}
+                        onMouseEnter={() => setSelectedButton('collaborate')}
+                    />
+                </div>
             </div>
-            <div className="animate-text-reveal" style={{ animationDelay: '2.2s' }}>
-              <ContactLinkButton
-                href={COLLABORATE_FORM_URL}
-                icon={<Handshake size={48} />}
-                title="Collaborate"
-                subtitle="Partner With Us"
-              />
-            </div>
+             <div className="animate-content-slide-in" style={{ animationDelay: '2.2s' }}>
+                <p className="text-sm text-muted-foreground font-code">
+                Use [<kbd className="px-1.5 py-0.5 text-xs font-semibold text-foreground bg-card border border-border rounded-md">A</kbd>/<kbd className="px-1.5 py-0.5 text-xs font-semibold text-foreground bg-card border border-border rounded-md">D</kbd>] or [<kbd className="px-1.5 py-0.5 text-xs font-semibold text-foreground bg-card border border-border rounded-md">Arrows</kbd>] to select. Press [<kbd className="px-1.5 py-0.5 text-xs font-semibold text-foreground bg-card border border-border rounded-md">Enter</kbd>] to confirm.
+                </p>
+             </div>
           </div>
         </div>
       </div>
