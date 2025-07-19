@@ -2,28 +2,27 @@
 'use client';
 
 import { cn } from "@/lib/utils";
-import Link from "next/link";
 import type { ReactNode } from "react";
 
 interface CyberButtonProps {
     icon: ReactNode;
     label: string;
-    href: string;
     isSelected: boolean;
     onMouseEnter: () => void;
+    onClick?: () => void; // Optional onClick handler
+    className?: string;
 }
 
-export default function CyberButton({ icon, label, href, isSelected, onMouseEnter }: CyberButtonProps) {
+export default function CyberButton({ icon, label, isSelected, onMouseEnter, onClick, className }: CyberButtonProps) {
     return (
-        <Link
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
+        <button
+            onClick={onClick}
+            onMouseEnter={onMouseEnter}
             className={cn(
                 'cyber-button group flex-shrink-0',
-                { 'is-selected': isSelected }
+                { 'is-selected': isSelected },
+                className
             )}
-            onMouseEnter={onMouseEnter}
         >
             <div className="cyber-button-content">
                 {icon}
@@ -31,6 +30,6 @@ export default function CyberButton({ icon, label, href, isSelected, onMouseEnte
                     {label}
                 </span>
             </div>
-        </Link>
+        </button>
     );
 }

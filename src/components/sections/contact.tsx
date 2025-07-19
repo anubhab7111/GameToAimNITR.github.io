@@ -6,6 +6,7 @@ import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import Typewriter from '@/components/typewriter';
 import CyberButton from '@/components/cyber-button';
+import Link from 'next/link';
 
 const presidentInfo = {
   role: 'President',
@@ -114,22 +115,24 @@ export default function ContactSection() {
           <div className="flex flex-col items-center gap-8">
             <div className="flex flex-col md:flex-row items-center gap-8">
                 <div className={cn("animate-content-slide-in", { 'is-visible': isVisible })} style={{ animationDelay: '1.8s' }}>
+                  <Link href={JOIN_US_FORM_URL} target="_blank" rel="noopener noreferrer">
                     <CyberButton
                         icon={<UserPlus size={24} />}
                         label="Join Us"
-                        href={JOIN_US_FORM_URL}
                         isSelected={selectedButton === 'join'}
                         onMouseEnter={() => setSelectedButton('join')}
                     />
+                  </Link>
                 </div>
                 <div className={cn("animate-content-slide-in", { 'is-visible': isVisible })} style={{ animationDelay: '2.0s' }}>
+                  <Link href={COLLABORATE_FORM_URL} target="_blank" rel="noopener noreferrer">
                      <CyberButton
                         icon={<Handshake size={24} />}
                         label="Collaborate"
-                        href={COLLABORATE_FORM_URL}
                         isSelected={selectedButton === 'collaborate'}
                         onMouseEnter={() => setSelectedButton('collaborate')}
                     />
+                  </Link>
                 </div>
             </div>
              <div className={cn("animate-content-slide-in", { 'is-visible': isVisible })} style={{ animationDelay: '2.2s' }}>
