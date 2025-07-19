@@ -13,7 +13,7 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Github, Users } from 'lucide-react';
+import { Github, Users, Code } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 export default function GamesSection() {
@@ -94,8 +94,8 @@ export default function GamesSection() {
                 {selectedGame.description}
               </DialogDescription>
             </DialogHeader>
-            <div className="mt-4 max-h-[70vh] overflow-y-auto pr-2 space-y-6 text-center">
-               <div className="flex flex-col items-center gap-4">
+            <div className="mt-4 max-h-[70vh] overflow-y-auto pr-2 space-y-6">
+               <div className="flex flex-col items-center gap-4 text-center">
                  <div className="flex items-center gap-2">
                     <Users className="w-5 h-5 text-primary" />
                     <h4 className="font-semibold text-lg">Developed by</h4>
@@ -106,15 +106,25 @@ export default function GamesSection() {
                     ))}
                   </div>
                </div>
-              <div className="aspect-video rounded-lg overflow-hidden border border-primary/20">
-                <iframe
-                  className="w-full h-full"
-                  src={selectedGame.videoUrl}
-                  title={`Video for ${selectedGame.title}`}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
-              </div>
+
+                <div className="space-y-4 text-left">
+                  <div className="flex items-center justify-center gap-2">
+                    <Code className="w-5 h-5 text-primary" />
+                    <h4 className="font-semibold text-lg text-center">Tech Stack</h4>
+                  </div>
+                  {selectedGame.techStack.map((tech) => (
+                    <div key={tech.name} className="p-3 bg-card/50 rounded-lg border border-border flex items-start gap-4">
+                      <div className="p-2 bg-background rounded-md border border-primary/20">
+                          <tech.icon className="w-6 h-6 text-primary" />
+                      </div>
+                      <div>
+                          <h5 className="font-bold text-base text-primary-foreground">{tech.name}</h5>
+                          <p className="text-sm text-muted-foreground">{tech.reason}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
               <Button asChild variant="outline" className="w-full border-accent text-accent hover:bg-accent hover:text-accent-foreground">
                 <a href={selectedGame.githubUrl} target="_blank" rel="noopener noreferrer">
                   <Github className="mr-2 h-4 w-4" />
