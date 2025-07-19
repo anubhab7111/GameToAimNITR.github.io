@@ -5,6 +5,7 @@ import { games } from '@/lib/games-data';
 import type { Game } from '@/lib/games-data';
 import GameCard from '@/components/game-card';
 import { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import {
   Dialog,
   DialogContent,
@@ -95,6 +96,16 @@ export default function GamesSection() {
               </DialogDescription>
             </DialogHeader>
             <div className="mt-4 max-h-[70vh] overflow-y-auto pr-2 space-y-6">
+               <div className="relative w-full aspect-video rounded-lg overflow-hidden border border-primary/20">
+                <Image
+                  src={selectedGame.image}
+                  alt={selectedGame.title}
+                  fill
+                  className="object-cover"
+                  data-ai-hint={selectedGame.aiHint}
+                />
+              </div>
+
                <div className="flex flex-col items-center gap-4 text-center">
                  <div className="flex items-center gap-2">
                     <Users className="w-5 h-5 text-primary" />
