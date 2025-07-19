@@ -92,10 +92,12 @@ export default function ContactSection() {
               <Link href={JOIN_US_FORM_URL} target="_blank" rel="noopener noreferrer" className="contact-card-button group">
                 <UserPlus className="w-12 h-12 text-accent transition-all duration-300 group-hover:scale-110" />
                 <span className="font-bold text-lg mt-2">Join Us</span>
+                <span className="text-sm text-muted-foreground mt-1">Become a member</span>
               </Link>
               <Link href={COLLABORATE_FORM_URL} target="_blank" rel="noopener noreferrer" className="contact-card-button group">
                 <Handshake className="w-12 h-12 text-accent transition-all duration-300 group-hover:scale-110" />
                 <span className="font-bold text-lg mt-2">Collaborate</span>
+                <span className="text-sm text-muted-foreground mt-1">Partner with us</span>
               </Link>
             </div>
           </div>
