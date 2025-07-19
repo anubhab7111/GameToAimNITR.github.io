@@ -18,48 +18,19 @@ const JOIN_US_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfaKcVCfLCq4N
 const COLLABORATE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfaKcVCfLCq4Nt5klTXbhhFj6ox1dpbwPSeGUJQbCbhN7iOuQ/viewform?usp=sf_link';
 
 
-const HolographicLinkCard = ({ href, icon, title, subtitle }: { href: string; icon: React.ReactNode; title: string; subtitle: string; }) => {
-  const cardRef = useRef<HTMLAnchorElement>(null);
-  const [rotation, setRotation] = useState({ x: 0, y: 0 });
-
-  const handleMouseMove = (e: MouseEvent<HTMLAnchorElement>) => {
-    if (!cardRef.current) return;
-    const { left, top, width, height } = cardRef.current.getBoundingClientRect();
-    const x = e.clientX - left - width / 2;
-    const y = e.clientY - top - height / 2;
-
-    const rotateY = (x / (width / 2)) * 8; 
-    const rotateX = -(y / (height / 2)) * 8;
-
-    setRotation({ x: rotateX, y: rotateY });
-  };
-
-  const handleMouseLeave = () => {
-    setRotation({ x: 0, y: 0 });
-  };
-
+const ContactLinkButton = ({ href, icon, title, subtitle }: { href: string; icon: React.ReactNode; title: string; subtitle: string; }) => {
   return (
     <Link
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      ref={cardRef}
-      className="holographic-card group"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        transform: `perspective(1000px) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`,
-        transition: 'transform 0.1s linear'
-      }}
+      className="contact-link-button group"
     >
-      <div className="holographic-card-glow transition-all duration-300 group-hover:opacity-100 group-hover:scale-105"></div>
-      <div className="holographic-card-content gap-2">
         <div className="text-accent h-12 w-12 mb-2 transition-transform duration-300 group-hover:scale-110">
           {icon}
         </div>
         <h3 className="text-2xl font-bold font-display text-glow-primary">{title}</h3>
         <p className="font-code text-accent tracking-widest">{subtitle}</p>
-      </div>
     </Link>
   );
 };
@@ -137,7 +108,7 @@ export default function ContactSection() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 max-w-4xl mx-auto">
             <div className="animate-text-reveal" style={{ animationDelay: '2.0s' }}>
-              <HolographicLinkCard
+              <ContactLinkButton
                 href={JOIN_US_FORM_URL}
                 icon={<UserPlus size={48} />}
                 title="Join Us"
@@ -145,7 +116,7 @@ export default function ContactSection() {
               />
             </div>
             <div className="animate-text-reveal" style={{ animationDelay: '2.2s' }}>
-              <HolographicLinkCard
+              <ContactLinkButton
                 href={COLLABORATE_FORM_URL}
                 icon={<Handshake size={48} />}
                 title="Collaborate"
