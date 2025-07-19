@@ -16,10 +16,12 @@ import {
 import { Button } from '@/components/ui/button';
 import { Github, Users, Code } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
 
 export default function GamesSection() {
   const [isVisible, setIsVisible] = useState(false);
   const [selectedGame, setSelectedGame] = useState<Game | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
 
@@ -51,7 +53,18 @@ export default function GamesSection() {
 
   const handleCardClick = (game: Game) => {
     setSelectedGame(game);
+    setIsDialogOpen(true);
   };
+  
+  const handleDialogChange = (open: boolean) => {
+      setIsDialogOpen(open);
+      if (!open) {
+          // Add a delay to allow the dialog to animate out before resetting the game
+          setTimeout(() => {
+              setSelectedGame(null);
+          }, 300);
+      }
+  }
 
   return (
     <>
@@ -86,7 +99,7 @@ export default function GamesSection() {
         </div>
       </section>
 
-      <Dialog open={!!selectedGame} onOpenChange={(isOpen) => !isOpen && setSelectedGame(null)}>
+      <Dialog open={isDialogOpen} onOpenChange={handleDialogChange}>
         {selectedGame && (
           <DialogContent className="max-w-2xl w-[90vw] bg-background/50 backdrop-blur-sm border-primary/30 box-glow-primary text-foreground">
             <DialogHeader>
@@ -96,17 +109,18 @@ export default function GamesSection() {
               </DialogDescription>
             </DialogHeader>
             <div className="mt-4 max-h-[70vh] overflow-y-auto pr-2 space-y-6">
-               <div className="relative w-full aspect-video rounded-lg overflow-hidden border border-primary/20">
+               <div className={cn("relative w-full aspect-video rounded-lg overflow-hidden border border-primary/20 animate-entry animate-fade-in", { 'is-visible': isDialogOpen })} style={{ animationDelay: '100ms' }}>
                 <Image
                   src={selectedGame.image}
                   alt={selectedGame.title}
                   fill
+                  sizes="(max-width: 768px) 100vw, 80vw"
                   className="object-cover"
                   data-ai-hint={selectedGame.aiHint}
                 />
               </div>
 
-               <div className="flex flex-col items-center gap-4 text-center">
+               <div className={cn("flex flex-col items-center gap-4 text-center animate-entry animate-slide-up-fade", { 'is-visible': isDialogOpen })} style={{ animationDelay: '200ms' }}>
                  <div className="flex items-center gap-2">
                     <Users className="w-5 h-5 text-primary" />
                     <h4 className="font-semibold text-lg">Developed by</h4>
@@ -119,13 +133,17 @@ export default function GamesSection() {
                </div>
 
                 <div className="space-y-4 text-left">
-                  <div className="flex items-center justify-center gap-2">
+                  <div className={cn("flex items-center justify-center gap-2 animate-entry animate-slide-up-fade", { 'is-visible': isDialogOpen })} style={{ animationDelay: '300ms' }}>
                     <Code className="w-5 h-5 text-primary" />
                     <h4 className="font-semibold text-lg text-center">Tech Stack</h4>
                   </div>
-                  {selectedGame.techStack.map((tech) => (
-                    <div key={tech.name} className="p-3 bg-card/50 rounded-lg border border-border flex items-start gap-4">
-                      <div className="p-2 bg-background rounded-md border border-primary/20">
+                  {selectedGame.techStack.map((tech, index) => (
+                    <div 
+                      key={tech.name} 
+                      className={cn("p-3 bg-card/50 rounded-lg border border-border flex items-start gap-4 animate-entry animate-slide-up-fade", { 'is-visible': isDialogOpen })}
+                      style={{ animationDelay: `${400 + index * 100}ms` }}
+                    >
+                      <div className="p-2 bg-background rounded-md border border-primary/20 mt-1">
                           <tech.icon className="w-6 h-6 text-primary" />
                       </div>
                       <div>
@@ -135,13 +153,14 @@ export default function GamesSection() {
                     </div>
                   ))}
                 </div>
-
-              <Button asChild variant="outline" className="w-full border-accent text-accent hover:bg-accent hover:text-accent-foreground">
-                <a href={selectedGame.githubUrl} target="_blank" rel="noopener noreferrer">
-                  <Github className="mr-2 h-4 w-4" />
-                  View on GitHub
-                </a>
-              </Button>
+              <div className={cn("animate-entry animate-fade-in", { 'is-visible': isDialogOpen })} style={{ animationDelay: '600ms' }}>
+                <Button asChild variant="outline" className="w-full border-accent text-accent hover:bg-accent hover:text-accent-foreground">
+                  <a href={selectedGame.githubUrl} target="_blank" rel="noopener noreferrer">
+                    <Github className="mr-2 h-4 w-4" />
+                    View on GitHub
+                  </a>
+                </Button>
+              </div>
             </div>
           </DialogContent>
         )}
