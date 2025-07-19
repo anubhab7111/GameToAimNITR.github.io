@@ -3,8 +3,9 @@
 
 import { Mail, Phone, User, Handshake, UserPlus } from 'lucide-react';
 import Link from 'next/link';
-import { useState, useRef, MouseEvent } from 'react';
+import { useState, useRef, MouseEvent, useEffect } from 'react';
 import { cn } from '@/lib/utils';
+import Typewriter from '@/components/typewriter';
 
 const presidentInfo = {
   role: 'President',
@@ -13,7 +14,6 @@ const presidentInfo = {
   phone: '+91-9876543210',
 };
 
-// Google Form Links - Replace with your actual links
 const JOIN_US_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfaKcVCfLCq4Nt5klTXbhhFj6ox1dpbwPSeGUJQbCbhN7iOuQ/viewform?usp=sf_link';
 const COLLABORATE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfaKcVCfLCq4Nt5klTXbhhFj6ox1dpbwPSeGUJQbCbhN7iOuQ/viewform?usp=sf_link';
 
@@ -66,47 +66,93 @@ const HolographicLinkCard = ({ href, icon, title, subtitle }: { href: string; ic
 
 
 export default function ContactSection() {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    const currentRef = sectionRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, []);
+
   return (
-    <section id="contact" className="py-16 md:py-24 flex items-center justify-center min-h-screen parallax-section">
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold text-glow-accent">Get In Touch</h2>
-          <p className="mt-4 text-lg text-muted-foreground">Ready to create the future? Connect with us.</p>
+    <section ref={sectionRef} id="contact" className="py-16 md:py-24 flex items-center justify-center min-h-screen parallax-section">
+      <div className={cn("terminal-container", { "is-active": isVisible })}>
+        <div className="terminal-header">
+          <div className="flex gap-1.5">
+            <span className="h-3 w-3 rounded-full bg-red-500"></span>
+            <span className="h-3 w-3 rounded-full bg-yellow-500"></span>
+            <span className="h-3 w-3 rounded-full bg-green-500"></span>
+          </div>
+          <p className="text-sm text-muted-foreground font-code">/dev/tty.contact</p>
         </div>
-        
-        <div className="max-w-4xl mx-auto p-4 md:p-6 mb-12 border border-primary/20 bg-card/50 backdrop-blur-sm rounded-lg">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-x-12 gap-y-4 text-center">
-            <div className="flex items-center gap-3">
-              <User className="w-5 h-5 text-primary" />
-              <div>
-                <span className="font-bold text-lg">{presidentInfo.name}</span>
-                <span className="text-sm text-muted-foreground"> ({presidentInfo.role})</span>
+        <div className="terminal-body">
+          <div className="text-center">
+            <h2 className="text-4xl md:text-5xl font-bold text-glow-accent">
+              <Typewriter text="Get In Touch" speed={50} delay={500} />
+            </h2>
+            <p className="mt-4 text-lg text-muted-foreground animate-text-reveal" style={{ animationDelay: '1.2s' }}>
+              Ready to create the future? Connect with us.
+            </p>
+          </div>
+          
+          <div className="max-w-4xl mx-auto p-4 md:p-6 my-12 border border-primary/20 bg-card/50 backdrop-blur-sm rounded-lg animate-text-reveal" style={{ animationDelay: '1.6s' }}>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-x-12 gap-y-4 text-center">
+              <div className="flex items-center gap-3">
+                <User className="w-5 h-5 text-primary" />
+                <div>
+                  <span className="font-bold text-lg">{presidentInfo.name}</span>
+                  <span className="text-sm text-muted-foreground"> ({presidentInfo.role})</span>
+                </div>
+              </div>
+               <div className="flex items-center gap-3">
+                <Mail className="w-5 h-5 text-primary" />
+                <a href={`mailto:${presidentInfo.email}`} className="text-muted-foreground hover:text-primary transition-colors">{presidentInfo.email}</a>
+              </div>
+               <div className="flex items-center gap-3">
+                <Phone className="w-5 h-5 text-primary" />
+                <a href={`tel:${presidentInfo.phone}`} className="text-muted-foreground hover:text-primary transition-colors">{presidentInfo.phone}</a>
               </div>
             </div>
-             <div className="flex items-center gap-3">
-              <Mail className="w-5 h-5 text-primary" />
-              <a href={`mailto:${presidentInfo.email}`} className="text-muted-foreground hover:text-primary transition-colors">{presidentInfo.email}</a>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 max-w-4xl mx-auto">
+            <div className="animate-text-reveal" style={{ animationDelay: '2.0s' }}>
+              <HolographicLinkCard
+                href={JOIN_US_FORM_URL}
+                icon={<UserPlus size={48} />}
+                title="Join Us"
+                subtitle="Become a Member"
+              />
             </div>
-             <div className="flex items-center gap-3">
-              <Phone className="w-5 h-5 text-primary" />
-              <a href={`tel:${presidentInfo.phone}`} className="text-muted-foreground hover:text-primary transition-colors">{presidentInfo.phone}</a>
+            <div className="animate-text-reveal" style={{ animationDelay: '2.2s' }}>
+              <HolographicLinkCard
+                href={COLLABORATE_FORM_URL}
+                icon={<Handshake size={48} />}
+                title="Collaborate"
+                subtitle="Partner With Us"
+              />
             </div>
           </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 max-w-4xl mx-auto">
-          <HolographicLinkCard
-            href={JOIN_US_FORM_URL}
-            icon={<UserPlus size={48} />}
-            title="Join Us"
-            subtitle="Become a Member"
-          />
-          <HolographicLinkCard
-            href={COLLABORATE_FORM_URL}
-            icon={<Handshake size={48} />}
-            title="Collaborate"
-            subtitle="Partner With Us"
-          />
         </div>
       </div>
     </section>
