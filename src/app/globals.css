@@ -663,7 +663,6 @@
   .holographic-card {
     @apply relative w-full max-w-sm rounded-lg border-2 border-accent/30 bg-card/30 p-8 text-center transition-all duration-300 ease-out;
     transform-style: preserve-3d;
-    perspective: 1000px;
   }
 
   .holographic-card-glow {
