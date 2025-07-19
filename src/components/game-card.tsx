@@ -67,7 +67,7 @@ export default function GameCard({ game, isVisible, index, onClick, onMouseEnter
         )}
         style={{ transitionDelay: `${(index * 30) + 100}ms`}}
         >
-          <div className="relative w-full h-1/2 cyber-card-shimmer" style={{ clipPath: 'polygon(0 20px, 20px 0, 100% 0, 100% 100%, 0 100%)' }}>
+          <div className="relative w-full aspect-[4/3] cyber-card-shimmer" style={{ clipPath: 'polygon(0 20px, 20px 0, 100% 0, 100% 100%, 0 100%)' }}>
             <Image
               src={game.image}
               alt={game.title}
@@ -78,8 +78,8 @@ export default function GameCard({ game, isVisible, index, onClick, onMouseEnter
             />
              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-black/10 to-transparent opacity-80 transition-opacity duration-300" />
           </div>
-          <div className="p-4 flex-grow flex flex-col justify-center">
-            <h3 className="font-bold text-xl text-primary text-glow-primary transition-all duration-300 group-hover:text-accent">
+          <div className="p-4 flex-1 flex flex-col justify-center">
+            <h3 className="font-bold text-lg md:text-xl text-primary text-glow-primary transition-all duration-300 group-hover:text-accent">
                 {game.title}
             </h3>
             <p className="text-muted-foreground mt-2 text-sm">
