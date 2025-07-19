@@ -86,77 +86,29 @@ export default function GamesSection() {
 
       <Dialog open={!!selectedGame} onOpenChange={(isOpen) => !isOpen && setSelectedGame(null)}>
         {selectedGame && (
-          <DialogContent className="max-w-4xl w-[90vw] bg-background/50 backdrop-blur-sm border-primary/30 box-glow-primary text-foreground">
+          <DialogContent className="max-w-2xl w-[90vw] bg-background/50 backdrop-blur-sm border-primary/30 box-glow-primary text-foreground">
             <DialogHeader>
               <DialogTitle className="text-3xl font-bold text-glow-primary">{selectedGame.title}</DialogTitle>
               <DialogDescription className="text-muted-foreground pt-2 text-base">
                 {selectedGame.description}
               </DialogDescription>
             </DialogHeader>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 mt-4 max-h-[70vh] overflow-y-auto pr-4">
-              <div className="space-y-4">
-                <div className="aspect-video rounded-lg overflow-hidden border border-primary/20">
-                  <iframe
-                    className="w-full h-full"
-                    src={selectedGame.videoUrl}
-                    title={`Video for ${selectedGame.title}`}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  ></iframe>
-                </div>
-                <p className="text-sm text-muted-foreground">{selectedGame.longDescription}</p>
+            <div className="mt-4 max-h-[70vh] overflow-y-auto pr-2 space-y-6">
+              <div className="aspect-video rounded-lg overflow-hidden border border-primary/20">
+                <iframe
+                  className="w-full h-full"
+                  src={selectedGame.videoUrl}
+                  title={`Video for ${selectedGame.title}`}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
               </div>
-              <div className="space-y-6">
-                <div>
-                  <h4 className="text-xl font-bold text-accent mb-4">Tech Stack</h4>
-                  <div className="space-y-4">
-                    {selectedGame.techStack.map((tech) => (
-                      <div key={tech.name} className="flex items-start gap-4">
-                        <div className="p-2 bg-card rounded-md border border-border mt-1">
-                          <tech.icon className="w-6 h-6 text-primary" />
-                        </div>
-                        <div>
-                          <p className="font-bold">{tech.name}</p>
-                          <p className="text-sm text-muted-foreground">{tech.reason}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <h4 className="text-xl font-bold text-accent mb-4">Project Details</h4>
-                  <div className="flex flex-col space-y-2 text-sm text-muted-foreground">
-                    <div className="flex items-center gap-4">
-                      <span className="font-bold text-foreground w-24">Status:</span>
-                       <span className={`inline-flex items-center gap-2 font-semibold ${
-                          selectedGame.status === 'Released' ? 'text-green-400' :
-                          selectedGame.status === 'Beta' ? 'text-yellow-400' :
-                          'text-red-400'
-                        }`}>
-                           <span className={`w-2.5 h-2.5 rounded-full ${
-                          selectedGame.status === 'Released' ? 'bg-green-500' :
-                          selectedGame.status === 'Beta' ? 'bg-yellow-500' :
-                          'bg-red-500'
-                        }`}></span>
-                        {selectedGame.status}
-                       </span>
-                    </div>
-                     <div className="flex items-center gap-4">
-                      <span className="font-bold text-foreground w-24">Active Devs:</span>
-                      <span className="flex items-center gap-2">
-                         <Users className="w-4 h-4" />
-                         {selectedGame.activeDevs}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <Button asChild variant="outline" className="w-full border-accent text-accent hover:bg-accent hover:text-accent-foreground">
-                  <a href={selectedGame.githubUrl} target="_blank" rel="noopener noreferrer">
-                    <Github className="mr-2 h-4 w-4" />
-                    View on GitHub
-                  </a>
-                </Button>
-              </div>
+              <Button asChild variant="outline" className="w-full border-accent text-accent hover:bg-accent hover:text-accent-foreground">
+                <a href={selectedGame.githubUrl} target="_blank" rel="noopener noreferrer">
+                  <Github className="mr-2 h-4 w-4" />
+                  View on GitHub
+                </a>
+              </Button>
             </div>
           </DialogContent>
         )}
