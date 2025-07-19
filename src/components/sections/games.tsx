@@ -110,7 +110,7 @@ export default function GamesSection() {
             </DialogHeader>
             <div className="mt-4 max-h-[70vh] overflow-y-auto pr-2 grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Left Column: Image */}
-              <div className={cn("relative w-full aspect-square rounded-lg overflow-hidden border border-primary/20 animate-entry animate-fade-in", { 'is-visible': isDialogOpen })} style={{ animationDelay: '100ms' }}>
+              <div className={cn("relative w-full aspect-video lg:aspect-square rounded-lg overflow-hidden border border-primary/20 animate-entry animate-fade-in", { 'is-visible': isDialogOpen })} style={{ animationDelay: '100ms' }}>
                 <Image
                   src={selectedGame.image}
                   alt={selectedGame.title}
