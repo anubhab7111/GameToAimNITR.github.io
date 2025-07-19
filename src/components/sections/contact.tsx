@@ -5,7 +5,6 @@ import { Mail, Phone, User, Handshake, UserPlus } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import Typewriter from '@/components/typewriter';
-import CyberButton from '@/components/cyber-button';
 import Link from 'next/link';
 
 const presidentInfo = {
@@ -21,7 +20,6 @@ const COLLABORATE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfaKcVCfL
 export default function ContactSection() {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
-  const [selectedButton, setSelectedButton] = useState<'join' | 'collaborate'>('join');
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -47,29 +45,6 @@ export default function ContactSection() {
       }
     };
   }, []);
-  
-  useEffect(() => {
-    if (!isVisible) return;
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
-        return;
-      }
-      if (e.key === 'ArrowLeft' || e.key === 'a') {
-        setSelectedButton('join');
-      } else if (e.key === 'ArrowRight' || e.key === 'd') {
-        setSelectedButton('collaborate');
-      } else if (e.key === 'Enter') {
-        const url = selectedButton === 'join' ? JOIN_US_FORM_URL : COLLABORATE_FORM_URL;
-        window.open(url, '_blank');
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isVisible, selectedButton]);
 
   return (
     <section ref={sectionRef} id="contact" className="py-16 md:py-24 flex items-center justify-center min-h-screen parallax-section">
@@ -113,33 +88,16 @@ export default function ContactSection() {
           </div>
 
           <div className="flex flex-col items-center gap-8">
-            <div className="flex flex-col md:flex-row items-center gap-8">
-                <div className={cn("animate-content-slide-in", { 'is-visible': isVisible })} style={{ animationDelay: '1.8s' }}>
-                  <Link href={JOIN_US_FORM_URL} target="_blank" rel="noopener noreferrer">
-                    <CyberButton
-                        icon={<UserPlus size={24} />}
-                        label="Join Us"
-                        isSelected={selectedButton === 'join'}
-                        onMouseEnter={() => setSelectedButton('join')}
-                    />
-                  </Link>
-                </div>
-                <div className={cn("animate-content-slide-in", { 'is-visible': isVisible })} style={{ animationDelay: '2.0s' }}>
-                  <Link href={COLLABORATE_FORM_URL} target="_blank" rel="noopener noreferrer">
-                     <CyberButton
-                        icon={<Handshake size={24} />}
-                        label="Collaborate"
-                        isSelected={selectedButton === 'collaborate'}
-                        onMouseEnter={() => setSelectedButton('collaborate')}
-                    />
-                  </Link>
-                </div>
+            <div className={cn("flex flex-col md:flex-row items-center gap-8 animate-content-slide-in", { 'is-visible': isVisible })} style={{ animationDelay: '1.8s' }}>
+              <Link href={JOIN_US_FORM_URL} target="_blank" rel="noopener noreferrer" className="contact-card-button group">
+                <UserPlus className="w-12 h-12 text-accent transition-all duration-300 group-hover:scale-110" />
+                <span className="font-bold text-lg mt-2">Join Us</span>
+              </Link>
+              <Link href={COLLABORATE_FORM_URL} target="_blank" rel="noopener noreferrer" className="contact-card-button group">
+                <Handshake className="w-12 h-12 text-accent transition-all duration-300 group-hover:scale-110" />
+                <span className="font-bold text-lg mt-2">Collaborate</span>
+              </Link>
             </div>
-             <div className={cn("animate-content-slide-in", { 'is-visible': isVisible })} style={{ animationDelay: '2.2s' }}>
-                <p className="text-sm text-muted-foreground font-code">
-                Use [<kbd className="px-1.5 py-0.5 text-xs font-semibold text-foreground bg-card border border-border rounded-md">A</kbd>/<kbd className="px-1.5 py-0.5 text-xs font-semibold text-foreground bg-card border border-border rounded-md">D</kbd>] or [<kbd className="px-1.5 py-0.5 text-xs font-semibold text-foreground bg-card border border-border rounded-md">Arrows</kbd>] to select. Press [<kbd className="px-1.5 py-0.5 text-xs font-semibold text-foreground bg-card border border-border rounded-md">Enter</kbd>] to confirm.
-                </p>
-             </div>
           </div>
         </div>
       </div>

@@ -1065,4 +1065,17 @@
       transform: translateY(0);
     }
   }
+
+  .contact-card-button {
+    @apply w-64 h-48 flex flex-col items-center justify-center p-4 rounded-lg
+           bg-card/50 border-2 border-accent/30 text-foreground no-underline
+           transition-all duration-300;
+  }
+
+  .contact-card-button:hover {
+    @apply border-accent bg-accent/10 text-accent;
+    box-shadow: 0 0 15px hsl(var(--accent)), 0 0 30px hsl(var(--accent));
+    transform: translateY(-5px);
+  }
 }
+
