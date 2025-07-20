@@ -2,6 +2,7 @@
 'use client';
 
 import { useEffect, useState, useRef, useCallback } from 'react';
+import dynamic from 'next/dynamic';
 import { useLenis } from '@studio-freight/react-lenis';
 import HeroSection from '@/components/sections/hero';
 import AboutSection from '@/components/sections/about';
@@ -11,7 +12,10 @@ import GamesSection from '@/components/sections/games';
 import ShowcaseSection from '@/components/sections/showcase';
 import HackerOverlay from '@/components/hacker-overlay';
 import { useAnimation } from '@/context/animation-context';
-import BioIDTerminal from '@/components/bio-id-terminal';
+
+const BioIDTerminal = dynamic(() => import('@/components/bio-id-terminal'), {
+  ssr: false,
+});
 
 export default function Home() {
   const { sequenceComplete } = useAnimation();
