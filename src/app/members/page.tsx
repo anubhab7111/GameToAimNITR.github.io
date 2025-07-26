@@ -5,8 +5,8 @@ import { useState, useMemo, useEffect, useRef } from 'react';
 import { useLenis } from '@studio-freight/react-lenis';
 import { Button } from '@/components/ui/button';
 import MemberCard from '@/components/member-card';
-import { members, years } from '@/lib/members-data';
-import type { Year } from '@/lib/members-data';
+import { members, years } from '@/lib/members';
+import type { Year } from '@/lib/members/types';
 import { cn } from '@/lib/utils';
 
 export default function MembersPage() {

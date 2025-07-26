@@ -4,7 +4,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import { Github, Linkedin, ChevronDown } from 'lucide-react';
-import type { Member } from '@/lib/members-data';
+import type { Member } from '@/lib/members/types';
 import { cn } from '@/lib/utils';
 import {
   Collapsible,

@@ -4,7 +4,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BrainCircuit, BookOpenText, Glasses, Users, Swords, FolderGit2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { members } from '@/lib/members-data';
+import { members } from '@/lib/members';
 import { useState, useEffect, useRef } from 'react';
 
 const AnimatedCounter = ({ value }: { value: number }) => {
