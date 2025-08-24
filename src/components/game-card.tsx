@@ -1,7 +1,6 @@
 
 'use client';
 
-import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import type { Game } from '@/lib/games-data';
 import { cn } from '@/lib/utils';
@@ -12,13 +11,12 @@ interface GameCardProps {
   game: Game;
   isVisible: boolean;
   index: number;
-  onClick: (game: Game) => void;
   onMouseEnter: () => void;
   isHovered: boolean;
   isDimmed: boolean;
 }
 
-export default function GameCard({ game, isVisible, index, onClick, onMouseEnter, isHovered, isDimmed }: GameCardProps) {
+export default function GameCard({ game, isVisible, index, onMouseEnter, isHovered, isDimmed }: GameCardProps) {
   const isMobile = useIsMobile();
   const [isMounted, setIsMounted] = useState(false);
 
@@ -44,10 +42,9 @@ export default function GameCard({ game, isVisible, index, onClick, onMouseEnter
   
   return (
     <div
-      onClick={() => onClick(game)}
       onMouseEnter={onMouseEnter}
       className={cn(
-        "relative aspect-[3/4] w-full group",
+        "relative w-full group h-full",
         'transition-all duration-300 ease-in-out',
         getTransformOrigin(index),
         !isVisible || !isMounted ? 'scale-y-0 opacity-0' : 'scale-y-100 opacity-100',
@@ -57,28 +54,16 @@ export default function GameCard({ game, isVisible, index, onClick, onMouseEnter
       style={{ transitionDelay: `${index * 30}ms` }}
       role="button"
       tabIndex={0}
-      onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onClick(game)}
       aria-label={`View details for ${game.title}`}
     >
       <div className="cyber-card-container h-full w-full">
         <div className={cn(
-            "cyber-card-content flex flex-col transition-opacity duration-300",
+            "cyber-card-content flex flex-col justify-center transition-opacity duration-300 p-4",
             isVisible ? "opacity-100" : "opacity-0"
         )}
         style={{ transitionDelay: `${(index * 30) + 100}ms`}}
         >
-          <div className="relative w-full aspect-[4/3] cyber-card-shimmer" style={{ clipPath: 'polygon(0 20px, 20px 0, 100% 0, 100% 100%, 0 100%)' }}>
-            <Image
-              src={game.image}
-              alt={game.title}
-              fill
-              sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
-              className="object-cover transition-transform duration-500"
-              data-ai-hint={game.aiHint}
-            />
-             <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-black/10 to-transparent opacity-80 transition-opacity duration-300" />
-          </div>
-          <div className="p-4 flex-1 flex flex-col justify-center">
+          <div className="flex-1 flex flex-col justify-center">
             <h3 className="font-bold text-lg md:text-xl text-primary text-glow-primary transition-all duration-300 group-hover:text-accent">
                 {game.title}
             </h3>
