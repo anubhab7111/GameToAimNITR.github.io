@@ -25,6 +25,11 @@ export default function Home() {
   const isScrolling = useRef(false);
   const isDiving = useRef(false);
   const enableScroll = useRef(false);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   // Enable scrolling only after the landing sequence is complete
   useEffect(() => {
@@ -178,7 +183,7 @@ export default function Home() {
       <ContactSection />
       <section id="member-access" className="py-24">
         <div className="container mx-auto px-4">
-          <BioIDTerminal />
+          {isClient && <BioIDTerminal />}
         </div>
       </section>
     </>
