@@ -6,7 +6,6 @@ import { useLenis } from '@studio-freight/react-lenis';
 import { Gamepad2, Component, UserPlus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Cybertype from '@/components/cybertype';
-import HeroBackground from '@/components/hero-background';
 import { useAnimation } from '@/context/animation-context';
 
 export default function HeroSection() {
@@ -78,7 +77,15 @@ export default function HeroSection() {
 
   return (
     <section ref={sectionRef} id="hero" className="relative h-[100vh] w-full flex items-center justify-center text-center overflow-hidden">
-      <HeroBackground isVisible={true} />
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute z-0 w-full h-full object-cover"
+        src="/gta_final.webm"
+      />
+      <div className="absolute inset-0 bg-black/50 z-0"></div>
       <div className="z-10 flex flex-col items-center p-4">
         <div
           className={'animate-entry animate-slide-in-top is-visible'}
