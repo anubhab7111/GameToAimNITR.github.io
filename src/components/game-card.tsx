@@ -14,6 +14,7 @@ interface GameCardProps {
   onMouseEnter: () => void;
   isHovered: boolean;
   isDimmed: boolean;
+  onClick: () => void;
 }
 
 export default function GameCard({ game, isVisible, index, onMouseEnter, isHovered, isDimmed }: GameCardProps) {
@@ -39,7 +40,7 @@ export default function GameCard({ game, isVisible, index, onMouseEnter, isHover
     }
     return 'origin-center';
   };
-  
+
   return (
     <div
       onMouseEnter={onMouseEnter}

@@ -24,12 +24,15 @@ import { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useLenis } from '@studio-freight/react-lenis';
-import type { ElementType } from 'react';
+// import type { ElementType } from 'react';
+import type { ComponentType } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface NavLink {
   href: string;
   label: string;
-  Icon: ElementType;
+  // Icon: ElementType;
+  Icon: ComponentType<{ className?: string }>;
 }
 
 const navLinks: NavLink[] = [
@@ -42,11 +45,13 @@ const navLinks: NavLink[] = [
 ];
 
 export default function Header() {
+  const router = useRouter();
   const pathname = usePathname();
   const [activeLink, setActiveLink] = useState('');
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const isNavigatingRef = useRef(false);
-  const timeoutRef = useRef<NodeJS.Timeout>();
+  // const timeoutRef = useRef<NodeJS.Timeout>();
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const lenis = useLenis();
   const navRef = useRef<HTMLElement>(null);
   const [underlineStyle, setUnderlineStyle] = useState({ left: 0, width: 0, opacity: 0 });
@@ -72,10 +77,10 @@ export default function Header() {
       setActiveLink(pathname);
       return;
     }
-    
+
     const handleScroll = () => {
         if (isNavigatingRef.current) return;
-        
+
         const scrollPosition = (lenis?.scroll || 0) + window.innerHeight / 2;
         let currentSectionId = '';
 
@@ -88,19 +93,19 @@ export default function Header() {
                 currentSectionId = '/#' + section.id;
             }
         }
-        
+
         // Handle hero section edge case
         if ((lenis?.scroll || 0) < window.innerHeight / 2) {
           currentSectionId = '/#about'; // Or a dedicated hero link
         }
-        
+
         setActiveLink(currentSectionId);
     };
 
     if (lenis) {
         lenis.on('scroll', handleScroll);
     }
-    
+
     // Set initial state
     handleScroll();
 
@@ -116,7 +121,7 @@ export default function Header() {
 
   const handleNavLinkClick = (e: React.MouseEvent, href: string) => {
     if (isSheetOpen) setIsSheetOpen(false);
-  
+
     if (href === '/#member-access' && pathname.startsWith('/members')) {
         e.preventDefault();
         router.push('/');
@@ -124,7 +129,8 @@ export default function Header() {
         return;
     }
 
-    if (href.startsWith('/#') && pathname === '/') {
+    // if (href.startsWith('/#') && pathname === '/') {
+    if (href.startsWith('/#') && pathname === '/' && href !== '/#member-access') {
       e.preventDefault();
       document.body.classList.add('is-nav-scrolling');
       setTimeout(() => document.body.classList.remove('is-nav-scrolling'), 800);
@@ -151,7 +157,7 @@ export default function Header() {
     const isActive = activeLink === href;
     const isMemberLinkOnMemberPage = pathname === '/members' && href === '/#member-access';
     const finalIsActive = isActive || isMemberLinkOnMemberPage;
-    
+
     const linkHref = href === '/#member-access' ? '/members' : href;
 
 

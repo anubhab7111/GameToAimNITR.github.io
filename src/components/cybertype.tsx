@@ -24,8 +24,10 @@ export default function Cybertype({
   const [displayedText, setDisplayedText] = useState('');
   const [isAnimating, setIsAnimating] = useState(true);
 
-  const animationRef = useRef<NodeJS.Timeout>();
-  const loopTimeoutRef = useRef<NodeJS.Timeout>();
+  // const animationRef = useRef<NodeJS.Timeout>();
+  // const loopTimeoutRef = useRef<NodeJS.Timeout>();
+  const animationRef = useRef<NodeJS.Timeout | null>(null);
+  const loopTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (animationRef.current) clearInterval(animationRef.current);
@@ -33,7 +35,7 @@ export default function Cybertype({
 
     const targetText = texts[currentIndex];
     setIsAnimating(true);
-    
+
     // An array to track which character indices have been revealed
     const revealed = new Array(targetText.length).fill(false);
     // An array of indices from 0 to length-1, which we will shuffle
@@ -70,13 +72,13 @@ export default function Cybertype({
             return CHAR_POOL[Math.floor(Math.random() * CHAR_POOL.length)];
           })
           .join('');
-        
+
         setDisplayedText(nextText);
 
         if (revealedCount >= targetText.length) {
           if (animationRef.current) clearInterval(animationRef.current);
           // Final set to ensure correct text is displayed
-          setDisplayedText(targetText); 
+          setDisplayedText(targetText);
           setIsAnimating(false);
 
           loopTimeoutRef.current = setTimeout(() => {

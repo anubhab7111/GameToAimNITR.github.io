@@ -18,13 +18,14 @@ export default function Typewriter({
 }: TypewriterProps) {
   const [displayedText, setDisplayedText] = useState('');
   const [isTyping, setIsTyping] = useState(true);
-  const timeoutRef = useRef<NodeJS.Timeout>();
+  // const timeoutRef = useRef<NodeJS.Timeout>();
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     // Reset state when props change
     setDisplayedText('');
     setIsTyping(true);
-    
+
     if (delay > 90000) { // A large delay means we are waiting for visibility
         setIsTyping(false);
         return;

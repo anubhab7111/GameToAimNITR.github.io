@@ -61,7 +61,8 @@ function SceneUpdater({
   setZoom,
   isInteracting,
 }: {
-  controlsRef: React.RefObject<OrbitControlsImpl>;
+  // controlsRef: React.RefObject<OrbitControlsImpl>;
+  controlsRef: React.RefObject<OrbitControlsImpl | null>;
   setZoom: (zoom: number) => void;
   isInteracting: boolean;
 }) {
@@ -93,17 +94,17 @@ export default function ModelViewer({ model }: { model: ModelInfo }) {
 
   const handlePan = (dx: number, dy: number) => {
     if (!controlsRef.current) return;
-  
+
     const controls = controlsRef.current;
     const camera = controls.object;
-  
+
     const offset = new Vector3();
     offset.copy(camera.position).sub(controls.target);
-    
+
     // Y-axis for up/down, X-axis for left/right
     const target = new Vector3();
     target.copy(controls.target);
-    
+
     const panLeft = new Vector3();
     panLeft.crossVectors(camera.up, offset).normalize();
     panLeft.multiplyScalar(dx * -0.05);
@@ -116,7 +117,7 @@ export default function ModelViewer({ model }: { model: ModelInfo }) {
 
     camera.position.add(pan);
     controls.target.add(pan);
-  
+
     controls.update();
   };
 
@@ -127,13 +128,13 @@ export default function ModelViewer({ model }: { model: ModelInfo }) {
       const maxDistance = 7;
       const minDistance = 0.7;
       const newDistance = minDistance + (1 - newZoom / 100) * (maxDistance - minDistance);
-      
+
       const direction = new Vector3();
       controls.object.getWorldDirection(direction);
       const newPosition = new Vector3();
       direction.multiplyScalar(-newDistance);
       newPosition.copy(controls.target).add(direction);
-      
+
       controls.object.position.copy(newPosition);
       controls.update();
 
