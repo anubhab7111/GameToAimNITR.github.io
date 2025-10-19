@@ -9,13 +9,13 @@ import Link from 'next/link';
 
 const presidentInfo = {
   role: 'President',
-  name: 'Jax',
-  email: 'president@gta.nitt.edu',
-  phone: '+91-9876543210',
+  name: 'Bidyendu Das',
+  email: 'dasbidyendu22@gmail.com',
+  phone: '+91-8018108430',
 };
 
 const JOIN_US_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfaKcVCfLCq4Nt5klTXbhhFj6ox1dpbwPSeGUJQbCbhN7iOuQ/viewform?usp=sf_link';
-const COLLABORATE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfaKcVCfLCq4Nt5klTXbhhFj6ox1dpbwPSeGUJQbCbhN7iOuQ/viewform?usp=sf_link';
+const COLLABORATE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeEz-xeGZA0Av_0CWYYADY--ZgLh8Pt2YTkI9QF5et8IuQRWw/viewform?usp=header';
 
 export default function ContactSection() {
   const [isVisible, setIsVisible] = useState(false);
