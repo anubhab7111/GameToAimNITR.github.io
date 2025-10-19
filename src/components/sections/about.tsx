@@ -23,7 +23,7 @@ const AnimatedCounter = ({ value }: { value: number }) => {
           }
           const duration = 1000;
           const increment = end / (duration / 16);
-          
+
           const timer = setInterval(() => {
             start += increment;
             if (start >= end) {
@@ -33,7 +33,7 @@ const AnimatedCounter = ({ value }: { value: number }) => {
               setCount(Math.ceil(start));
             }
           }, 16);
-          
+
           observer.disconnect();
         }
       },
@@ -64,20 +64,20 @@ const focusAreas = [
   },
   {
     icon: <BrainCircuit className="h-10 w-10 text-primary" />,
-    title: 'AI in Games',
-    description: 'Developing intelligent NPCs, procedural content generation, and adaptive game mechanics.',
+    title: 'Multiplayer & Networked Experiences',
+    description: 'Building connected worlds where players can collaborate, compete, and create shared memories.',
   },
   {
     icon: <BookOpenText className="h-10 w-10 text-primary" />,
-    title: 'Interactive Storytelling',
-    description: 'Weaving compelling narratives where player choices shape the journey and its outcome.',
+    title: 'Community & Collaboration',
+    description: 'Fostering a space where developers, artists, and storytellers come together to learn, build, and grow.',
   },
 ];
 
 const stats = [
-    { icon: <Users className="h-8 w-8 text-accent" />, value: `${members.length}+`, label: 'Members' },
-    { icon: <FolderGit2 className="h-8 w-8 text-accent" />, value: '12+', label: 'Projects Shipped' },
-    { icon: <Swords className="h-8 w-8 text-accent" />, value: '5+', label: 'Game Jams Hosted' },
+    { icon: <Users className="h-8 w-8 text-accent" />, value: `40+`, label: 'Members' },
+    { icon: <FolderGit2 className="h-8 w-8 text-accent" />, value: '500+', label: 'Players Reached' },
+    { icon: <Swords className="h-8 w-8 text-accent" />, value: '10+', label: 'Projects Shipped' },
 ];
 
 
@@ -130,7 +130,7 @@ export default function AboutSection() {
             )}
             style={{ animationDelay: '200ms' }}
           >
-            GAME TO AIM (GTA) is a community of passionate developers, artists, and storytellers at NIT Rourkela. Our mission is to push the boundaries of interactive entertainment and foster a culture of innovation and collaboration.
+          Game to Aim is the official game development club of NIT Rourkela, founded in 2020. We are a community of passionate developers, artists, and storytellers creating games across platforms — from Play Store releases to Virtual Reality experiences — using Unity, Unreal, and more.
           </p>
         </div>
 
