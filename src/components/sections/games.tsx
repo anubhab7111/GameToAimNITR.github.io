@@ -2,13 +2,27 @@
 'use client';
 
 import { games } from '@/lib/games-data';
+import type { Game } from '@/lib/games-data';
 import GameCard from '@/components/game-card';
 import { useState, useEffect, useRef } from 'react';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
+import Image from 'next/image';
+import { Button } from '@/components/ui/button';
+import { Users, Code, Wand2 } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 
 export default function GamesSection() {
   const [isVisible, setIsVisible] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [selectedGame, setSelectedGame] = useState<Game | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -35,6 +49,11 @@ export default function GamesSection() {
       }
     };
   }, []);
+  
+  const handleGameClick = (game: Game) => {
+    setSelectedGame(game);
+    setIsDialogOpen(true);
+  };
 
   return (
     <>
@@ -61,12 +80,71 @@ export default function GamesSection() {
               isVisible={isVisible}
               index={index}
               onMouseEnter={() => setHoveredIndex(index)}
+              onClick={handleGameClick}
               isHovered={hoveredIndex === index}
               isDimmed={hoveredIndex !== null && hoveredIndex !== index}
             />
           ))}
         </div>
       </section>
+
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="max-w-4xl w-full grid grid-cols-1 md:grid-cols-2 gap-8 p-0 border-accent box-glow-accent">
+          {selectedGame && (
+            <>
+              <div className="relative aspect-video md:aspect-auto">
+                <Image
+                  src={selectedGame.image}
+                  alt={selectedGame.title}
+                  fill
+                  className="object-cover rounded-l-lg"
+                  data-ai-hint={selectedGame.aiHint}
+                />
+              </div>
+              <div className="p-8 flex flex-col gap-4">
+                <DialogHeader>
+                  <DialogTitle className="text-3xl font-bold text-primary text-glow-primary">{selectedGame.title}</DialogTitle>
+                  <DialogDescription className="text-muted-foreground text-base">
+                    {selectedGame.longDescription}
+                  </DialogDescription>
+                </DialogHeader>
+
+                <div>
+                  <h4 className="font-semibold text-lg flex items-center gap-2 mb-2 text-accent">
+                    <Code /> Tech Stack
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedGame.techStack.map((tech) => (
+                      <Badge key={tech} variant="secondary" className="bg-secondary/50 text-secondary-foreground border-border">
+                        {tech}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="font-semibold text-lg flex items-center gap-2 mb-2 text-accent">
+                    <Users /> Developers
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedGame.developers.map((dev) => (
+                      <Badge key={dev} variant="outline" className="text-foreground border-border">
+                        {dev}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+                
+                <div className="mt-auto pt-4">
+                   <Button onClick={() => setIsDialogOpen(false)} className="w-full">
+                      Close
+                    </Button>
+                </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

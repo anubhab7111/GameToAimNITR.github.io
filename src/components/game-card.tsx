@@ -14,11 +14,12 @@ interface GameCardProps {
   isVisible: boolean;
   index: number;
   onMouseEnter: () => void;
+  onClick: (game: Game) => void;
   isHovered: boolean;
   isDimmed: boolean;
 }
 
-export default function GameCard({ game, isVisible, index, onMouseEnter, isHovered, isDimmed }: GameCardProps) {
+export default function GameCard({ game, isVisible, index, onMouseEnter, onClick, isHovered, isDimmed }: GameCardProps) {
   const isMobile = useIsMobile();
   const [isMounted, setIsMounted] = useState(false);
 
@@ -45,8 +46,9 @@ export default function GameCard({ game, isVisible, index, onMouseEnter, isHover
   return (
     <div
       onMouseEnter={onMouseEnter}
+      onClick={() => onClick(game)}
       className={cn(
-        "relative w-full group h-full",
+        "relative w-full group h-full game-card-clickable",
         'transition-all duration-300 ease-in-out',
         getTransformOrigin(index),
         !isVisible || !isMounted ? 'scale-y-0 opacity-0' : 'scale-y-100 opacity-100',
