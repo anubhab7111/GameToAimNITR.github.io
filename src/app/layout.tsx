@@ -2,13 +2,7 @@
 import type {Metadata} from 'next';
 import { Space_Grotesk, Orbitron, VT323 } from 'next/font/google';
 import './globals.css';
-import { Toaster } from "@/components/ui/toaster"
-import Header from '@/components/header';
-import Footer from '@/components/footer';
-import CursorFX from '@/components/cursor-fx';
-import LenisProvider from '@/components/lenis-provider';
-import { AnimationProvider } from '@/context/animation-context';
-import BackgroundFX from '@/components/background-fx';
+import { RootProviders } from '@/components/root-providers';
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -42,18 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${spaceGrotesk.variable} ${orbitron.variable} ${vt323.variable} dark`}>
       <body className="font-body antialiased">
-        <AnimationProvider>
-          <LenisProvider>
-            <CursorFX />
-            <BackgroundFX />
-            <div className="relative flex min-h-screen flex-col">
-              <Header />
-              <main className="flex-1 relative z-10">{children}</main>
-              <Footer />
-            </div>
-            <Toaster />
-          </LenisProvider>
-        </AnimationProvider>
+        <RootProviders>{children}</RootProviders>
       </body>
     </html>
   );
