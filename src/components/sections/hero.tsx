@@ -1,25 +1,21 @@
 
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useState } from 'react';
 import { useLenis } from '@studio-freight/react-lenis';
 import { Gamepad2, Component, UserPlus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Cybertype from '@/components/cybertype';
-import { useAnimation } from '@/context/animation-context';
 
 export default function HeroSection() {
   const buttons = ['games', 'showcase', 'join'] as const;
   type SelectedButton = (typeof buttons)[number];
   
-  const { sequenceComplete } = useAnimation();
   const [selectedButton, setSelectedButton] = useState<SelectedButton>('games');
   
   const lenis = useLenis();
-  const sectionRef = useRef<HTMLDivElement>(null);
 
   const handleNavigation = (targetId: string) => {
-    if (!sequenceComplete) return;
     document.body.classList.add('is-nav-scrolling');
     setTimeout(() => {
       document.body.classList.remove('is-nav-scrolling');
@@ -31,44 +27,6 @@ export default function HeroSection() {
     });
   };
 
-  useEffect(() => {
-    if (!sequenceComplete) return;
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) {
-        return; // Don't interfere with form inputs
-      }
-      
-      const currentIndex = buttons.indexOf(selectedButton);
-
-      if (['a', 'arrowleft'].includes(event.key.toLowerCase())) {
-        event.preventDefault();
-        const nextIndex = (currentIndex - 1 + buttons.length) % buttons.length;
-        setSelectedButton(buttons[nextIndex]);
-      } else if (['d', 'arrowright'].includes(event.key.toLowerCase())) {
-        event.preventDefault();
-        const nextIndex = (currentIndex + 1) % buttons.length;
-        setSelectedButton(buttons[nextIndex]);
-      }
-
-      if (event.key === 'Enter') {
-        event.preventDefault();
-        const pathMap: Record<SelectedButton, string> = {
-          games: '#games',
-          showcase: '#showcase',
-          join: '#contact',
-        };
-        handleNavigation(pathMap[selectedButton]);
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [selectedButton, lenis, sequenceComplete]);
-
   const buttonData = [
     { id: 'games', label: 'Explore Games', icon: <Gamepad2 />, target: '#games' },
     { id: 'showcase', label: 'Explore Showcase', icon: <Component />, target: '#showcase' },
@@ -76,7 +34,7 @@ export default function HeroSection() {
   ];
 
   return (
-    <section ref={sectionRef} id="hero" className="relative h-[100vh] w-full flex items-center justify-center text-center overflow-hidden">
+    <section id="hero" className="relative h-[100vh] w-full flex items-center justify-center text-center overflow-hidden">
       <video
         autoPlay
         loop
@@ -142,7 +100,7 @@ export default function HeroSection() {
             style={{ animationDelay: '500ms' }}
           >
             <p className="text-sm text-muted-foreground font-code mt-4">
-              Use [<kbd className="px-1.5 py-0.5 text-xs font-semibold text-foreground bg-card border border-border rounded-md">A</kbd>/<kbd className="px-1.5 py-0.5 text-xs font-semibold text-foreground bg-card border border-border rounded-md">D</kbd>] or [<kbd className="px-1.5 py-0.5 text-xs font-semibold text-foreground bg-card border border-border rounded-md">Arrows</kbd>] to select. Press [<kbd className="px-1.5 py-0.5 text-xs font-semibold text-foreground bg-card border border-border rounded-md">Enter</kbd>] to confirm.
+              Hover or click to navigate the digital frontier.
             </p>
           </div>
         </div>

@@ -4,7 +4,6 @@
 import { games } from '@/lib/games-data';
 import GameCard from '@/components/game-card';
 import { useState, useEffect, useRef } from 'react';
-import { cn } from '@/lib/utils';
 
 export default function GamesSection() {
   const [isVisible, setIsVisible] = useState(false);
@@ -61,7 +60,6 @@ export default function GamesSection() {
               game={game}
               isVisible={isVisible}
               index={index}
-              onClick={() => {}}
               onMouseEnter={() => setHoveredIndex(index)}
               isHovered={hoveredIndex === index}
               isDimmed={hoveredIndex !== null && hoveredIndex !== index}
