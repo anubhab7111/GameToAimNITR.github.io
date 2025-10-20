@@ -2,6 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import type { Game } from '@/lib/games-data';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -14,7 +15,6 @@ interface GameCardProps {
   onMouseEnter: () => void;
   isHovered: boolean;
   isDimmed: boolean;
-  onClick: () => void;
 }
 
 export default function GameCard({ game, isVisible, index, onMouseEnter, isHovered, isDimmed }: GameCardProps) {
@@ -59,12 +59,22 @@ export default function GameCard({ game, isVisible, index, onMouseEnter, isHover
     >
       <div className="cyber-card-container h-full w-full">
         <div className={cn(
-            "cyber-card-content flex flex-col justify-center transition-opacity duration-300 p-4",
+            "cyber-card-content flex flex-col justify-start transition-opacity duration-300",
             isVisible ? "opacity-100" : "opacity-0"
         )}
         style={{ transitionDelay: `${(index * 30) + 100}ms`}}
         >
-          <div className="flex-1 flex flex-col justify-center">
+          <div className="relative w-full aspect-[4/3] cyber-card-shimmer" style={{ clipPath: 'polygon(0 20px, 20px 0, 100% 0, 100% 100%, 0 100%)' }}>
+            <Image
+              src={game.image}
+              alt={game.title}
+              fill
+              sizes="(max-width: 768px) 50vw, 20vw"
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              data-ai-hint={game.aiHint}
+            />
+          </div>
+          <div className="p-4 flex-1 flex flex-col justify-center">
             <h3 className="font-bold text-lg md:text-xl text-primary text-glow-primary transition-all duration-300 group-hover:text-accent">
                 {game.title}
             </h3>

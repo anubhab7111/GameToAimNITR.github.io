@@ -1,0 +1,18 @@
+{
+  "games": {
+    "campusSurvivalVR": "https://picsum.photos/seed/cs_vr/400/300",
+    "campusQuestVR": "https://picsum.photos/seed/cq_vr/400/300",
+    "neonRush": "https://picsum.photos/seed/neon_rush/400/300"
+  },
+  "achievements": {
+    "codeJamChampion": "https://picsum.photos/seed/ach1/600/400",
+    "unrealVirtuoso": "https://picsum.photos/seed/ach2/600/400",
+    "gameathonSurvivor": "https://picsum.photos/seed/ach3/600/400",
+    "communityContributor": "https://picsum.photos/seed/ach4/600/400",
+    "vrPioneer": "https://picsum.photos/seed/ach5/600/400",
+    "bugSquasher": "https://picsum.photos/seed/ach6/600/400"
+  },
+  "members": {
+    "default": "https://picsum.photos/seed/member/400/400"
+  }
+}
