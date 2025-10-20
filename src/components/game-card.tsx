@@ -7,6 +7,7 @@ import type { Game } from '@/lib/games-data';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { games } from '@/lib/games-data';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface GameCardProps {
   game: Game;
@@ -28,7 +29,7 @@ export default function GameCard({ game, isVisible, index, onMouseEnter, isHover
   const getTransformOrigin = (i: number) => {
     if (!isMounted) return 'origin-center';
 
-    const cols = isMobile ? 2 : 5; // Adjusted to 5 to match games section
+    const cols = isMobile ? 2 : 5;
     const numRows = Math.ceil(games.length / cols);
     const row = Math.floor(i / cols);
 
@@ -57,14 +58,15 @@ export default function GameCard({ game, isVisible, index, onMouseEnter, isHover
       tabIndex={0}
       aria-label={`View details for ${game.title}`}
     >
-      <div className="cyber-card-container h-full w-full">
-        <div className={cn(
-            "cyber-card-content flex flex-col justify-start transition-opacity duration-300",
+      <Card
+        className={cn(
+            "h-full w-full overflow-hidden border-primary/20 transition-all duration-300 group-hover:border-primary group-hover:box-glow-primary flex flex-col",
             isVisible ? "opacity-100" : "opacity-0"
         )}
         style={{ transitionDelay: `${(index * 30) + 100}ms`}}
-        >
-          <div className="relative w-full aspect-[4/3] cyber-card-shimmer" style={{ clipPath: 'polygon(0 20px, 20px 0, 100% 0, 100% 100%, 0 100%)' }}>
+      >
+        <CardHeader className="p-0">
+          <div className="relative w-full aspect-[4/3]">
             <Image
               src={game.image}
               alt={game.title}
@@ -74,16 +76,16 @@ export default function GameCard({ game, isVisible, index, onMouseEnter, isHover
               data-ai-hint={game.aiHint}
             />
           </div>
-          <div className="p-4 flex-1 flex flex-col justify-center">
+        </CardHeader>
+        <CardContent className="p-4 flex-1 flex flex-col justify-center">
             <h3 className="font-bold text-lg md:text-xl text-primary text-glow-primary transition-all duration-300 group-hover:text-accent">
                 {game.title}
             </h3>
             <p className="text-muted-foreground mt-2 text-sm">
                 {game.description}
             </p>
-          </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
